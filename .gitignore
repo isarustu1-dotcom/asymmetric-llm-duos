@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.DS_Store
+.env
+
+# Editor
+.vscode/
+.idea/
+
+# Logs and outputs
+*.out
+*.log
+
+# Results — stored externally, never in repo
+workdirs/
