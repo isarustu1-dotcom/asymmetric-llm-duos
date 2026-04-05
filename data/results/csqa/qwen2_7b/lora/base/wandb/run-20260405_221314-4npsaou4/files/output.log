@@ -1,0 +1,143 @@
+2026-04-05 22:13:15,664 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:13:15,666 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 119.83it/s]
+2026-04-05 22:13:16,213 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+                                                
+                                              
+{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0602, 'eval_samples_per_second': 16.62, 'eval_steps_per_second': 16.62, 'epoch': 1.0}
+{'eval_loss': 0.3859686851501465, 'eval_accuracy': 1.0, 'eval_ece': 0.3202083110809326, 'eval_nll': 0.3859688341617584, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.041, 'eval_steps_per_second': 17.041, 'epoch': 2.0}
+{'eval_loss': 0.3859686851501465, 'eval_accuracy': 1.0, 'eval_ece': 0.3202083110809326, 'eval_nll': 0.3859688341617584, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.096, 'eval_steps_per_second': 17.096, 'epoch': 3.0}
+{'eval_loss': 0.3950110077857971, 'eval_accuracy': 1.0, 'eval_ece': 0.326327383518219, 'eval_nll': 0.3950110077857971, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.965, 'eval_steps_per_second': 16.965, 'epoch': 4.0}
+{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.941, 'eval_steps_per_second': 16.941, 'epoch': 5.0}
+{'eval_loss': 0.33308878540992737, 'eval_accuracy': 1.0, 'eval_ece': 0.2832934856414795, 'eval_nll': 0.33308887481689453, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 6.0}
+{'loss': 0.8767, 'grad_norm': 6.060823440551758, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+{'eval_loss': 0.337828665971756, 'eval_accuracy': 1.0, 'eval_ece': 0.2866825461387634, 'eval_nll': 0.33782875537872314, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.03, 'eval_steps_per_second': 17.03, 'epoch': 7.0}
+{'eval_loss': 0.2591317296028137, 'eval_accuracy': 1.0, 'eval_ece': 0.22827863693237305, 'eval_nll': 0.2591317296028137, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.061, 'eval_steps_per_second': 17.061, 'epoch': 8.0}
+{'eval_loss': 0.2022874802350998, 'eval_accuracy': 1.0, 'eval_ece': 0.18313992023468018, 'eval_nll': 0.2022874802350998, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.079, 'eval_steps_per_second': 17.079, 'epoch': 9.0}
+{'eval_loss': 0.1286313682794571, 'eval_accuracy': 1.0, 'eval_ece': 0.12070202827453613, 'eval_nll': 0.12863147258758545, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.043, 'eval_steps_per_second': 17.043, 'epoch': 10.0}
+{'eval_loss': 0.08366165310144424, 'eval_accuracy': 1.0, 'eval_ece': 0.0802575945854187, 'eval_nll': 0.08366165310144424, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 11.0}
+{'eval_loss': 0.0314258374273777, 'eval_accuracy': 1.0, 'eval_ece': 0.03093719482421875, 'eval_nll': 0.0314258374273777, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.777, 'eval_steps_per_second': 16.777, 'epoch': 12.0}
+{'eval_loss': 0.015832196921110153, 'eval_accuracy': 1.0, 'eval_ece': 0.015707552433013916, 'eval_nll': 0.015832196921110153, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.077, 'eval_steps_per_second': 17.077, 'epoch': 13.0}
+{'loss': 0.1657, 'grad_norm': 0.05964019522070885, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+{'eval_loss': 0.007767945993691683, 'eval_accuracy': 1.0, 'eval_ece': 0.007737874984741211, 'eval_nll': 0.007767945993691683, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.804, 'eval_steps_per_second': 16.804, 'epoch': 14.0}
+{'eval_loss': 0.003689507720991969, 'eval_accuracy': 1.0, 'eval_ece': 0.003682732582092285, 'eval_nll': 0.003689507720991969, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.819, 'eval_steps_per_second': 16.819, 'epoch': 15.0}
+{'eval_loss': 0.002489089034497738, 'eval_accuracy': 1.0, 'eval_ece': 0.002485990524291992, 'eval_nll': 0.002489089034497738, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.024, 'eval_steps_per_second': 17.024, 'epoch': 16.0}
+{'eval_loss': 0.0017686928622424603, 'eval_accuracy': 1.0, 'eval_ece': 0.0017671585083007812, 'eval_nll': 0.0017686928622424603, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.019, 'eval_steps_per_second': 17.019, 'epoch': 17.0}
+{'eval_loss': 0.001134586171247065, 'eval_accuracy': 1.0, 'eval_ece': 0.0011339187622070312, 'eval_nll': 0.001134586171247065, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.991, 'eval_steps_per_second': 16.991, 'epoch': 18.0}
+{'eval_loss': 0.0010787388309836388, 'eval_accuracy': 1.0, 'eval_ece': 0.0010781288146972656, 'eval_nll': 0.0010787388309836388, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.141, 'eval_steps_per_second': 17.141, 'epoch': 19.0}
+{'loss': 0.0013, 'grad_norm': 0.0022542141377925873, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+{'eval_loss': 0.0009488132782280445, 'eval_accuracy': 1.0, 'eval_ece': 0.0009483695030212402, 'eval_nll': 0.0009488132782280445, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.008, 'eval_steps_per_second': 17.008, 'epoch': 20.0}
+{'eval_loss': 0.0007701530121266842, 'eval_accuracy': 1.0, 'eval_ece': 0.0007698535919189453, 'eval_nll': 0.0007701530121266842, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.05, 'eval_steps_per_second': 17.05, 'epoch': 21.0}
+{'eval_loss': 0.0006884350441396236, 'eval_accuracy': 1.0, 'eval_ece': 0.0006881952285766602, 'eval_nll': 0.0006884350441396236, 'eval_runtime': 0.0616, 'eval_samples_per_second': 16.244, 'eval_steps_per_second': 16.244, 'epoch': 22.0}
+{'eval_loss': 0.0006544832140207291, 'eval_accuracy': 1.0, 'eval_ece': 0.0006542801856994629, 'eval_nll': 0.0006544832140207291, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.058, 'eval_steps_per_second': 17.058, 'epoch': 23.0}
+{'eval_loss': 0.0006544832140207291, 'eval_accuracy': 1.0, 'eval_ece': 0.0006542801856994629, 'eval_nll': 0.0006544832140207291, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.026, 'eval_steps_per_second': 17.026, 'epoch': 24.0}
+{'eval_loss': 0.0006532918778248131, 'eval_accuracy': 1.0, 'eval_ece': 0.0006530880928039551, 'eval_nll': 0.0006532918778248131, 'eval_runtime': 0.0593, 'eval_samples_per_second': 16.873, 'eval_steps_per_second': 16.873, 'epoch': 25.0}
+{'eval_loss': 0.0005787128466181457, 'eval_accuracy': 1.0, 'eval_ece': 0.0005785226821899414, 'eval_nll': 0.0005787128466181457, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.947, 'eval_steps_per_second': 16.947, 'epoch': 26.0}
+{'loss': 0.0001, 'grad_norm': 0.003976179752498865, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+{'eval_loss': 0.0006086166249588132, 'eval_accuracy': 1.0, 'eval_ece': 0.0006084442138671875, 'eval_nll': 0.0006086166249588132, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.043, 'eval_steps_per_second': 17.043, 'epoch': 27.0}
+{'eval_loss': 0.0007416835287585855, 'eval_accuracy': 1.0, 'eval_ece': 0.0007413029670715332, 'eval_nll': 0.0007415643776766956, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.765, 'eval_steps_per_second': 16.765, 'epoch': 28.0}
+{'eval_loss': 0.0006784282741136849, 'eval_accuracy': 1.0, 'eval_ece': 0.0006781816482543945, 'eval_nll': 0.0006784282741136849, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.03, 'eval_steps_per_second': 17.03, 'epoch': 29.0}
+{'eval_loss': 0.0005371319712139666, 'eval_accuracy': 1.0, 'eval_ece': 0.0005368590354919434, 'eval_nll': 0.0005370128201320767, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.949, 'eval_steps_per_second': 16.949, 'epoch': 30.0}
+{'eval_loss': 0.0005986090400256217, 'eval_accuracy': 1.0, 'eval_ece': 0.0005984306335449219, 'eval_nll': 0.0005986090400256217, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.97, 'eval_steps_per_second': 16.97, 'epoch': 31.0}
+{'eval_loss': 0.0005998004344291985, 'eval_accuracy': 1.0, 'eval_ece': 0.0005996227264404297, 'eval_nll': 0.0005998004344291985, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.062, 'eval_steps_per_second': 17.062, 'epoch': 32.0}
+{'eval_loss': 0.000474936212413013, 'eval_accuracy': 1.0, 'eval_ece': 0.0004749298095703125, 'eval_nll': 0.00047505536349490285, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.168, 'eval_steps_per_second': 17.168, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.001854854403063655, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+{'eval_loss': 0.0004945961991325021, 'eval_accuracy': 1.0, 'eval_ece': 0.0004944801330566406, 'eval_nll': 0.0004945961991325021, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.882, 'eval_steps_per_second': 16.882, 'epoch': 33.33}
+100%|██████████| 100/100 [00:38<00:00,  2.58it/s]
+{'train_runtime': 38.8204, 'train_samples_per_second': 10.304, 'train_steps_per_second': 2.576, 'train_loss': 0.2087724852806423, 'epoch': 33.33}
+2026-04-05 22:14:11,175 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+100%|██████████| 1/1 [00:00<00:00, 570.96it/s]
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_loss: 0.0004945961991325021
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_ece: 0.0004944801330566406
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_nll: 0.0004945961991325021
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0592
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.893
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.893
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+100%|██████████| 1/1 [00:00<00:00, 22.47it/s]
+2026-04-05 22:14:11,344 - ib-edl - [92mINFO[0m: [base] test_loss: 5.858964141225442e-05
+2026-04-05 22:14:11,344 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_ece: 5.8591365814208984e-05
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_nll: 5.858964141225442e-05
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1052
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.016
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.508
+2026-04-05 22:14:11,346 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+100%|██████████| 1/1 [00:00<00:00, 593.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 24.45it/s]
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4'])
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5'])
+2026-04-05 22:14:11,520 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4'])
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5'])
+2026-04-05 22:14:11,523 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz

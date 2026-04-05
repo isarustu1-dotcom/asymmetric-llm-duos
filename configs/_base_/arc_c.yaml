@@ -5,18 +5,18 @@ data:
             split: train
         name_suffix: "C"
         add_space: True
-        subset_size: null
+        subset_size: 10
     val:
         type: ARCDataset
         dataset_cfg:
             split: validation
         name_suffix: "C"
         add_space: True
-        subset_size: null
+        subset_size: 1
     test:
         type: ARCDataset
         dataset_cfg:
             split: test
         name_suffix: "C"
         add_space: True
-        subset_size: null
+        subset_size: 2

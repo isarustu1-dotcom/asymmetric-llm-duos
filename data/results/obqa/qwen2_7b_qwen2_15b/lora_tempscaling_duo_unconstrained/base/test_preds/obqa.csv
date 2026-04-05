@@ -1,0 +1,11 @@
+seed,model_type,idx,input,true_label,predicted_label,prob_label_0,prob_label_1,prob_label_2,prob_label_3
+1,base,0,"A person wants to start saving money so that they can afford a nice vacation at the end of the year. After looking over their budget and expenses, they decide the best way to save money is to",1,1,0.009580627083778381,0.9772505760192871,0.0065846629440784454,0.0065846629440784454
+1,base,1,There is most likely going to be fog around:,0,0,0.40978237986564636,0.12497657537460327,0.10360921174287796,0.36163169145584106
+2,base,0,"A person wants to start saving money so that they can afford a nice vacation at the end of the year. After looking over their budget and expenses, they decide the best way to save money is to",1,1,0.010832942090928555,0.9751503467559814,0.006570510566234589,0.0074453637935221195
+2,base,1,There is most likely going to be fog around:,0,0,0.38813257217407227,0.14278601109981537,0.10446446388959885,0.3646168112754822
+3,base,0,"A person wants to start saving money so that they can afford a nice vacation at the end of the year. After looking over their budget and expenses, they decide the best way to save money is to",1,1,0.010832942090928555,0.9751503467559814,0.006570510566234589,0.0074453637935221195
+3,base,1,There is most likely going to be fog around:,0,0,0.38610243797302246,0.13343343138694763,0.11775460094213486,0.3627096712589264
+4,base,0,"A person wants to start saving money so that they can afford a nice vacation at the end of the year. After looking over their budget and expenses, they decide the best way to save money is to",1,1,0.010832942090928555,0.9751503467559814,0.006570510566234589,0.0074453637935221195
+4,base,1,There is most likely going to be fog around:,0,0,0.403828889131546,0.13110403716564178,0.1086890697479248,0.3563777506351471
+5,base,0,"A person wants to start saving money so that they can afford a nice vacation at the end of the year. After looking over their budget and expenses, they decide the best way to save money is to",1,1,0.009588049724698067,0.9780076742172241,0.00581544591113925,0.006589763797819614
+5,base,1,There is most likely going to be fog around:,0,0,0.37083899974823,0.14522264897823334,0.11309950798749924,0.37083899974823

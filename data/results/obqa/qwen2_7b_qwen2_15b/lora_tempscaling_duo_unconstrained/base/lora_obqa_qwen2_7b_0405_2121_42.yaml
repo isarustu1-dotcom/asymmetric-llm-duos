@@ -1,0 +1,72 @@
+data:
+  test:
+    add_space: true
+    dataset_cfg:
+      split: test
+    subset_size: 2
+    type: OBQADataset
+  train:
+    add_space: true
+    dataset_cfg:
+      split: train
+    subset_size: 10
+    type: OBQADataset
+  val:
+    add_space: true
+    dataset_cfg:
+      split: validation
+    subset_size: 1
+    type: OBQADataset
+model:
+  model_cfg:
+    torch_dtype: bfloat16
+    type: AutoModelForCausalLM
+  model_name_or_path: Qwen/Qwen2-7B
+  peft_cfg:
+    bias: lora_only
+    inference_mode: false
+    lora_alpha: 16
+    lora_dropout: 0.1
+    r: 8
+    target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    task_type: CAUSAL_LM
+    type: LoraConfig
+  peft_path: null
+  special_tokens:
+    pad_token: <|endoftext|>
+  tokenizer_cfg:
+    type: AutoTokenizer
+    use_fast: true
+  use_peft: true
+process_preds:
+  do_plot: false
+  npz_file: obqa.npz
+  plot_cfg:
+    plot_grid_size:
+    - 5
+    - 5
+tokenizer_run_cfg:
+  max_length: 300
+  padding: true
+  return_tensors: pt
+  truncation: true
+train_cfg:
+  bf16: true
+  do_eval: true
+  do_train: true
+  eval_strategy: epoch
+  learning_rate: 5.0e-05
+  logging_steps: 20
+  lr_scheduler_type: cosine
+  max_steps: 10
+  per_device_eval_batch_size: 4
+  per_device_train_batch_size: 4
+  save_only_model: true
+  save_strategy: epoch
+  save_total_limit: 1
+  warmup_steps: 20
+  weight_decay: 0.0

@@ -7,7 +7,8 @@ train_cfg:
     learning_rate: 0.00005
     # On several datasets like ARC-C, 0.0 is better than 1e-5 for the weight decay.
     weight_decay: 0.0
-    max_steps: 10080
+    #max_steps: 100
+    max_steps: 10
     lr_scheduler_type: 'cosine'
     warmup_steps: 20
     logging_steps: 20

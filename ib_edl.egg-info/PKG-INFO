@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: ib-edl
+Version: 0.1.0
+Summary: "Calibrating LLMs with Information-Theoretic Evidential Deep Learning (ICLR 2025)"
+Keywords: Evidential Deep Learning,Information Bottleneck,Calibration,Large Language Models
+License-File: LICENSE
+Requires-Dist: accelerate
+Requires-Dist: alive-progress
+Requires-Dist: datasets
+Requires-Dist: mmengine
+Requires-Dist: numpy
+Requires-Dist: peft
+Requires-Dist: protobuf
+Requires-Dist: sentencepiece
+Requires-Dist: scipy
+Requires-Dist: tabulate
+Requires-Dist: tokenizers
+Requires-Dist: torch>=2.4.0
+Requires-Dist: torchmetrics
+Requires-Dist: transformers>=4.46.2
+Requires-Dist: wandb
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: codecov; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: setuptools; extra == "dev"
+Requires-Dist: yapf; extra == "dev"
+Requires-Dist: docformatter; extra == "dev"
+Dynamic: license-file

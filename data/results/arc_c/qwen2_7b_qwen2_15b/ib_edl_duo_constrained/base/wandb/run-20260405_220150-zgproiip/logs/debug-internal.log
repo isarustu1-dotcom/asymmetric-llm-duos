@@ -1,0 +1,12 @@
+{"time":"2026-04-05T22:01:51.237422781+02:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-04-05T22:01:51.565210479+02:00","level":"INFO","msg":"stream: created new stream","id":"zgproiip"}
+{"time":"2026-04-05T22:01:51.565317422+02:00","level":"INFO","msg":"handler: started","stream_id":"zgproiip"}
+{"time":"2026-04-05T22:01:51.565853026+02:00","level":"INFO","msg":"stream: started","id":"zgproiip"}
+{"time":"2026-04-05T22:01:51.565871681+02:00","level":"INFO","msg":"writer: started","stream_id":"zgproiip"}
+{"time":"2026-04-05T22:01:51.565889264+02:00","level":"INFO","msg":"sender: started","stream_id":"zgproiip"}
+{"time":"2026-04-05T22:02:47.006508792+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-04-05T22:02:47.665572989+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2026-04-05T22:02:47.668616289+02:00","level":"INFO","msg":"stream: closing","id":"zgproiip"}
+{"time":"2026-04-05T22:02:47.66863825+02:00","level":"INFO","msg":"handler: closed","stream_id":"zgproiip"}
+{"time":"2026-04-05T22:02:47.668980047+02:00","level":"INFO","msg":"sender: closed","stream_id":"zgproiip"}
+{"time":"2026-04-05T22:02:47.669006477+02:00","level":"INFO","msg":"stream: closed","id":"zgproiip"}

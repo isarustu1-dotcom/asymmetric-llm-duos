@@ -1,0 +1,1756 @@
+Obtaining file:///dss/dsshome1/03/ra58yed2/asymmetric-llm-duos
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: accelerate in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.12.0)
+Requirement already satisfied: alive-progress in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (3.3.0)
+Requirement already satisfied: datasets in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (4.4.1)
+Requirement already satisfied: mmengine in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.10.7)
+Requirement already satisfied: numpy in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (2.3.5)
+Requirement already satisfied: peft in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.18.0)
+Requirement already satisfied: protobuf in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (6.33.4)
+Requirement already satisfied: sentencepiece in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.2.1)
+Requirement already satisfied: scipy in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.16.3)
+Requirement already satisfied: tabulate in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.9.0)
+Requirement already satisfied: tokenizers in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.22.1)
+Requirement already satisfied: torch>=2.4.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (2.9.1)
+Requirement already satisfied: torchmetrics in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.8.2)
+Requirement already satisfied: transformers>=4.46.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (4.57.3)
+Requirement already satisfied: wandb in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.24.0)
+Requirement already satisfied: filelock in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.20.0)
+Requirement already satisfied: typing-extensions>=4.10.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (4.15.0)
+Requirement already satisfied: setuptools in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (80.9.0)
+Requirement already satisfied: sympy>=1.13.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.6.1)
+Requirement already satisfied: jinja2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (2025.10.0)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.93)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
+Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (9.10.2.21)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.4.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (11.3.3.83)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (10.3.9.90)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (11.7.3.90)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.5.8.93)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (0.7.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.27.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (2.27.5)
+Requirement already satisfied: nvidia-nvshmem-cu12==3.3.20 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.3.20)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.93)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (1.13.1.3)
+Requirement already satisfied: triton==3.5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.5.1)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from sympy>=1.13.3->torch>=2.4.0->ib-edl==0.1.0) (1.3.0)
+Requirement already satisfied: huggingface-hub<1.0,>=0.34.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (0.36.0)
+Requirement already satisfied: packaging>=20.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (25.0)
+Requirement already satisfied: pyyaml>=5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (6.0.3)
+Requirement already satisfied: regex!=2019.12.17 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (2025.11.3)
+Requirement already satisfied: requests in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (2.32.5)
+Requirement already satisfied: safetensors>=0.4.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (0.7.0)
+Requirement already satisfied: tqdm>=4.27 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (4.67.1)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from huggingface-hub<1.0,>=0.34.0->transformers>=4.46.2->ib-edl==0.1.0) (1.2.0)
+Requirement already satisfied: psutil in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from accelerate->ib-edl==0.1.0) (7.1.3)
+Requirement already satisfied: about-time==4.2.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from alive-progress->ib-edl==0.1.0) (4.2.1)
+Requirement already satisfied: graphemeu==0.7.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from alive-progress->ib-edl==0.1.0) (0.7.2)
+Requirement already satisfied: pyarrow>=21.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (22.0.0)
+Requirement already satisfied: dill<0.4.1,>=0.3.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.4.0)
+Requirement already satisfied: pandas in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (2.3.3)
+Requirement already satisfied: httpx<1.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.28.1)
+Requirement already satisfied: xxhash in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (3.6.0)
+Requirement already satisfied: multiprocess<0.70.19 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.70.18)
+Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (3.13.2)
+Requirement already satisfied: anyio in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (4.12.0)
+Requirement already satisfied: certifi in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (2025.11.12)
+Requirement already satisfied: httpcore==1.* in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (1.0.9)
+Requirement already satisfied: idna in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (3.11)
+Requirement already satisfied: h11>=0.16 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpcore==1.*->httpx<1.0.0->datasets->ib-edl==0.1.0) (0.16.0)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (2.6.1)
+Requirement already satisfied: aiosignal>=1.4.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.4.0)
+Requirement already satisfied: attrs>=17.3.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (25.4.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.8.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (6.7.0)
+Requirement already satisfied: propcache>=0.2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (0.4.1)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.22.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from requests->transformers>=4.46.2->ib-edl==0.1.0) (3.4.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from requests->transformers>=4.46.2->ib-edl==0.1.0) (2.6.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from jinja2->torch>=2.4.0->ib-edl==0.1.0) (3.0.3)
+Requirement already satisfied: addict in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (2.4.0)
+Requirement already satisfied: matplotlib in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (3.10.8)
+Requirement already satisfied: rich in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (14.2.0)
+Requirement already satisfied: termcolor in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (3.2.0)
+Requirement already satisfied: yapf in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (0.43.0)
+Requirement already satisfied: opencv-python>=3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (4.13.0.90)
+Requirement already satisfied: contourpy>=1.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (1.3.3)
+Requirement already satisfied: cycler>=0.10 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (4.61.1)
+Requirement already satisfied: kiwisolver>=1.3.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (1.4.9)
+Requirement already satisfied: pillow>=8 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (12.0.0)
+Requirement already satisfied: pyparsing>=3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (3.2.5)
+Requirement already satisfied: python-dateutil>=2.7 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from python-dateutil>=2.7->matplotlib->mmengine->ib-edl==0.1.0) (1.17.0)
+Requirement already satisfied: pytz>=2020.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pandas->datasets->ib-edl==0.1.0) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pandas->datasets->ib-edl==0.1.0) (2025.2)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from rich->mmengine->ib-edl==0.1.0) (4.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from rich->mmengine->ib-edl==0.1.0) (2.19.2)
+Requirement already satisfied: mdurl~=0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from markdown-it-py>=2.2.0->rich->mmengine->ib-edl==0.1.0) (0.1.2)
+Requirement already satisfied: lightning-utilities>=0.8.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torchmetrics->ib-edl==0.1.0) (0.15.2)
+Requirement already satisfied: click>=8.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (8.3.1)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (3.1.46)
+Requirement already satisfied: platformdirs in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (4.5.1)
+Requirement already satisfied: pydantic<3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (2.12.5)
+Requirement already satisfied: sentry-sdk>=2.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (2.50.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (0.7.0)
+Requirement already satisfied: pydantic-core==2.41.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (2.41.5)
+Requirement already satisfied: typing-inspection>=0.4.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (0.4.2)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb->ib-edl==0.1.0) (4.0.12)
+Requirement already satisfied: smmap<6,>=3.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb->ib-edl==0.1.0) (5.0.2)
+Building wheels for collected packages: ib-edl
+  Building editable for ib-edl (pyproject.toml): started
+  Building editable for ib-edl (pyproject.toml): finished with status 'done'
+  Created wheel for ib-edl: filename=ib_edl-0.1.0-0.editable-py3-none-any.whl size=3824 sha256=a970ff48bdeff880a6f725eb4770836cb5ee824808952ada63186aa5a1f2e337
+  Stored in directory: /tmp/pip-ephem-wheel-cache-8jjt5azr/wheels/dd/e1/c8/20101cbea653c13009178c1120a7414eb6b85d5fb6220f526e
+Successfully built ib-edl
+Installing collected packages: ib-edl
+  Attempting uninstall: ib-edl
+    Found existing installation: ib-edl 0.1.0
+    Uninstalling ib-edl-0.1.0:
+      Successfully uninstalled ib-edl-0.1.0
+Successfully installed ib-edl-0.1.0
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
+wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run sn0wyj6j
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_220854-sn0wyj6j
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 0405_2208_54
+wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/sn0wyj6j
+2026-04-05 22:08:55,671 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:08:55,672 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[train] Seed=1 | output -> data/results/csqa/qwen2_7b/lora
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 121.70it/s]
+2026-04-05 22:08:56,190 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  1%|          | 1/100 [00:01<01:55,  1.17s/it]  2%|▏         | 2/100 [00:01<00:57,  1.71it/s]  3%|▎         | 3/100 [00:01<00:38,  2.50it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  3%|▎         | 3/100 [00:01<00:38,  2.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 275.38it/s][A
+                                              [A  4%|▍         | 4/100 [00:02<00:50,  1.89it/s]  5%|▌         | 5/100 [00:02<00:38,  2.50it/s]  6%|▌         | 6/100 [00:02<00:29,  3.14it/s]{'eval_loss': 0.40658998489379883, 'eval_accuracy': 1.0, 'eval_ece': 0.33408284187316895, 'eval_nll': 0.40658998489379883, 'eval_runtime': 0.0642, 'eval_samples_per_second': 15.571, 'eval_steps_per_second': 15.571, 'epoch': 1.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  6%|▌         | 6/100 [00:02<00:29,  3.14it/s]
+100%|██████████| 1/1 [00:00<00:00, 345.27it/s][A
+                                              [A  7%|▋         | 7/100 [00:03<00:42,  2.17it/s]  8%|▊         | 8/100 [00:03<00:33,  2.73it/s]  9%|▉         | 9/100 [00:03<00:27,  3.31it/s]{'eval_loss': 0.42772018909454346, 'eval_accuracy': 1.0, 'eval_ece': 0.3480061888694763, 'eval_nll': 0.42772018909454346, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.756, 'eval_steps_per_second': 16.756, 'epoch': 2.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  9%|▉         | 9/100 [00:03<00:27,  3.31it/s]
+100%|██████████| 1/1 [00:00<00:00, 357.24it/s][A
+                                              [A 10%|█         | 10/100 [00:04<00:38,  2.34it/s] 11%|█         | 11/100 [00:04<00:30,  2.89it/s] 12%|█▏        | 12/100 [00:04<00:25,  3.44it/s]{'eval_loss': 0.3910621702671051, 'eval_accuracy': 1.0, 'eval_ece': 0.3236619234085083, 'eval_nll': 0.3910621702671051, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.948, 'eval_steps_per_second': 16.948, 'epoch': 3.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 12%|█▏        | 12/100 [00:04<00:25,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.71it/s][A
+                                              [A 13%|█▎        | 13/100 [00:05<00:36,  2.40it/s] 14%|█▍        | 14/100 [00:05<00:29,  2.92it/s] 15%|█▌        | 15/100 [00:05<00:24,  3.48it/s]{'eval_loss': 0.3910621702671051, 'eval_accuracy': 1.0, 'eval_ece': 0.3236619234085083, 'eval_nll': 0.3910621702671051, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.961, 'eval_steps_per_second': 16.961, 'epoch': 4.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 15%|█▌        | 15/100 [00:05<00:24,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 364.98it/s][A
+                                              [A 16%|█▌        | 16/100 [00:06<00:34,  2.41it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.95it/s] 18%|█▊        | 18/100 [00:06<00:23,  3.52it/s]{'eval_loss': 0.3910621702671051, 'eval_accuracy': 1.0, 'eval_ece': 0.3236619234085083, 'eval_nll': 0.3910621702671051, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.748, 'eval_steps_per_second': 16.748, 'epoch': 5.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 18%|█▊        | 18/100 [00:06<00:23,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.32it/s][A
+                                              [A 19%|█▉        | 19/100 [00:07<00:33,  2.40it/s] 20%|██        | 20/100 [00:07<00:27,  2.95it/s]                                                 20%|██        | 20/100 [00:07<00:27,  2.95it/s] 21%|██        | 21/100 [00:07<00:22,  3.51it/s]{'eval_loss': 0.33628904819488525, 'eval_accuracy': 1.0, 'eval_ece': 0.2855834364891052, 'eval_nll': 0.33628904819488525, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.988, 'eval_steps_per_second': 16.988, 'epoch': 6.0}
+{'loss': 0.7886, 'grad_norm': 6.263420104980469, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 21%|██        | 21/100 [00:07<00:22,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.21it/s][A
+                                              [A 22%|██▏       | 22/100 [00:08<00:32,  2.43it/s] 23%|██▎       | 23/100 [00:08<00:25,  2.98it/s] 24%|██▍       | 24/100 [00:08<00:21,  3.54it/s]{'eval_loss': 0.3490804433822632, 'eval_accuracy': 1.0, 'eval_ece': 0.29466360807418823, 'eval_nll': 0.3490804433822632, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.07, 'eval_steps_per_second': 17.07, 'epoch': 7.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 24%|██▍       | 24/100 [00:08<00:21,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 356.72it/s][A
+                                              [A 25%|██▌       | 25/100 [00:09<00:30,  2.45it/s] 26%|██▌       | 26/100 [00:09<00:24,  3.00it/s] 27%|██▋       | 27/100 [00:09<00:20,  3.56it/s]{'eval_loss': 0.2731058597564697, 'eval_accuracy': 1.0, 'eval_ece': 0.23898780345916748, 'eval_nll': 0.2731058597564697, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.955, 'eval_steps_per_second': 16.955, 'epoch': 8.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 27%|██▋       | 27/100 [00:09<00:20,  3.56it/s]
+100%|██████████| 1/1 [00:00<00:00, 386.50it/s][A
+                                              [A 28%|██▊       | 28/100 [00:10<00:29,  2.43it/s] 29%|██▉       | 29/100 [00:10<00:23,  2.98it/s] 30%|███       | 30/100 [00:10<00:19,  3.54it/s]{'eval_loss': 0.20926915109157562, 'eval_accuracy': 1.0, 'eval_ece': 0.18882310390472412, 'eval_nll': 0.20926915109157562, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.974, 'eval_steps_per_second': 16.974, 'epoch': 9.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 30%|███       | 30/100 [00:10<00:19,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.01it/s][A
+                                              [A 31%|███       | 31/100 [00:11<00:28,  2.41it/s] 32%|███▏      | 32/100 [00:11<00:23,  2.95it/s] 33%|███▎      | 33/100 [00:11<00:19,  3.51it/s]{'eval_loss': 0.17457245290279388, 'eval_accuracy': 1.0, 'eval_ece': 0.16018396615982056, 'eval_nll': 0.17457245290279388, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.013, 'eval_steps_per_second': 17.013, 'epoch': 10.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 33%|███▎      | 33/100 [00:11<00:19,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 379.68it/s][A
+                                              [A 34%|███▍      | 34/100 [00:12<00:28,  2.35it/s] 35%|███▌      | 35/100 [00:12<00:22,  2.89it/s] 36%|███▌      | 36/100 [00:12<00:18,  3.45it/s]{'eval_loss': 0.08819393813610077, 'eval_accuracy': 1.0, 'eval_ece': 0.08441668748855591, 'eval_nll': 0.08819393813610077, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.036, 'eval_steps_per_second': 17.036, 'epoch': 11.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 36%|███▌      | 36/100 [00:13<00:18,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 326.58it/s][A
+                                              [A 37%|███▋      | 37/100 [00:13<00:26,  2.41it/s] 38%|███▊      | 38/100 [00:13<00:20,  2.95it/s] 39%|███▉      | 39/100 [00:14<00:17,  3.52it/s]{'eval_loss': 0.034950874745845795, 'eval_accuracy': 1.0, 'eval_ece': 0.03434723615646362, 'eval_nll': 0.03495098650455475, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.049, 'eval_steps_per_second': 17.049, 'epoch': 12.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 39%|███▉      | 39/100 [00:14<00:17,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 383.43it/s][A
+                                              [A 40%|████      | 40/100 [00:14<00:24,  2.43it/s]                                                 40%|████      | 40/100 [00:14<00:24,  2.43it/s] 41%|████      | 41/100 [00:14<00:19,  2.97it/s] 42%|████▏     | 42/100 [00:15<00:16,  3.53it/s]{'eval_loss': 0.0138212526217103, 'eval_accuracy': 1.0, 'eval_ece': 0.01372617483139038, 'eval_nll': 0.0138212526217103, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.034, 'eval_steps_per_second': 17.034, 'epoch': 13.0}
+{'loss': 0.1932, 'grad_norm': 0.16090364754199982, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 42%|████▏     | 42/100 [00:15<00:16,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 394.46it/s][A
+                                              [A 43%|████▎     | 43/100 [00:15<00:23,  2.41it/s] 44%|████▍     | 44/100 [00:15<00:18,  2.96it/s] 45%|████▌     | 45/100 [00:16<00:15,  3.52it/s]{'eval_loss': 0.007227820809930563, 'eval_accuracy': 1.0, 'eval_ece': 0.007201790809631348, 'eval_nll': 0.007227820809930563, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.025, 'eval_steps_per_second': 17.025, 'epoch': 14.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 45%|████▌     | 45/100 [00:16<00:15,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.64it/s][A
+                                              [A 46%|████▌     | 46/100 [00:16<00:22,  2.42it/s] 47%|████▋     | 47/100 [00:16<00:17,  2.96it/s] 48%|████▊     | 48/100 [00:17<00:14,  3.50it/s]{'eval_loss': 0.003756254445761442, 'eval_accuracy': 1.0, 'eval_ece': 0.0037493109703063965, 'eval_nll': 0.0037563731893897057, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.045, 'eval_steps_per_second': 17.045, 'epoch': 15.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 48%|████▊     | 48/100 [00:17<00:14,  3.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.48it/s][A
+                                              [A 49%|████▉     | 49/100 [00:17<00:21,  2.40it/s] 50%|█████     | 50/100 [00:18<00:16,  2.95it/s] 51%|█████     | 51/100 [00:18<00:13,  3.51it/s]{'eval_loss': 0.0020159415435045958, 'eval_accuracy': 1.0, 'eval_ece': 0.0020140409469604492, 'eval_nll': 0.002016060519963503, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.988, 'eval_steps_per_second': 16.988, 'epoch': 16.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 51%|█████     | 51/100 [00:18<00:13,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 357.02it/s][A
+                                              [A 52%|█████▏    | 52/100 [00:18<00:20,  2.35it/s] 53%|█████▎    | 53/100 [00:19<00:16,  2.89it/s] 54%|█████▍    | 54/100 [00:19<00:13,  3.47it/s]{'eval_loss': 0.0015074567636474967, 'eval_accuracy': 1.0, 'eval_ece': 0.0015064477920532227, 'eval_nll': 0.0015075758565217257, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.955, 'eval_steps_per_second': 16.955, 'epoch': 17.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 54%|█████▍    | 54/100 [00:19<00:13,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 383.99it/s][A
+                                              [A 55%|█████▌    | 55/100 [00:19<00:18,  2.39it/s] 56%|█████▌    | 56/100 [00:20<00:14,  2.94it/s] 57%|█████▋    | 57/100 [00:20<00:12,  3.50it/s]{'eval_loss': 0.0010756427654996514, 'eval_accuracy': 1.0, 'eval_ece': 0.0010752081871032715, 'eval_nll': 0.0010757618583738804, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.068, 'eval_steps_per_second': 17.068, 'epoch': 18.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 57%|█████▋    | 57/100 [00:20<00:12,  3.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 394.50it/s][A
+                                              [A 58%|█████▊    | 58/100 [00:20<00:17,  2.41it/s] 59%|█████▉    | 59/100 [00:21<00:13,  2.96it/s] 60%|██████    | 60/100 [00:21<00:11,  3.52it/s]                                                 60%|██████    | 60/100 [00:21<00:11,  3.52it/s]{'eval_loss': 0.0010795724811032414, 'eval_accuracy': 1.0, 'eval_ece': 0.0010790824890136719, 'eval_nll': 0.0010796914575621486, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.025, 'eval_steps_per_second': 17.025, 'epoch': 19.0}
+{'loss': 0.0017, 'grad_norm': 0.00647238502278924, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 60%|██████    | 60/100 [00:21<00:11,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 362.70it/s][A
+                                              [A 61%|██████    | 61/100 [00:22<00:15,  2.44it/s] 62%|██████▏   | 62/100 [00:22<00:12,  2.99it/s] 63%|██████▎   | 63/100 [00:22<00:10,  3.55it/s]{'eval_loss': 0.0007904027588665485, 'eval_accuracy': 1.0, 'eval_ece': 0.0007901191711425781, 'eval_nll': 0.0007904027588665485, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.946, 'eval_steps_per_second': 16.946, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 63%|██████▎   | 63/100 [00:22<00:10,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00, 349.88it/s][A
+                                              [A 64%|██████▍   | 64/100 [00:23<00:14,  2.44it/s] 65%|██████▌   | 65/100 [00:23<00:11,  2.97it/s] 66%|██████▌   | 66/100 [00:23<00:09,  3.49it/s]{'eval_loss': 0.0007744412287138402, 'eval_accuracy': 1.0, 'eval_ece': 0.0007741451263427734, 'eval_nll': 0.0007744412287138402, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.038, 'eval_steps_per_second': 17.038, 'epoch': 21.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 66%|██████▌   | 66/100 [00:23<00:09,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 321.45it/s][A
+                                              [A 67%|██████▋   | 67/100 [00:24<00:14,  2.35it/s] 68%|██████▊   | 68/100 [00:24<00:11,  2.88it/s] 69%|██████▉   | 69/100 [00:24<00:09,  3.42it/s]{'eval_loss': 0.0006043276516720653, 'eval_accuracy': 1.0, 'eval_ece': 0.0006041526794433594, 'eval_nll': 0.0006043276516720653, 'eval_runtime': 0.0603, 'eval_samples_per_second': 16.574, 'eval_steps_per_second': 16.574, 'epoch': 22.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 69%|██████▉   | 69/100 [00:24<00:09,  3.42it/s]
+100%|██████████| 1/1 [00:00<00:00, 340.53it/s][A
+                                              [A 70%|███████   | 70/100 [00:25<00:12,  2.37it/s] 71%|███████   | 71/100 [00:25<00:09,  2.91it/s] 72%|███████▏  | 72/100 [00:25<00:08,  3.45it/s]{'eval_loss': 0.0006043276516720653, 'eval_accuracy': 1.0, 'eval_ece': 0.0006041526794433594, 'eval_nll': 0.0006043276516720653, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.986, 'eval_steps_per_second': 16.986, 'epoch': 23.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 72%|███████▏  | 72/100 [00:25<00:08,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 405.87it/s][A
+                                              [A 73%|███████▎  | 73/100 [00:26<00:11,  2.40it/s] 74%|███████▍  | 74/100 [00:26<00:08,  2.93it/s] 75%|███████▌  | 75/100 [00:26<00:07,  3.46it/s]{'eval_loss': 0.0006326819420792162, 'eval_accuracy': 1.0, 'eval_ece': 0.0006324648857116699, 'eval_nll': 0.0006326819420792162, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.116, 'eval_steps_per_second': 17.116, 'epoch': 24.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 75%|███████▌  | 75/100 [00:26<00:07,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 332.72it/s][A
+                                              [A 76%|███████▌  | 76/100 [00:27<00:09,  2.41it/s] 77%|███████▋  | 77/100 [00:27<00:07,  2.93it/s] 78%|███████▊  | 78/100 [00:27<00:06,  3.47it/s]{'eval_loss': 0.0005683475756086409, 'eval_accuracy': 1.0, 'eval_ece': 0.0005683302879333496, 'eval_nll': 0.0005684667266905308, 'eval_runtime': 0.0608, 'eval_samples_per_second': 16.46, 'eval_steps_per_second': 16.46, 'epoch': 25.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 78%|███████▊  | 78/100 [00:27<00:06,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 372.53it/s][A
+                                              [A 79%|███████▉  | 79/100 [00:28<00:08,  2.35it/s] 80%|████████  | 80/100 [00:28<00:06,  2.88it/s]                                                 80%|████████  | 80/100 [00:28<00:06,  2.88it/s] 81%|████████  | 81/100 [00:28<00:05,  3.42it/s]{'eval_loss': 0.0005343916127458215, 'eval_accuracy': 1.0, 'eval_ece': 0.000534355640411377, 'eval_nll': 0.0005345107638277113, 'eval_runtime': 0.0604, 'eval_samples_per_second': 16.568, 'eval_steps_per_second': 16.568, 'epoch': 26.0}
+{'loss': 0.0002, 'grad_norm': 0.014174776151776314, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 81%|████████  | 81/100 [00:28<00:05,  3.42it/s]
+100%|██████████| 1/1 [00:00<00:00, 361.39it/s][A
+                                              [A 82%|████████▏ | 82/100 [00:29<00:07,  2.33it/s] 83%|████████▎ | 83/100 [00:29<00:05,  2.86it/s] 84%|████████▍ | 84/100 [00:29<00:04,  3.39it/s]{'eval_loss': 0.0006453100359067321, 'eval_accuracy': 1.0, 'eval_ece': 0.000644981861114502, 'eval_nll': 0.0006451908848248422, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.895, 'eval_steps_per_second': 16.895, 'epoch': 27.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 84%|████████▍ | 84/100 [00:29<00:04,  3.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 361.64it/s][A
+                                              [A 85%|████████▌ | 85/100 [00:30<00:06,  2.35it/s] 86%|████████▌ | 86/100 [00:30<00:04,  2.88it/s] 87%|████████▋ | 87/100 [00:30<00:03,  3.43it/s]{'eval_loss': 0.0006043276516720653, 'eval_accuracy': 1.0, 'eval_ece': 0.0006041526794433594, 'eval_nll': 0.0006043276516720653, 'eval_runtime': 0.0605, 'eval_samples_per_second': 16.527, 'eval_steps_per_second': 16.527, 'epoch': 28.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 87%|████████▋ | 87/100 [00:30<00:03,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 298.31it/s][A
+                                              [A 88%|████████▊ | 88/100 [00:31<00:05,  2.37it/s] 89%|████████▉ | 89/100 [00:31<00:03,  2.90it/s] 90%|█████████ | 90/100 [00:31<00:02,  3.45it/s]{'eval_loss': 0.0005333193112164736, 'eval_accuracy': 1.0, 'eval_ece': 0.0005331635475158691, 'eval_nll': 0.0005333193112164736, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.966, 'eval_steps_per_second': 16.966, 'epoch': 29.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 90%|█████████ | 90/100 [00:31<00:02,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 301.57it/s][A
+                                              [A 91%|█████████ | 91/100 [00:32<00:03,  2.39it/s] 92%|█████████▏| 92/100 [00:32<00:02,  2.93it/s] 93%|█████████▎| 93/100 [00:32<00:02,  3.47it/s]{'eval_loss': 0.0005015069036744535, 'eval_accuracy': 1.0, 'eval_ece': 0.0005013942718505859, 'eval_nll': 0.0005015069036744535, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.009, 'eval_steps_per_second': 17.009, 'epoch': 30.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 93%|█████████▎| 93/100 [00:32<00:02,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 380.47it/s][A
+                                              [A 94%|█████████▍| 94/100 [00:33<00:02,  2.39it/s] 95%|█████████▌| 95/100 [00:33<00:01,  2.92it/s] 96%|█████████▌| 96/100 [00:33<00:01,  3.47it/s]{'eval_loss': 0.0006043276516720653, 'eval_accuracy': 1.0, 'eval_ece': 0.0006041526794433594, 'eval_nll': 0.0006043276516720653, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.061, 'eval_steps_per_second': 17.061, 'epoch': 31.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 96%|█████████▌| 96/100 [00:34<00:01,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 405.87it/s][A
+                                              [A 97%|█████████▋| 97/100 [00:34<00:01,  2.39it/s] 98%|█████████▊| 98/100 [00:34<00:00,  2.92it/s] 99%|█████████▉| 99/100 [00:34<00:00,  3.47it/s]{'eval_loss': 0.0005583396414294839, 'eval_accuracy': 1.0, 'eval_ece': 0.000558316707611084, 'eval_nll': 0.0005584587925113738, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.046, 'eval_steps_per_second': 17.046, 'epoch': 32.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 99%|█████████▉| 99/100 [00:35<00:00,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 375.16it/s][A
+                                              [A100%|██████████| 100/100 [00:35<00:00,  2.40it/s]                                                 100%|██████████| 100/100 [00:35<00:00,  2.40it/s]{'eval_loss': 0.0006326819420792162, 'eval_accuracy': 1.0, 'eval_ece': 0.0006324648857116699, 'eval_nll': 0.0006326819420792162, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.024, 'eval_steps_per_second': 17.024, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.0014799023047089577, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 100/100 [00:35<00:00,  2.40it/s]
+100%|██████████| 1/1 [00:00<00:00, 409.12it/s][A
+                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+                                                 100%|██████████| 100/100 [00:36<00:00,  2.40it/s]100%|██████████| 100/100 [00:36<00:00,  2.76it/s]
+2026-04-05 22:09:48,457 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+{'eval_loss': 0.0005708495154976845, 'eval_accuracy': 1.0, 'eval_ece': 0.000570833683013916, 'eval_nll': 0.0005709686665795743, 'eval_runtime': 0.0591, 'eval_samples_per_second': 16.924, 'eval_steps_per_second': 16.924, 'epoch': 33.33}
+{'train_runtime': 36.2754, 'train_samples_per_second': 11.027, 'train_steps_per_second': 2.757, 'train_loss': 0.1967802554660011, 'epoch': 33.33}
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 596.71it/s]
+2026-04-05 22:09:48,518 - ib-edl - [92mINFO[0m: [base] val_loss: 0.0005708495154976845
+2026-04-05 22:09:48,518 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:09:48,518 - ib-edl - [92mINFO[0m: [base] val_ece: 0.000570833683013916
+2026-04-05 22:09:48,519 - ib-edl - [92mINFO[0m: [base] val_nll: 0.0005709686665795743
+2026-04-05 22:09:48,519 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0598
+2026-04-05 22:09:48,519 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.728
+2026-04-05 22:09:48,519 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.728
+2026-04-05 22:09:48,519 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 28.04it/s]
+2026-04-05 22:09:48,618 - ib-edl - [92mINFO[0m: [base] test_loss: 6.311931065283716e-05
+2026-04-05 22:09:48,619 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:09:48,619 - ib-edl - [92mINFO[0m: [base] test_ece: 6.324052810668945e-05
+2026-04-05 22:09:48,619 - ib-edl - [92mINFO[0m: [base] test_nll: 6.323851266643032e-05
+2026-04-05 22:09:48,620 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.0968
+2026-04-05 22:09:48,620 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 20.666
+2026-04-05 22:09:48,620 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 10.333
+2026-04-05 22:09:48,621 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+Map:   0%|          | 0/1 [00:00<?, ? examples/s]Map: 100%|██████████| 1/1 [00:00<00:00, 122.59 examples/s]
+Map:   0%|          | 0/2 [00:00<?, ? examples/s]Map: 100%|██████████| 2/2 [00:00<00:00, 472.17 examples/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 597.22it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 166.32it/s]
+2026-04-05 22:09:48,770 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+2026-04-05 22:09:48,772 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz
+wandb: updating run metadata
+wandb: uploading wandb-summary.json; uploading config.yaml
+wandb: uploading history steps 29-43, summary, console lines 70-71
+wandb: 
+wandb: Run history:
+wandb:           eval/accuracy ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/ece █████▇▇▆▅▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               eval/loss ██▇▇▇▇▇▅▄▄▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/nll ██▇▇▇▇▇▅▄▄▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            eval/runtime █▃▂▂▃▂▁▂▂▁▁▁▁▁▁▂▂▁▁▂▁▃▂▁▄▃▂▄▂▁▁▁▁▂
+wandb: eval/samples_per_second ▁▆▇▇▆▇█▇▇██████▇▇██▇█▆▇█▅▆▇▅▇████▇
+wandb:   eval/steps_per_second ▁▆▇▇▆▇█▇▇██████▇▇██▇█▆▇█▅▆▇▅▇████▇
+wandb:           test/accuracy ▁▁▁
+wandb:                test/ece ▁█▁
+wandb:               test/loss ▁█▁
+wandb:                     +16 ...
+wandb: 
+wandb: Run summary:
+wandb:           eval/accuracy 1
+wandb:                eval/ece 0.00057
+wandb:               eval/loss 0.00057
+wandb:                eval/nll 0.00057
+wandb:            eval/runtime 0.0591
+wandb: eval/samples_per_second 16.924
+wandb:   eval/steps_per_second 16.924
+wandb:           test/accuracy 1
+wandb:                test/ece 6e-05
+wandb:               test/loss 6e-05
+wandb:                     +21 ...
+wandb: 
+wandb: 🚀 View run 0405_2208_54 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/sn0wyj6j
+wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_220854-sn0wyj6j/logs
+Seeds in the output file before update with seed 1: dict_keys([]) 
+
+Seeds in the output file after update with seed 1: dict_keys(['1']) 
+
+Seeds in the output file before update with seed 1: dict_keys([]) 
+
+Seeds in the output file after update with seed 1: dict_keys(['1']) 
+
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
+wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run ij7v3ik9
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_220959-ij7v3ik9
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 0405_2209_59
+wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/ij7v3ik9
+2026-04-05 22:10:00,891 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:10:00,893 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[train] Seed=2 | output -> data/results/csqa/qwen2_7b/lora
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 121.89it/s]
+2026-04-05 22:10:01,417 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  1%|          | 1/100 [00:01<01:49,  1.11s/it]  2%|▏         | 2/100 [00:01<00:55,  1.78it/s]  3%|▎         | 3/100 [00:01<00:39,  2.48it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  3%|▎         | 3/100 [00:01<00:39,  2.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 275.38it/s][A
+                                              [A  4%|▍         | 4/100 [00:02<00:51,  1.87it/s]  5%|▌         | 5/100 [00:02<00:38,  2.50it/s]  6%|▌         | 6/100 [00:02<00:30,  3.12it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.738, 'eval_steps_per_second': 16.738, 'epoch': 1.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  6%|▌         | 6/100 [00:02<00:30,  3.12it/s]
+100%|██████████| 1/1 [00:00<00:00, 308.54it/s][A
+                                              [A  7%|▋         | 7/100 [00:03<00:42,  2.21it/s]  8%|▊         | 8/100 [00:03<00:33,  2.77it/s]  9%|▉         | 9/100 [00:03<00:27,  3.35it/s]{'eval_loss': 0.40658998489379883, 'eval_accuracy': 1.0, 'eval_ece': 0.33408284187316895, 'eval_nll': 0.40658998489379883, 'eval_runtime': 0.0632, 'eval_samples_per_second': 15.811, 'eval_steps_per_second': 15.811, 'epoch': 2.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  9%|▉         | 9/100 [00:03<00:27,  3.35it/s]
+100%|██████████| 1/1 [00:00<00:00, 396.32it/s][A
+                                              [A 10%|█         | 10/100 [00:04<00:38,  2.33it/s] 11%|█         | 11/100 [00:04<00:30,  2.88it/s] 12%|█▏        | 12/100 [00:04<00:25,  3.45it/s]{'eval_loss': 0.3910621702671051, 'eval_accuracy': 1.0, 'eval_ece': 0.3236619234085083, 'eval_nll': 0.3910621702671051, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.035, 'eval_steps_per_second': 17.035, 'epoch': 3.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 12%|█▏        | 12/100 [00:04<00:25,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 329.04it/s][A
+                                              [A 13%|█▎        | 13/100 [00:05<00:36,  2.36it/s] 14%|█▍        | 14/100 [00:05<00:29,  2.89it/s] 15%|█▌        | 15/100 [00:05<00:24,  3.45it/s]{'eval_loss': 0.3950110077857971, 'eval_accuracy': 1.0, 'eval_ece': 0.326327383518219, 'eval_nll': 0.3950110077857971, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.081, 'eval_steps_per_second': 17.081, 'epoch': 4.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 15%|█▌        | 15/100 [00:05<00:24,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 372.83it/s][A
+                                              [A 16%|█▌        | 16/100 [00:06<00:35,  2.36it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.90it/s] 18%|█▊        | 18/100 [00:06<00:23,  3.45it/s]{'eval_loss': 0.35591205954551697, 'eval_accuracy': 1.0, 'eval_ece': 0.2994658350944519, 'eval_nll': 0.35591214895248413, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.028, 'eval_steps_per_second': 17.028, 'epoch': 5.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 18%|█▊        | 18/100 [00:06<00:23,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 344.53it/s][A
+                                              [A 19%|█▉        | 19/100 [00:07<00:34,  2.38it/s] 20%|██        | 20/100 [00:07<00:27,  2.91it/s]                                                 20%|██        | 20/100 [00:07<00:27,  2.91it/s] 21%|██        | 21/100 [00:07<00:22,  3.46it/s]{'eval_loss': 0.3345734477043152, 'eval_accuracy': 1.0, 'eval_ece': 0.2843567132949829, 'eval_nll': 0.3345734477043152, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 6.0}
+{'loss': 0.7964, 'grad_norm': 4.520737648010254, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 21%|██        | 21/100 [00:07<00:22,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 374.83it/s][A
+                                              [A 22%|██▏       | 22/100 [00:08<00:33,  2.32it/s] 23%|██▎       | 23/100 [00:08<00:26,  2.86it/s] 24%|██▍       | 24/100 [00:08<00:22,  3.41it/s]{'eval_loss': 0.3215939402580261, 'eval_accuracy': 1.0, 'eval_ece': 0.2750074863433838, 'eval_nll': 0.3215939402580261, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.035, 'eval_steps_per_second': 17.035, 'epoch': 7.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 24%|██▍       | 24/100 [00:08<00:22,  3.41it/s]
+100%|██████████| 1/1 [00:00<00:00, 393.13it/s][A
+                                              [A 25%|██▌       | 25/100 [00:09<00:31,  2.36it/s] 26%|██▌       | 26/100 [00:09<00:25,  2.89it/s] 27%|██▋       | 27/100 [00:09<00:21,  3.44it/s]{'eval_loss': 0.2860841155052185, 'eval_accuracy': 1.0, 'eval_ece': 0.24880057573318481, 'eval_nll': 0.2860841155052185, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.044, 'eval_steps_per_second': 17.044, 'epoch': 8.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 27%|██▋       | 27/100 [00:10<00:21,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 377.53it/s][A
+                                              [A 28%|██▊       | 28/100 [00:10<00:30,  2.37it/s] 29%|██▉       | 29/100 [00:10<00:24,  2.90it/s] 30%|███       | 30/100 [00:11<00:20,  3.45it/s]{'eval_loss': 0.23409977555274963, 'eval_accuracy': 1.0, 'eval_ece': 0.20871716737747192, 'eval_nll': 0.23409977555274963, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.088, 'eval_steps_per_second': 17.088, 'epoch': 9.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 30%|███       | 30/100 [00:11<00:20,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 367.08it/s][A
+                                              [A 31%|███       | 31/100 [00:11<00:28,  2.38it/s] 32%|███▏      | 32/100 [00:11<00:23,  2.92it/s] 33%|███▎      | 33/100 [00:12<00:19,  3.47it/s]{'eval_loss': 0.14728108048439026, 'eval_accuracy': 1.0, 'eval_ece': 0.13694864511489868, 'eval_nll': 0.14728108048439026, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.167, 'eval_steps_per_second': 17.167, 'epoch': 10.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 33%|███▎      | 33/100 [00:12<00:19,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 367.44it/s][A
+                                              [A 34%|███▍      | 34/100 [00:12<00:27,  2.39it/s] 35%|███▌      | 35/100 [00:12<00:22,  2.93it/s] 36%|███▌      | 36/100 [00:13<00:18,  3.48it/s]{'eval_loss': 0.08077742904424667, 'eval_accuracy': 1.0, 'eval_ece': 0.07760101556777954, 'eval_nll': 0.08077742904424667, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.151, 'eval_steps_per_second': 17.151, 'epoch': 11.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 36%|███▌      | 36/100 [00:13<00:18,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 412.42it/s][A
+                                              [A 37%|███▋      | 37/100 [00:13<00:26,  2.35it/s] 38%|███▊      | 38/100 [00:14<00:21,  2.89it/s] 39%|███▉      | 39/100 [00:14<00:17,  3.44it/s]{'eval_loss': 0.035144247114658356, 'eval_accuracy': 1.0, 'eval_ece': 0.03453385829925537, 'eval_nll': 0.035144247114658356, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.081, 'eval_steps_per_second': 17.081, 'epoch': 12.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 39%|███▉      | 39/100 [00:14<00:17,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.00it/s][A
+                                              [A 40%|████      | 40/100 [00:14<00:25,  2.39it/s]                                                 40%|████      | 40/100 [00:14<00:25,  2.39it/s] 41%|████      | 41/100 [00:15<00:20,  2.92it/s] 42%|████▏     | 42/100 [00:15<00:16,  3.47it/s]{'eval_loss': 0.013885327614843845, 'eval_accuracy': 1.0, 'eval_ece': 0.013789474964141846, 'eval_nll': 0.013885445892810822, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 13.0}
+{'loss': 0.1854, 'grad_norm': 0.03985712677240372, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 42%|████▏     | 42/100 [00:15<00:16,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 371.37it/s][A
+                                              [A 43%|████▎     | 43/100 [00:15<00:23,  2.38it/s] 44%|████▍     | 44/100 [00:16<00:19,  2.92it/s] 45%|████▌     | 45/100 [00:16<00:15,  3.47it/s]{'eval_loss': 0.007421778980642557, 'eval_accuracy': 1.0, 'eval_ece': 0.007394313812255859, 'eval_nll': 0.007421778980642557, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.08, 'eval_steps_per_second': 17.08, 'epoch': 14.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 45%|████▌     | 45/100 [00:16<00:15,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 346.26it/s][A
+                                              [A 46%|████▌     | 46/100 [00:17<00:22,  2.38it/s] 47%|████▋     | 47/100 [00:17<00:18,  2.91it/s] 48%|████▊     | 48/100 [00:17<00:15,  3.46it/s]{'eval_loss': 0.003858384909108281, 'eval_accuracy': 1.0, 'eval_ece': 0.0038509368896484375, 'eval_nll': 0.003858384909108281, 'eval_runtime': 0.0635, 'eval_samples_per_second': 15.744, 'eval_steps_per_second': 15.744, 'epoch': 15.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 48%|████▊     | 48/100 [00:17<00:15,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 373.19it/s][A
+                                              [A 49%|████▉     | 49/100 [00:18<00:21,  2.39it/s] 50%|█████     | 50/100 [00:18<00:17,  2.92it/s] 51%|█████     | 51/100 [00:18<00:14,  3.48it/s]{'eval_loss': 0.002370882546529174, 'eval_accuracy': 1.0, 'eval_ece': 0.0023682117462158203, 'eval_nll': 0.002371001522988081, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.086, 'eval_steps_per_second': 17.086, 'epoch': 16.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 51%|█████     | 51/100 [00:18<00:14,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 369.38it/s][A
+                                              [A 52%|█████▏    | 52/100 [00:19<00:20,  2.37it/s] 53%|█████▎    | 53/100 [00:19<00:16,  2.91it/s] 54%|█████▍    | 54/100 [00:19<00:13,  3.46it/s]{'eval_loss': 0.0016111262375488877, 'eval_accuracy': 1.0, 'eval_ece': 0.00160980224609375, 'eval_nll': 0.0016111262375488877, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.977, 'eval_steps_per_second': 16.977, 'epoch': 17.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 54%|█████▍    | 54/100 [00:19<00:13,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 355.60it/s][A
+                                              [A 55%|█████▌    | 55/100 [00:20<00:18,  2.37it/s] 56%|█████▌    | 56/100 [00:20<00:15,  2.91it/s] 57%|█████▋    | 57/100 [00:20<00:12,  3.46it/s]{'eval_loss': 0.001086479052901268, 'eval_accuracy': 1.0, 'eval_ece': 0.0010858774185180664, 'eval_nll': 0.001086479052901268, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.195, 'eval_steps_per_second': 17.195, 'epoch': 18.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 57%|█████▋    | 57/100 [00:20<00:12,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 352.23it/s][A
+                                              [A 58%|█████▊    | 58/100 [00:21<00:17,  2.37it/s] 59%|█████▉    | 59/100 [00:21<00:14,  2.90it/s] 60%|██████    | 60/100 [00:21<00:11,  3.45it/s]                                                 60%|██████    | 60/100 [00:21<00:11,  3.45it/s]{'eval_loss': 0.0010889797704294324, 'eval_accuracy': 1.0, 'eval_ece': 0.0010885000228881836, 'eval_nll': 0.0010890988633036613, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.085, 'eval_steps_per_second': 17.085, 'epoch': 19.0}
+{'loss': 0.0013, 'grad_norm': 0.04005115479230881, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 60%|██████    | 60/100 [00:21<00:11,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 47.52it/s][A
+                                             [A 61%|██████    | 61/100 [00:22<00:16,  2.31it/s] 62%|██████▏   | 62/100 [00:22<00:13,  2.85it/s] 63%|██████▎   | 63/100 [00:22<00:10,  3.39it/s]{'eval_loss': 0.0009015309624373913, 'eval_accuracy': 1.0, 'eval_ece': 0.0009011030197143555, 'eval_nll': 0.0009015309624373913, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.973, 'eval_steps_per_second': 16.973, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 63%|██████▎   | 63/100 [00:22<00:10,  3.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 369.12it/s][A
+                                              [A 64%|██████▍   | 64/100 [00:23<00:15,  2.34it/s] 65%|██████▌   | 65/100 [00:23<00:12,  2.88it/s] 66%|██████▌   | 66/100 [00:23<00:09,  3.43it/s]{'eval_loss': 0.0007040405762381852, 'eval_accuracy': 1.0, 'eval_ece': 0.0007038116455078125, 'eval_nll': 0.0007040405762381852, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.815, 'eval_steps_per_second': 16.815, 'epoch': 21.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 66%|██████▌   | 66/100 [00:23<00:09,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 411.53it/s][A
+                                              [A 67%|██████▋   | 67/100 [00:24<00:13,  2.41it/s] 68%|██████▊   | 68/100 [00:24<00:10,  2.94it/s] 69%|██████▉   | 69/100 [00:24<00:08,  3.49it/s]{'eval_loss': 0.000649956171400845, 'eval_accuracy': 1.0, 'eval_ece': 0.0006497502326965332, 'eval_nll': 0.000649956171400845, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.079, 'eval_steps_per_second': 17.079, 'epoch': 22.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 69%|██████▉   | 69/100 [00:24<00:08,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 368.47it/s][A
+                                              [A 70%|███████   | 70/100 [00:25<00:12,  2.31it/s] 71%|███████   | 71/100 [00:25<00:10,  2.85it/s] 72%|███████▏  | 72/100 [00:25<00:08,  3.41it/s]{'eval_loss': 0.0007329876534640789, 'eval_accuracy': 1.0, 'eval_ece': 0.000732719898223877, 'eval_nll': 0.0007329876534640789, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.097, 'eval_steps_per_second': 17.097, 'epoch': 23.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 72%|███████▏  | 72/100 [00:25<00:08,  3.41it/s]
+100%|██████████| 1/1 [00:00<00:00, 391.63it/s][A
+                                              [A 73%|███████▎  | 73/100 [00:26<00:11,  2.39it/s] 74%|███████▍  | 74/100 [00:26<00:08,  2.94it/s] 75%|███████▌  | 75/100 [00:26<00:07,  3.51it/s]{'eval_loss': 0.0006482883472926915, 'eval_accuracy': 1.0, 'eval_ece': 0.0006480813026428223, 'eval_nll': 0.0006482883472926915, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.176, 'eval_steps_per_second': 17.176, 'epoch': 24.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 75%|███████▌  | 75/100 [00:26<00:07,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 411.25it/s][A
+                                              [A 76%|███████▌  | 76/100 [00:27<00:09,  2.41it/s] 77%|███████▋  | 77/100 [00:27<00:07,  2.95it/s] 78%|███████▊  | 78/100 [00:27<00:06,  3.51it/s]{'eval_loss': 0.0006790239713154733, 'eval_accuracy': 1.0, 'eval_ece': 0.0006787776947021484, 'eval_nll': 0.0006790239713154733, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.13, 'eval_steps_per_second': 17.13, 'epoch': 25.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 78%|███████▊  | 78/100 [00:27<00:06,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 338.74it/s][A
+                                              [A 79%|███████▉  | 79/100 [00:28<00:09,  2.33it/s] 80%|████████  | 80/100 [00:28<00:06,  2.88it/s]                                                 80%|████████  | 80/100 [00:28<00:06,  2.88it/s] 81%|████████  | 81/100 [00:28<00:05,  3.44it/s]{'eval_loss': 0.0005737089086323977, 'eval_accuracy': 1.0, 'eval_ece': 0.0005736351013183594, 'eval_nll': 0.0005738280597142875, 'eval_runtime': 0.0594, 'eval_samples_per_second': 16.843, 'eval_steps_per_second': 16.843, 'epoch': 26.0}
+{'loss': 0.0001, 'grad_norm': 0.0014771830756217241, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 81%|████████  | 81/100 [00:29<00:05,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 408.96it/s][A
+                                              [A 82%|████████▏ | 82/100 [00:29<00:07,  2.40it/s] 83%|████████▎ | 83/100 [00:29<00:05,  2.96it/s] 84%|████████▍ | 84/100 [00:29<00:04,  3.54it/s]{'eval_loss': 0.0006370898918248713, 'eval_accuracy': 1.0, 'eval_ece': 0.0006368756294250488, 'eval_nll': 0.0006370898918248713, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.178, 'eval_steps_per_second': 17.178, 'epoch': 27.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 84%|████████▍ | 84/100 [00:30<00:04,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 404.39it/s][A
+                                              [A 85%|████████▌ | 85/100 [00:30<00:06,  2.45it/s] 86%|████████▌ | 86/100 [00:30<00:04,  3.01it/s] 87%|████████▋ | 87/100 [00:30<00:03,  3.58it/s]{'eval_loss': 0.0006482883472926915, 'eval_accuracy': 1.0, 'eval_ece': 0.0006480813026428223, 'eval_nll': 0.0006482883472926915, 'eval_runtime': 0.0581, 'eval_samples_per_second': 17.197, 'eval_steps_per_second': 17.197, 'epoch': 28.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 87%|████████▋ | 87/100 [00:31<00:03,  3.58it/s]
+100%|██████████| 1/1 [00:00<00:00, 383.32it/s][A
+                                              [A 88%|████████▊ | 88/100 [00:31<00:05,  2.24it/s] 89%|████████▉ | 89/100 [00:31<00:03,  2.78it/s] 90%|█████████ | 90/100 [00:32<00:02,  3.34it/s]{'eval_loss': 0.0005722792120650411, 'eval_accuracy': 1.0, 'eval_ece': 0.0005721449851989746, 'eval_nll': 0.0005722792120650411, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.18, 'eval_steps_per_second': 17.18, 'epoch': 29.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 90%|█████████ | 90/100 [00:32<00:02,  3.34it/s]
+100%|██████████| 1/1 [00:00<00:00, 346.15it/s][A
+                                              [A 91%|█████████ | 91/100 [00:32<00:03,  2.36it/s] 92%|█████████▏| 92/100 [00:33<00:02,  2.90it/s] 93%|█████████▎| 93/100 [00:33<00:02,  3.47it/s]{'eval_loss': 0.000562271336093545, 'eval_accuracy': 1.0, 'eval_ece': 0.000562131404876709, 'eval_nll': 0.000562271336093545, 'eval_runtime': 0.0591, 'eval_samples_per_second': 16.928, 'eval_steps_per_second': 16.928, 'epoch': 30.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 93%|█████████▎| 93/100 [00:33<00:02,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 385.36it/s][A
+                                              [A 94%|█████████▍| 94/100 [00:33<00:02,  2.43it/s] 95%|█████████▌| 95/100 [00:34<00:01,  2.98it/s] 96%|█████████▌| 96/100 [00:34<00:01,  3.55it/s]{'eval_loss': 0.0007347744540311396, 'eval_accuracy': 1.0, 'eval_ece': 0.0007345080375671387, 'eval_nll': 0.0007347744540311396, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.083, 'eval_steps_per_second': 17.083, 'epoch': 31.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 96%|█████████▌| 96/100 [00:34<00:01,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00, 368.15it/s][A
+                                              [A 97%|█████████▋| 97/100 [00:34<00:01,  2.41it/s] 98%|█████████▊| 98/100 [00:35<00:00,  2.96it/s] 99%|█████████▉| 99/100 [00:35<00:00,  3.53it/s]{'eval_loss': 0.000649956171400845, 'eval_accuracy': 1.0, 'eval_ece': 0.0006497502326965332, 'eval_nll': 0.000649956171400845, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.186, 'eval_steps_per_second': 17.186, 'epoch': 32.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 99%|█████████▉| 99/100 [00:35<00:00,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 395.69it/s][A
+                                              [A100%|██████████| 100/100 [00:35<00:00,  2.35it/s]                                                 100%|██████████| 100/100 [00:35<00:00,  2.35it/s]{'eval_loss': 0.0006911749369464815, 'eval_accuracy': 1.0, 'eval_ece': 0.0006909370422363281, 'eval_nll': 0.0006911749369464815, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.18, 'eval_steps_per_second': 17.18, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.011631686240434647, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 100/100 [00:36<00:00,  2.35it/s]
+100%|██████████| 1/1 [00:00<00:00, 393.91it/s][A
+                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+                                                 100%|██████████| 100/100 [00:36<00:00,  2.35it/s]100%|██████████| 100/100 [00:36<00:00,  2.74it/s]
+2026-04-05 22:10:54,053 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+{'eval_loss': 0.0006355411605909467, 'eval_accuracy': 1.0, 'eval_ece': 0.0006353259086608887, 'eval_nll': 0.0006355411605909467, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.089, 'eval_steps_per_second': 17.089, 'epoch': 33.33}
+{'train_runtime': 36.5407, 'train_samples_per_second': 10.947, 'train_steps_per_second': 2.737, 'train_loss': 0.19665163703844882, 'epoch': 33.33}
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 581.73it/s]
+2026-04-05 22:10:54,113 - ib-edl - [92mINFO[0m: [base] val_loss: 0.0006355411605909467
+2026-04-05 22:10:54,114 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:10:54,114 - ib-edl - [92mINFO[0m: [base] val_ece: 0.0006353259086608887
+2026-04-05 22:10:54,114 - ib-edl - [92mINFO[0m: [base] val_nll: 0.0006355411605909467
+2026-04-05 22:10:54,115 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0587
+2026-04-05 22:10:54,115 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 17.049
+2026-04-05 22:10:54,115 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 17.049
+2026-04-05 22:10:54,115 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 24.89it/s]
+2026-04-05 22:10:54,218 - ib-edl - [92mINFO[0m: [base] test_loss: 7.354942499659956e-05
+2026-04-05 22:10:54,218 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:10:54,218 - ib-edl - [92mINFO[0m: [base] test_ece: 7.355213165283203e-05
+2026-04-05 22:10:54,218 - ib-edl - [92mINFO[0m: [base] test_nll: 7.354942499659956e-05
+2026-04-05 22:10:54,218 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.101
+2026-04-05 22:10:54,219 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.801
+2026-04-05 22:10:54,219 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.9
+2026-04-05 22:10:54,219 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 594.94it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 28.82it/s]
+2026-04-05 22:10:54,386 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+2026-04-05 22:10:54,388 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz
+wandb: updating run metadata
+wandb: uploading wandb-summary.json; uploading config.yaml
+wandb: uploading history steps 29-43, summary, console lines 70-71
+wandb: 
+wandb: Run history:
+wandb:           eval/accuracy ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/ece ████▇▇▇▆▅▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               eval/loss ████▇▇▆▆▅▄▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/nll ████▇▇▆▆▅▄▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            eval/runtime ▃█▂▂▂▂▂▂▂▁▁▂▂▂█▂▂▁▂▂▃▂▂▁▁▃▁▁▁▂▂▁▁▂
+wandb: eval/samples_per_second ▆▁▇▇▇▇▇▇▇██▇▇▇▁▇▇█▇▇▆▇███▆███▇▇██▇
+wandb:   eval/steps_per_second ▆▁▇▇▇▇▇▇▇██▇▇▇▁▇▇█▇▇▆▇███▆███▇▇██▇
+wandb:           test/accuracy ▁▁▁
+wandb:                test/ece ▁█▁
+wandb:               test/loss ▁█▁
+wandb:                     +16 ...
+wandb: 
+wandb: Run summary:
+wandb:           eval/accuracy 1
+wandb:                eval/ece 0.00064
+wandb:               eval/loss 0.00064
+wandb:                eval/nll 0.00064
+wandb:            eval/runtime 0.0585
+wandb: eval/samples_per_second 17.089
+wandb:   eval/steps_per_second 17.089
+wandb:           test/accuracy 1
+wandb:                test/ece 7e-05
+wandb:               test/loss 7e-05
+wandb:                     +21 ...
+wandb: 
+wandb: 🚀 View run 0405_2209_59 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/ij7v3ik9
+wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_220959-ij7v3ik9/logs
+Seeds in the output file before update with seed 2: dict_keys(['1']) 
+
+Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
+
+Seeds in the output file before update with seed 2: dict_keys(['1']) 
+
+Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
+
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
+wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run gzgfvbi0
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221104-gzgfvbi0
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 0405_2211_04
+wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/gzgfvbi0
+2026-04-05 22:11:06,001 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:11:06,002 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[train] Seed=3 | output -> data/results/csqa/qwen2_7b/lora
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 122.02it/s]
+2026-04-05 22:11:06,541 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  1%|          | 1/100 [00:01<01:53,  1.15s/it]  2%|▏         | 2/100 [00:01<00:56,  1.74it/s]  3%|▎         | 3/100 [00:01<00:40,  2.39it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  3%|▎         | 3/100 [00:01<00:40,  2.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 295.85it/s][A
+                                              [A  4%|▍         | 4/100 [00:02<00:52,  1.83it/s]  5%|▌         | 5/100 [00:02<00:39,  2.43it/s]  6%|▌         | 6/100 [00:02<00:30,  3.05it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0641, 'eval_samples_per_second': 15.607, 'eval_steps_per_second': 15.607, 'epoch': 1.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  6%|▌         | 6/100 [00:02<00:30,  3.05it/s]
+100%|██████████| 1/1 [00:00<00:00, 274.86it/s][A
+                                              [A  7%|▋         | 7/100 [00:03<00:42,  2.21it/s]  8%|▊         | 8/100 [00:03<00:33,  2.78it/s]  9%|▉         | 9/100 [00:03<00:26,  3.37it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.755, 'eval_steps_per_second': 16.755, 'epoch': 2.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  9%|▉         | 9/100 [00:03<00:26,  3.37it/s]
+100%|██████████| 1/1 [00:00<00:00, 347.82it/s][A
+                                              [A 10%|█         | 10/100 [00:04<00:38,  2.34it/s] 11%|█         | 11/100 [00:04<00:30,  2.89it/s] 12%|█▏        | 12/100 [00:04<00:25,  3.45it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.026, 'eval_steps_per_second': 17.026, 'epoch': 3.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 12%|█▏        | 12/100 [00:04<00:25,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 369.31it/s][A
+                                              [A 13%|█▎        | 13/100 [00:05<00:36,  2.40it/s] 14%|█▍        | 14/100 [00:05<00:29,  2.93it/s] 15%|█▌        | 15/100 [00:05<00:24,  3.47it/s]{'eval_loss': 0.37011486291885376, 'eval_accuracy': 1.0, 'eval_ece': 0.3093450665473938, 'eval_nll': 0.37011492252349854, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.006, 'eval_steps_per_second': 17.006, 'epoch': 4.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 15%|█▌        | 15/100 [00:05<00:24,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 315.38it/s][A
+                                              [A 16%|█▌        | 16/100 [00:06<00:35,  2.35it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.90it/s] 18%|█▊        | 18/100 [00:06<00:23,  3.47it/s]{'eval_loss': 0.3910621702671051, 'eval_accuracy': 1.0, 'eval_ece': 0.3236619234085083, 'eval_nll': 0.3910621702671051, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.744, 'eval_steps_per_second': 16.744, 'epoch': 5.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 18%|█▊        | 18/100 [00:06<00:23,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 403.80it/s][A
+                                              [A 19%|█▉        | 19/100 [00:07<00:33,  2.38it/s] 20%|██        | 20/100 [00:07<00:27,  2.93it/s]                                                 20%|██        | 20/100 [00:07<00:27,  2.93it/s] 21%|██        | 21/100 [00:07<00:22,  3.49it/s]{'eval_loss': 0.3752894401550293, 'eval_accuracy': 1.0, 'eval_ece': 0.31290972232818604, 'eval_nll': 0.3752896189689636, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.107, 'eval_steps_per_second': 17.107, 'epoch': 6.0}
+{'loss': 0.8743, 'grad_norm': 4.524260520935059, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 21%|██        | 21/100 [00:07<00:22,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 337.60it/s][A
+                                              [A 22%|██▏       | 22/100 [00:08<00:32,  2.42it/s] 23%|██▎       | 23/100 [00:08<00:25,  2.97it/s] 24%|██▍       | 24/100 [00:08<00:21,  3.54it/s]{'eval_loss': 0.3522888422012329, 'eval_accuracy': 1.0, 'eval_ece': 0.29692304134368896, 'eval_nll': 0.3522889316082001, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.094, 'eval_steps_per_second': 17.094, 'epoch': 7.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 24%|██▍       | 24/100 [00:08<00:21,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 377.66it/s][A
+                                              [A 25%|██▌       | 25/100 [00:09<00:31,  2.41it/s] 26%|██▌       | 26/100 [00:09<00:25,  2.96it/s] 27%|██▋       | 27/100 [00:09<00:20,  3.53it/s]{'eval_loss': 0.2860841155052185, 'eval_accuracy': 1.0, 'eval_ece': 0.24880057573318481, 'eval_nll': 0.2860841155052185, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.981, 'eval_steps_per_second': 16.981, 'epoch': 8.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 27%|██▋       | 27/100 [00:09<00:20,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 358.58it/s][A
+                                              [A 28%|██▊       | 28/100 [00:10<00:30,  2.34it/s] 29%|██▉       | 29/100 [00:10<00:24,  2.89it/s] 30%|███       | 30/100 [00:10<00:20,  3.46it/s]{'eval_loss': 0.2263796627521515, 'eval_accuracy': 1.0, 'eval_ece': 0.20258468389511108, 'eval_nll': 0.2263796627521515, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.105, 'eval_steps_per_second': 17.105, 'epoch': 9.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 30%|███       | 30/100 [00:11<00:20,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 395.17it/s][A
+                                              [A 31%|███       | 31/100 [00:11<00:28,  2.40it/s] 32%|███▏      | 32/100 [00:11<00:23,  2.94it/s] 33%|███▎      | 33/100 [00:12<00:19,  3.51it/s]{'eval_loss': 0.14457488059997559, 'eval_accuracy': 1.0, 'eval_ece': 0.1346098780632019, 'eval_nll': 0.14457488059997559, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.021, 'eval_steps_per_second': 17.021, 'epoch': 10.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 33%|███▎      | 33/100 [00:12<00:19,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 406.42it/s][A
+                                              [A 34%|███▍      | 34/100 [00:12<00:27,  2.41it/s] 35%|███▌      | 35/100 [00:12<00:21,  2.96it/s] 36%|███▌      | 36/100 [00:13<00:18,  3.53it/s]{'eval_loss': 0.07463213056325912, 'eval_accuracy': 1.0, 'eval_ece': 0.0719151496887207, 'eval_nll': 0.07463213801383972, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.985, 'eval_steps_per_second': 16.985, 'epoch': 11.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 36%|███▌      | 36/100 [00:13<00:18,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 406.58it/s][A
+                                              [A 37%|███▋      | 37/100 [00:13<00:26,  2.42it/s] 38%|███▊      | 38/100 [00:13<00:20,  2.97it/s] 39%|███▉      | 39/100 [00:14<00:17,  3.54it/s]{'eval_loss': 0.02846469171345234, 'eval_accuracy': 1.0, 'eval_ece': 0.028063416481018066, 'eval_nll': 0.02846469171345234, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.054, 'eval_steps_per_second': 17.054, 'epoch': 12.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 39%|███▉      | 39/100 [00:14<00:17,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 400.30it/s][A
+                                              [A 40%|████      | 40/100 [00:14<00:25,  2.39it/s]                                                 40%|████      | 40/100 [00:14<00:25,  2.39it/s] 41%|████      | 41/100 [00:14<00:20,  2.94it/s] 42%|████▏     | 42/100 [00:15<00:16,  3.50it/s]{'eval_loss': 0.014895058237016201, 'eval_accuracy': 1.0, 'eval_ece': 0.014784812927246094, 'eval_nll': 0.014895175583660603, 'eval_runtime': 0.0638, 'eval_samples_per_second': 15.664, 'eval_steps_per_second': 15.664, 'epoch': 13.0}
+{'loss': 0.1362, 'grad_norm': 0.047041162848472595, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 42%|████▏     | 42/100 [00:15<00:16,  3.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 368.57it/s][A
+                                              [A 43%|████▎     | 43/100 [00:15<00:23,  2.43it/s] 44%|████▍     | 44/100 [00:15<00:18,  2.99it/s] 45%|████▌     | 45/100 [00:16<00:15,  3.55it/s]{'eval_loss': 0.0066572073847055435, 'eval_accuracy': 1.0, 'eval_ece': 0.006635069847106934, 'eval_nll': 0.0066572073847055435, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.034, 'eval_steps_per_second': 17.034, 'epoch': 14.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 45%|████▌     | 45/100 [00:16<00:15,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00, 368.18it/s][A
+                                              [A 46%|████▌     | 46/100 [00:16<00:22,  2.41it/s] 47%|████▋     | 47/100 [00:17<00:17,  2.96it/s] 48%|████▊     | 48/100 [00:17<00:14,  3.54it/s]{'eval_loss': 0.0033283811062574387, 'eval_accuracy': 1.0, 'eval_ece': 0.0033228397369384766, 'eval_nll': 0.0033283811062574387, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.114, 'eval_steps_per_second': 17.114, 'epoch': 15.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 48%|████▊     | 48/100 [00:17<00:14,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 371.64it/s][A
+                                              [A 49%|████▉     | 49/100 [00:17<00:21,  2.38it/s] 50%|█████     | 50/100 [00:18<00:17,  2.94it/s] 51%|█████     | 51/100 [00:18<00:14,  3.47it/s]{'eval_loss': 0.0022448119707405567, 'eval_accuracy': 1.0, 'eval_ece': 0.00224226713180542, 'eval_nll': 0.0022448119707405567, 'eval_runtime': 0.0594, 'eval_samples_per_second': 16.823, 'eval_steps_per_second': 16.823, 'epoch': 16.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 51%|█████     | 51/100 [00:18<00:14,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 386.96it/s][A
+                                              [A 52%|█████▏    | 52/100 [00:18<00:19,  2.42it/s] 53%|█████▎    | 53/100 [00:19<00:15,  2.97it/s] 54%|█████▍    | 54/100 [00:19<00:13,  3.54it/s]{'eval_loss': 0.0016418322920799255, 'eval_accuracy': 1.0, 'eval_ece': 0.0016404986381530762, 'eval_nll': 0.0016418322920799255, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.015, 'eval_steps_per_second': 17.015, 'epoch': 17.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 54%|█████▍    | 54/100 [00:19<00:13,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 305.15it/s][A
+                                              [A 55%|█████▌    | 55/100 [00:19<00:18,  2.45it/s] 56%|█████▌    | 56/100 [00:20<00:14,  3.00it/s] 57%|█████▋    | 57/100 [00:20<00:12,  3.57it/s]{'eval_loss': 0.001128632458858192, 'eval_accuracy': 1.0, 'eval_ece': 0.0011281371116638184, 'eval_nll': 0.001128751551732421, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.071, 'eval_steps_per_second': 17.071, 'epoch': 18.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 57%|█████▋    | 57/100 [00:20<00:12,  3.57it/s]
+100%|██████████| 1/1 [00:00<00:00, 398.77it/s][A
+                                              [A 58%|█████▊    | 58/100 [00:21<00:17,  2.34it/s] 59%|█████▉    | 59/100 [00:21<00:14,  2.89it/s] 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]                                                 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]{'eval_loss': 0.0008141063735820353, 'eval_accuracy': 1.0, 'eval_ece': 0.0008137822151184082, 'eval_nll': 0.0008141063735820353, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.016, 'eval_steps_per_second': 17.016, 'epoch': 19.0}
+{'loss': 0.0008, 'grad_norm': 0.09182564169168472, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 340.12it/s][A
+                                              [A 61%|██████    | 61/100 [00:22<00:16,  2.40it/s] 62%|██████▏   | 62/100 [00:22<00:12,  2.95it/s] 63%|██████▎   | 63/100 [00:22<00:10,  3.50it/s]{'eval_loss': 0.0007776573766022921, 'eval_accuracy': 1.0, 'eval_ece': 0.0007773637771606445, 'eval_nll': 0.0007776573766022921, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.978, 'eval_steps_per_second': 16.978, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 63%|██████▎   | 63/100 [00:22<00:10,  3.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 380.95it/s][A
+                                              [A 64%|██████▍   | 64/100 [00:23<00:14,  2.41it/s] 65%|██████▌   | 65/100 [00:23<00:11,  2.96it/s] 66%|██████▌   | 66/100 [00:23<00:09,  3.53it/s]{'eval_loss': 0.0006648475537076592, 'eval_accuracy': 1.0, 'eval_ece': 0.0006645321846008301, 'eval_nll': 0.0006647284608334303, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.045, 'eval_steps_per_second': 17.045, 'epoch': 21.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 66%|██████▌   | 66/100 [00:23<00:09,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 391.15it/s][A
+                                              [A 67%|██████▋   | 67/100 [00:24<00:14,  2.21it/s] 68%|██████▊   | 68/100 [00:24<00:11,  2.75it/s] 69%|██████▉   | 69/100 [00:24<00:09,  3.31it/s]{'eval_loss': 0.0005993238883093, 'eval_accuracy': 1.0, 'eval_ece': 0.0005991458892822266, 'eval_nll': 0.0005993238883093, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.075, 'eval_steps_per_second': 17.075, 'epoch': 22.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 69%|██████▉   | 69/100 [00:24<00:09,  3.31it/s]
+100%|██████████| 1/1 [00:00<00:00, 395.28it/s][A
+                                              [A 70%|███████   | 70/100 [00:25<00:13,  2.23it/s] 71%|███████   | 71/100 [00:25<00:10,  2.77it/s] 72%|███████▏  | 72/100 [00:25<00:08,  3.34it/s]{'eval_loss': 0.0005878866068087518, 'eval_accuracy': 1.0, 'eval_ece': 0.0005878210067749023, 'eval_nll': 0.0005880056996829808, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.082, 'eval_steps_per_second': 17.082, 'epoch': 23.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 72%|███████▏  | 72/100 [00:25<00:08,  3.34it/s]
+100%|██████████| 1/1 [00:00<00:00, 369.41it/s][A
+                                              [A 73%|███████▎  | 73/100 [00:26<00:11,  2.37it/s] 74%|███████▍  | 74/100 [00:26<00:08,  2.92it/s] 75%|███████▌  | 75/100 [00:26<00:07,  3.48it/s]{'eval_loss': 0.0005878866068087518, 'eval_accuracy': 1.0, 'eval_ece': 0.0005878210067749023, 'eval_nll': 0.0005880056996829808, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.05, 'eval_steps_per_second': 17.05, 'epoch': 24.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 75%|███████▌  | 75/100 [00:26<00:07,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 330.13it/s][A
+                                              [A 76%|███████▌  | 76/100 [00:27<00:10,  2.37it/s] 77%|███████▋  | 77/100 [00:27<00:07,  2.92it/s] 78%|███████▊  | 78/100 [00:27<00:06,  3.48it/s]{'eval_loss': 0.0006326819420792162, 'eval_accuracy': 1.0, 'eval_ece': 0.0006324648857116699, 'eval_nll': 0.0006326819420792162, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.906, 'eval_steps_per_second': 16.906, 'epoch': 25.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 78%|███████▊  | 78/100 [00:27<00:06,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 324.96it/s][A
+                                              [A 79%|███████▉  | 79/100 [00:28<00:08,  2.41it/s] 80%|████████  | 80/100 [00:28<00:06,  2.96it/s]                                                 80%|████████  | 80/100 [00:28<00:06,  2.96it/s] 81%|████████  | 81/100 [00:28<00:05,  3.54it/s]{'eval_loss': 0.000557267339900136, 'eval_accuracy': 1.0, 'eval_ece': 0.0005571246147155762, 'eval_nll': 0.000557267339900136, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.892, 'eval_steps_per_second': 16.892, 'epoch': 26.0}
+{'loss': 0.0001, 'grad_norm': 0.0018018438713625073, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 81%|████████  | 81/100 [00:28<00:05,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 396.47it/s][A
+                                              [A 82%|████████▏ | 82/100 [00:29<00:07,  2.44it/s] 83%|████████▎ | 83/100 [00:29<00:05,  3.00it/s] 84%|████████▍ | 84/100 [00:29<00:04,  3.56it/s]{'eval_loss': 0.0005189026123844087, 'eval_accuracy': 1.0, 'eval_ece': 0.0005187392234802246, 'eval_nll': 0.0005189026123844087, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.078, 'eval_steps_per_second': 17.078, 'epoch': 27.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 84%|████████▍ | 84/100 [00:29<00:04,  3.56it/s]
+100%|██████████| 1/1 [00:00<00:00, 408.13it/s][A
+                                              [A 85%|████████▌ | 85/100 [00:30<00:06,  2.44it/s] 86%|████████▌ | 86/100 [00:30<00:04,  3.00it/s] 87%|████████▋ | 87/100 [00:30<00:03,  3.56it/s]{'eval_loss': 0.0005596501869149506, 'eval_accuracy': 1.0, 'eval_ece': 0.0005595088005065918, 'eval_nll': 0.0005596501869149506, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.121, 'eval_steps_per_second': 17.121, 'epoch': 28.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 87%|████████▋ | 87/100 [00:30<00:03,  3.56it/s]
+100%|██████████| 1/1 [00:00<00:00, 364.91it/s][A
+                                              [A 88%|████████▊ | 88/100 [00:31<00:05,  2.38it/s] 89%|████████▉ | 89/100 [00:31<00:03,  2.93it/s] 90%|█████████ | 90/100 [00:31<00:02,  3.50it/s]{'eval_loss': 0.0005608416395261884, 'eval_accuracy': 1.0, 'eval_ece': 0.0005608201026916504, 'eval_nll': 0.0005609607324004173, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.003, 'eval_steps_per_second': 17.003, 'epoch': 29.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 90%|█████████ | 90/100 [00:31<00:02,  3.50it/s]
+100%|██████████| 1/1 [00:00<00:00, 373.76it/s][A
+                                              [A 91%|█████████ | 91/100 [00:32<00:03,  2.39it/s] 92%|█████████▏| 92/100 [00:32<00:02,  2.94it/s] 93%|█████████▎| 93/100 [00:32<00:01,  3.51it/s]{'eval_loss': 0.0005189026123844087, 'eval_accuracy': 1.0, 'eval_ece': 0.0005187392234802246, 'eval_nll': 0.0005189026123844087, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.974, 'eval_steps_per_second': 16.974, 'epoch': 30.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 93%|█████████▎| 93/100 [00:32<00:01,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 343.80it/s][A
+                                              [A 94%|█████████▍| 94/100 [00:33<00:02,  2.42it/s] 95%|█████████▌| 95/100 [00:33<00:01,  2.97it/s] 96%|█████████▌| 96/100 [00:33<00:01,  3.54it/s]{'eval_loss': 0.0005200940649956465, 'eval_accuracy': 1.0, 'eval_ece': 0.0005199313163757324, 'eval_nll': 0.0005200940649956465, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.935, 'eval_steps_per_second': 16.935, 'epoch': 31.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 96%|█████████▌| 96/100 [00:34<00:01,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 397.19it/s][A
+                                              [A 97%|█████████▋| 97/100 [00:34<00:01,  2.43it/s] 98%|█████████▊| 98/100 [00:34<00:00,  2.99it/s] 99%|█████████▉| 99/100 [00:34<00:00,  3.55it/s]{'eval_loss': 0.0005993238883093, 'eval_accuracy': 1.0, 'eval_ece': 0.0005991458892822266, 'eval_nll': 0.0005993238883093, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.14, 'eval_steps_per_second': 17.14, 'epoch': 32.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 99%|█████████▉| 99/100 [00:35<00:00,  3.55it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.82it/s][A
+                                              [A100%|██████████| 100/100 [00:35<00:00,  2.42it/s]                                                 100%|██████████| 100/100 [00:35<00:00,  2.42it/s]{'eval_loss': 0.0005289109540171921, 'eval_accuracy': 1.0, 'eval_ece': 0.0005287528038024902, 'eval_nll': 0.0005289109540171921, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.074, 'eval_steps_per_second': 17.074, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.014849203638732433, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 100/100 [00:35<00:00,  2.42it/s]
+100%|██████████| 1/1 [00:00<00:00, 416.60it/s][A
+                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+                                                 100%|██████████| 100/100 [00:36<00:00,  2.42it/s]100%|██████████| 100/100 [00:36<00:00,  2.76it/s]
+2026-04-05 22:11:58,898 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+{'eval_loss': 0.000557267339900136, 'eval_accuracy': 1.0, 'eval_ece': 0.0005571246147155762, 'eval_nll': 0.000557267339900136, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.888, 'eval_steps_per_second': 16.888, 'epoch': 33.33}
+{'train_runtime': 36.2618, 'train_samples_per_second': 11.031, 'train_steps_per_second': 2.758, 'train_loss': 0.20228284737910143, 'epoch': 33.33}
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 601.59it/s]
+2026-04-05 22:11:58,959 - ib-edl - [92mINFO[0m: [base] val_loss: 0.000557267339900136
+2026-04-05 22:11:58,959 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:11:58,959 - ib-edl - [92mINFO[0m: [base] val_ece: 0.0005571246147155762
+2026-04-05 22:11:58,960 - ib-edl - [92mINFO[0m: [base] val_nll: 0.000557267339900136
+2026-04-05 22:11:58,960 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0591
+2026-04-05 22:11:58,960 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.914
+2026-04-05 22:11:58,960 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.914
+2026-04-05 22:11:58,960 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 36.98it/s]
+2026-04-05 22:11:59,050 - ib-edl - [92mINFO[0m: [base] test_loss: 5.7516626839060336e-05
+2026-04-05 22:11:59,050 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:11:59,050 - ib-edl - [92mINFO[0m: [base] test_ece: 5.751848220825195e-05
+2026-04-05 22:11:59,050 - ib-edl - [92mINFO[0m: [base] test_nll: 5.7516626839060336e-05
+2026-04-05 22:11:59,051 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.0881
+2026-04-05 22:11:59,051 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 22.696
+2026-04-05 22:11:59,051 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 11.348
+2026-04-05 22:11:59,051 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 599.87it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 503.52it/s]
+2026-04-05 22:11:59,187 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+2026-04-05 22:11:59,189 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz
+wandb: updating run metadata
+wandb: uploading config.yaml
+wandb: uploading console lines 85-142
+wandb: 
+wandb: Run history:
+wandb:           eval/accuracy ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/ece ███▇██▇▆▅▄▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               eval/loss ███▇█▇▇▆▅▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/nll ███▇█▇▇▆▅▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            eval/runtime █▃▁▂▃▁▁▂▁▂▂▁█▁▁▂▂▁▂▂▁▁▁▁▂▂▁▁▂▂▂▁▁▂
+wandb: eval/samples_per_second ▁▆▇▇▆██▇█▇▇█▁██▇▇█▇▇████▇▇██▇▇▇██▇
+wandb:   eval/steps_per_second ▁▆▇▇▆██▇█▇▇█▁██▇▇█▇▇████▇▇██▇▇▇██▇
+wandb:           test/accuracy ▁▁▁
+wandb:                test/ece ▁█▁
+wandb:               test/loss ▁█▁
+wandb:                     +16 ...
+wandb: 
+wandb: Run summary:
+wandb:           eval/accuracy 1
+wandb:                eval/ece 0.00056
+wandb:               eval/loss 0.00056
+wandb:                eval/nll 0.00056
+wandb:            eval/runtime 0.0592
+wandb: eval/samples_per_second 16.888
+wandb:   eval/steps_per_second 16.888
+wandb:           test/accuracy 1
+wandb:                test/ece 6e-05
+wandb:               test/loss 6e-05
+wandb:                     +21 ...
+wandb: 
+wandb: 🚀 View run 0405_2211_04 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/gzgfvbi0
+wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221104-gzgfvbi0/logs
+Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
+
+Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
+
+Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
+
+Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
+
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
+wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run bku25grb
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221209-bku25grb
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 0405_2212_09
+wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/bku25grb
+2026-04-05 22:12:10,806 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:12:10,826 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[train] Seed=4 | output -> data/results/csqa/qwen2_7b/lora
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 121.49it/s]
+2026-04-05 22:12:11,413 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  1%|          | 1/100 [00:01<01:45,  1.07s/it]  2%|▏         | 2/100 [00:01<00:55,  1.76it/s]  3%|▎         | 3/100 [00:01<00:37,  2.56it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  3%|▎         | 3/100 [00:01<00:37,  2.56it/s]
+100%|██████████| 1/1 [00:00<00:00, 202.97it/s][A
+                                              [A  4%|▍         | 4/100 [00:02<00:51,  1.87it/s]  5%|▌         | 5/100 [00:02<00:38,  2.50it/s]  6%|▌         | 6/100 [00:02<00:29,  3.15it/s]{'eval_loss': 0.3950110077857971, 'eval_accuracy': 1.0, 'eval_ece': 0.326327383518219, 'eval_nll': 0.3950110077857971, 'eval_runtime': 0.0642, 'eval_samples_per_second': 15.586, 'eval_steps_per_second': 15.586, 'epoch': 1.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  6%|▌         | 6/100 [00:02<00:29,  3.15it/s]
+100%|██████████| 1/1 [00:00<00:00, 359.87it/s][A
+                                              [A  7%|▋         | 7/100 [00:03<00:41,  2.25it/s]  8%|▊         | 8/100 [00:03<00:32,  2.82it/s]  9%|▉         | 9/100 [00:03<00:27,  3.32it/s]{'eval_loss': 0.3522888422012329, 'eval_accuracy': 1.0, 'eval_ece': 0.29692304134368896, 'eval_nll': 0.3522889316082001, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.123, 'eval_steps_per_second': 17.123, 'epoch': 2.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  9%|▉         | 9/100 [00:03<00:27,  3.32it/s]
+100%|██████████| 1/1 [00:00<00:00, 352.26it/s][A
+                                              [A 10%|█         | 10/100 [00:04<00:38,  2.33it/s] 11%|█         | 11/100 [00:04<00:30,  2.88it/s] 12%|█▏        | 12/100 [00:04<00:25,  3.43it/s]{'eval_loss': 0.3859686851501465, 'eval_accuracy': 1.0, 'eval_ece': 0.3202083110809326, 'eval_nll': 0.3859688341617584, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.129, 'eval_steps_per_second': 17.129, 'epoch': 3.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 12%|█▏        | 12/100 [00:04<00:25,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 330.94it/s][A
+                                              [A 13%|█▎        | 13/100 [00:05<00:37,  2.30it/s] 14%|█▍        | 14/100 [00:05<00:30,  2.84it/s] 15%|█▌        | 15/100 [00:05<00:25,  3.39it/s]{'eval_loss': 0.4375435411930084, 'eval_accuracy': 1.0, 'eval_ece': 0.35437965393066406, 'eval_nll': 0.4375436305999756, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.099, 'eval_steps_per_second': 17.099, 'epoch': 4.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 15%|█▌        | 15/100 [00:05<00:25,  3.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 319.32it/s][A
+                                              [A 16%|█▌        | 16/100 [00:06<00:34,  2.40it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.94it/s] 18%|█▊        | 18/100 [00:06<00:23,  3.49it/s]{'eval_loss': 0.37011486291885376, 'eval_accuracy': 1.0, 'eval_ece': 0.3093450665473938, 'eval_nll': 0.37011492252349854, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.1, 'eval_steps_per_second': 17.1, 'epoch': 5.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 18%|█▊        | 18/100 [00:06<00:23,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 340.36it/s][A
+                                              [A 19%|█▉        | 19/100 [00:07<00:33,  2.41it/s] 20%|██        | 20/100 [00:07<00:27,  2.95it/s]                                                 20%|██        | 20/100 [00:07<00:27,  2.95it/s] 21%|██        | 21/100 [00:07<00:22,  3.49it/s]{'eval_loss': 0.37011486291885376, 'eval_accuracy': 1.0, 'eval_ece': 0.3093450665473938, 'eval_nll': 0.37011492252349854, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.062, 'eval_steps_per_second': 17.062, 'epoch': 6.0}
+{'loss': 0.89, 'grad_norm': 7.87044095993042, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 21%|██        | 21/100 [00:07<00:22,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 423.80it/s][A
+                                              [A 22%|██▏       | 22/100 [00:08<00:33,  2.33it/s] 23%|██▎       | 23/100 [00:08<00:26,  2.86it/s] 24%|██▍       | 24/100 [00:08<00:22,  3.40it/s]{'eval_loss': 0.3345734477043152, 'eval_accuracy': 1.0, 'eval_ece': 0.2843567132949829, 'eval_nll': 0.3345734477043152, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.141, 'eval_steps_per_second': 17.141, 'epoch': 7.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 24%|██▍       | 24/100 [00:08<00:22,  3.40it/s]
+100%|██████████| 1/1 [00:00<00:00, 415.61it/s][A
+                                              [A 25%|██▌       | 25/100 [00:09<00:31,  2.36it/s] 26%|██▌       | 26/100 [00:09<00:25,  2.90it/s] 27%|██▋       | 27/100 [00:09<00:21,  3.45it/s]{'eval_loss': 0.30215609073638916, 'eval_accuracy': 1.0, 'eval_ece': 0.2607772946357727, 'eval_nll': 0.30215609073638916, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.095, 'eval_steps_per_second': 17.095, 'epoch': 8.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 27%|██▋       | 27/100 [00:09<00:21,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 377.19it/s][A
+                                              [A 28%|██▊       | 28/100 [00:10<00:30,  2.38it/s] 29%|██▉       | 29/100 [00:10<00:24,  2.92it/s] 30%|███       | 30/100 [00:10<00:20,  3.47it/s]{'eval_loss': 0.21512581408023834, 'eval_accuracy': 1.0, 'eval_ece': 0.19356012344360352, 'eval_nll': 0.2151259034872055, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.0, 'eval_steps_per_second': 17.0, 'epoch': 9.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 30%|███       | 30/100 [00:11<00:20,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 380.13it/s][A
+                                              [A 31%|███       | 31/100 [00:11<00:28,  2.40it/s] 32%|███▏      | 32/100 [00:11<00:23,  2.94it/s] 33%|███▎      | 33/100 [00:12<00:19,  3.49it/s]{'eval_loss': 0.1286313682794571, 'eval_accuracy': 1.0, 'eval_ece': 0.12070202827453613, 'eval_nll': 0.12863147258758545, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.16, 'eval_steps_per_second': 17.16, 'epoch': 10.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 33%|███▎      | 33/100 [00:12<00:19,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 383.74it/s][A
+                                              [A 34%|███▍      | 34/100 [00:12<00:28,  2.31it/s] 35%|███▌      | 35/100 [00:12<00:22,  2.84it/s] 36%|███▌      | 36/100 [00:13<00:18,  3.37it/s]{'eval_loss': 0.06197725236415863, 'eval_accuracy': 1.0, 'eval_ece': 0.06009572744369507, 'eval_nll': 0.06197725236415863, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.119, 'eval_steps_per_second': 17.119, 'epoch': 11.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 36%|███▌      | 36/100 [00:13<00:18,  3.37it/s]
+100%|██████████| 1/1 [00:00<00:00, 363.96it/s][A
+                                              [A 37%|███▋      | 37/100 [00:13<00:26,  2.37it/s] 38%|███▊      | 38/100 [00:13<00:21,  2.90it/s] 39%|███▉      | 39/100 [00:14<00:17,  3.45it/s]{'eval_loss': 0.030157649889588356, 'eval_accuracy': 1.0, 'eval_ece': 0.02970743179321289, 'eval_nll': 0.030157649889588356, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.02, 'eval_steps_per_second': 17.02, 'epoch': 12.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 39%|███▉      | 39/100 [00:14<00:17,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 357.14it/s][A
+                                              [A 40%|████      | 40/100 [00:14<00:26,  2.29it/s]                                                 40%|████      | 40/100 [00:14<00:26,  2.29it/s] 41%|████      | 41/100 [00:15<00:20,  2.82it/s] 42%|████▏     | 42/100 [00:15<00:17,  3.37it/s]{'eval_loss': 0.014041325077414513, 'eval_accuracy': 1.0, 'eval_ece': 0.013943195343017578, 'eval_nll': 0.014041325077414513, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.162, 'eval_steps_per_second': 17.162, 'epoch': 13.0}
+{'loss': 0.1313, 'grad_norm': 0.03789835050702095, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 42%|████▏     | 42/100 [00:15<00:17,  3.37it/s]
+100%|██████████| 1/1 [00:00<00:00, 351.64it/s][A
+                                              [A 43%|████▎     | 43/100 [00:15<00:24,  2.33it/s] 44%|████▍     | 44/100 [00:16<00:19,  2.87it/s] 45%|████▌     | 45/100 [00:16<00:16,  3.43it/s]{'eval_loss': 0.006777868140488863, 'eval_accuracy': 1.0, 'eval_ece': 0.006754934787750244, 'eval_nll': 0.006777868140488863, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.149, 'eval_steps_per_second': 17.149, 'epoch': 14.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 45%|████▌     | 45/100 [00:16<00:16,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 376.27it/s][A
+                                              [A 46%|████▌     | 46/100 [00:17<00:22,  2.37it/s] 47%|████▋     | 47/100 [00:17<00:18,  2.90it/s] 48%|████▊     | 48/100 [00:17<00:15,  3.45it/s]{'eval_loss': 0.003875365946441889, 'eval_accuracy': 1.0, 'eval_ece': 0.0038678646087646484, 'eval_nll': 0.003875365946441889, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.12, 'eval_steps_per_second': 17.12, 'epoch': 15.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 48%|████▊     | 48/100 [00:17<00:15,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 326.28it/s][A
+                                              [A 49%|████▉     | 49/100 [00:18<00:21,  2.39it/s] 50%|█████     | 50/100 [00:18<00:17,  2.92it/s] 51%|█████     | 51/100 [00:18<00:14,  3.48it/s]{'eval_loss': 0.0024397389497607946, 'eval_accuracy': 1.0, 'eval_ece': 0.0024367570877075195, 'eval_nll': 0.0024397389497607946, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 16.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 51%|█████     | 51/100 [00:18<00:14,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 397.68it/s][A
+                                              [A 52%|█████▏    | 52/100 [00:19<00:20,  2.37it/s] 53%|█████▎    | 53/100 [00:19<00:16,  2.91it/s] 54%|█████▍    | 54/100 [00:19<00:13,  3.46it/s]{'eval_loss': 0.0021113501861691475, 'eval_accuracy': 1.0, 'eval_ece': 0.0021091103553771973, 'eval_nll': 0.0021113501861691475, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.12, 'eval_steps_per_second': 17.12, 'epoch': 17.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 54%|█████▍    | 54/100 [00:19<00:13,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 384.80it/s][A
+                                              [A 55%|█████▌    | 55/100 [00:20<00:18,  2.42it/s] 56%|█████▌    | 56/100 [00:20<00:14,  2.96it/s] 57%|█████▋    | 57/100 [00:20<00:12,  3.51it/s]{'eval_loss': 0.0012022180017083883, 'eval_accuracy': 1.0, 'eval_ece': 0.0012015104293823242, 'eval_nll': 0.0012022180017083883, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.123, 'eval_steps_per_second': 17.123, 'epoch': 18.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 57%|█████▋    | 57/100 [00:20<00:12,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 383.22it/s][A
+                                              [A 58%|█████▊    | 58/100 [00:21<00:17,  2.39it/s] 59%|█████▉    | 59/100 [00:21<00:14,  2.92it/s] 60%|██████    | 60/100 [00:21<00:11,  3.47it/s]                                                 60%|██████    | 60/100 [00:21<00:11,  3.47it/s]{'eval_loss': 0.0010589712765067816, 'eval_accuracy': 1.0, 'eval_ece': 0.0010585188865661621, 'eval_nll': 0.0010590903693810105, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.186, 'eval_steps_per_second': 17.186, 'epoch': 19.0}
+{'loss': 0.001, 'grad_norm': 0.0016366528579965234, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 60%|██████    | 60/100 [00:21<00:11,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.96it/s][A
+                                              [A 61%|██████    | 61/100 [00:22<00:16,  2.42it/s] 62%|██████▏   | 62/100 [00:22<00:12,  2.96it/s] 63%|██████▎   | 63/100 [00:22<00:10,  3.51it/s]{'eval_loss': 0.0009757286752574146, 'eval_accuracy': 1.0, 'eval_ece': 0.0009752511978149414, 'eval_nll': 0.0009757286752574146, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.018, 'eval_steps_per_second': 17.018, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 63%|██████▎   | 63/100 [00:22<00:10,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 364.09it/s][A
+                                              [A 64%|██████▍   | 64/100 [00:23<00:15,  2.36it/s] 65%|██████▌   | 65/100 [00:23<00:12,  2.88it/s] 66%|██████▌   | 66/100 [00:23<00:09,  3.42it/s]{'eval_loss': 0.0008611546363681555, 'eval_accuracy': 1.0, 'eval_ece': 0.0008608102798461914, 'eval_nll': 0.0008611546363681555, 'eval_runtime': 0.0581, 'eval_samples_per_second': 17.201, 'eval_steps_per_second': 17.201, 'epoch': 21.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 66%|██████▌   | 66/100 [00:23<00:09,  3.42it/s]
+100%|██████████| 1/1 [00:00<00:00, 321.77it/s][A
+                                              [A 67%|██████▋   | 67/100 [00:24<00:13,  2.41it/s] 68%|██████▊   | 68/100 [00:24<00:10,  2.95it/s] 69%|██████▉   | 69/100 [00:24<00:08,  3.49it/s]{'eval_loss': 0.0007475204183720052, 'eval_accuracy': 1.0, 'eval_ece': 0.0007472634315490723, 'eval_nll': 0.0007475204183720052, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.779, 'eval_steps_per_second': 16.779, 'epoch': 22.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 69%|██████▉   | 69/100 [00:24<00:08,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 415.77it/s][A
+                                              [A 70%|███████   | 70/100 [00:25<00:12,  2.40it/s] 71%|███████   | 71/100 [00:25<00:09,  2.94it/s] 72%|███████▏  | 72/100 [00:25<00:08,  3.49it/s]{'eval_loss': 0.0007600279641337693, 'eval_accuracy': 1.0, 'eval_ece': 0.0007597208023071289, 'eval_nll': 0.0007600279641337693, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.105, 'eval_steps_per_second': 17.105, 'epoch': 23.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 72%|███████▏  | 72/100 [00:25<00:08,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 374.39it/s][A
+                                              [A 73%|███████▎  | 73/100 [00:26<00:11,  2.44it/s] 74%|███████▍  | 74/100 [00:26<00:08,  2.98it/s] 75%|███████▌  | 75/100 [00:26<00:07,  3.53it/s]{'eval_loss': 0.0007140470552258193, 'eval_accuracy': 1.0, 'eval_ece': 0.0007137656211853027, 'eval_nll': 0.0007140470552258193, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.129, 'eval_steps_per_second': 17.129, 'epoch': 24.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 75%|███████▌  | 75/100 [00:26<00:07,  3.53it/s]
+100%|██████████| 1/1 [00:00<00:00, 372.56it/s][A
+                                              [A 76%|███████▌  | 76/100 [00:27<00:09,  2.44it/s] 77%|███████▋  | 77/100 [00:27<00:07,  2.98it/s] 78%|███████▊  | 78/100 [00:27<00:06,  3.54it/s]{'eval_loss': 0.0007028493564575911, 'eval_accuracy': 1.0, 'eval_ece': 0.0007026195526123047, 'eval_nll': 0.0007028493564575911, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.118, 'eval_steps_per_second': 17.118, 'epoch': 25.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 78%|███████▊  | 78/100 [00:27<00:06,  3.54it/s]
+100%|██████████| 1/1 [00:00<00:00, 414.33it/s][A
+                                              [A 79%|███████▉  | 79/100 [00:28<00:08,  2.43it/s] 80%|████████  | 80/100 [00:28<00:06,  2.97it/s]                                                 80%|████████  | 80/100 [00:28<00:06,  2.97it/s] 81%|████████  | 81/100 [00:28<00:05,  3.52it/s]{'eval_loss': 0.0007587176514789462, 'eval_accuracy': 1.0, 'eval_ece': 0.0007584095001220703, 'eval_nll': 0.0007587176514789462, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.13, 'eval_steps_per_second': 17.13, 'epoch': 26.0}
+{'loss': 0.0001, 'grad_norm': 0.00980790238827467, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 81%|████████  | 81/100 [00:28<00:05,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 371.44it/s][A
+                                              [A 82%|████████▏ | 82/100 [00:29<00:07,  2.35it/s] 83%|████████▎ | 83/100 [00:29<00:05,  2.88it/s] 84%|████████▍ | 84/100 [00:29<00:04,  3.43it/s]{'eval_loss': 0.0005931286723352969, 'eval_accuracy': 1.0, 'eval_ece': 0.0005929470062255859, 'eval_nll': 0.0005931286723352969, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.126, 'eval_steps_per_second': 17.126, 'epoch': 27.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 84%|████████▍ | 84/100 [00:29<00:04,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 334.58it/s][A
+                                              [A 85%|████████▌ | 85/100 [00:30<00:06,  2.39it/s] 86%|████████▌ | 86/100 [00:30<00:04,  2.93it/s] 87%|████████▋ | 87/100 [00:30<00:03,  3.48it/s]{'eval_loss': 0.0005931286723352969, 'eval_accuracy': 1.0, 'eval_ece': 0.0005929470062255859, 'eval_nll': 0.0005931286723352969, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.041, 'eval_steps_per_second': 17.041, 'epoch': 28.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 87%|████████▋ | 87/100 [00:30<00:03,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 407.29it/s][A
+                                              [A 88%|████████▊ | 88/100 [00:31<00:04,  2.42it/s] 89%|████████▉ | 89/100 [00:31<00:03,  2.96it/s] 90%|█████████ | 90/100 [00:31<00:02,  3.52it/s]{'eval_loss': 0.0005920564290136099, 'eval_accuracy': 1.0, 'eval_ece': 0.0005917549133300781, 'eval_nll': 0.0005919373361393809, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.166, 'eval_steps_per_second': 17.166, 'epoch': 29.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 90%|█████████ | 90/100 [00:32<00:02,  3.52it/s]
+100%|██████████| 1/1 [00:00<00:00, 348.36it/s][A
+                                              [A 91%|█████████ | 91/100 [00:32<00:03,  2.40it/s] 92%|█████████▏| 92/100 [00:32<00:02,  2.93it/s] 93%|█████████▎| 93/100 [00:33<00:02,  3.49it/s]{'eval_loss': 0.0007140470552258193, 'eval_accuracy': 1.0, 'eval_ece': 0.0007137656211853027, 'eval_nll': 0.0007140470552258193, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.109, 'eval_steps_per_second': 17.109, 'epoch': 30.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 93%|█████████▎| 93/100 [00:33<00:02,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.11it/s][A
+                                              [A 94%|█████████▍| 94/100 [00:33<00:02,  2.37it/s] 95%|█████████▌| 95/100 [00:33<00:01,  2.90it/s] 96%|█████████▌| 96/100 [00:34<00:01,  3.46it/s]{'eval_loss': 0.0006201728247106075, 'eval_accuracy': 1.0, 'eval_ece': 0.0006200075149536133, 'eval_nll': 0.0006201728247106075, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.17, 'eval_steps_per_second': 17.17, 'epoch': 31.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 96%|█████████▌| 96/100 [00:34<00:01,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 331.59it/s][A
+                                              [A 97%|█████████▋| 97/100 [00:34<00:01,  2.37it/s] 98%|█████████▊| 98/100 [00:34<00:00,  2.91it/s] 99%|█████████▉| 99/100 [00:35<00:00,  3.46it/s]{'eval_loss': 0.0007028493564575911, 'eval_accuracy': 1.0, 'eval_ece': 0.0007026195526123047, 'eval_nll': 0.0007028493564575911, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.079, 'eval_steps_per_second': 17.079, 'epoch': 32.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 99%|█████████▉| 99/100 [00:35<00:00,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 400.76it/s][A
+                                              [A100%|██████████| 100/100 [00:35<00:00,  2.39it/s]                                                 100%|██████████| 100/100 [00:35<00:00,  2.39it/s]{'eval_loss': 0.0005931286723352969, 'eval_accuracy': 1.0, 'eval_ece': 0.0005929470062255859, 'eval_nll': 0.0005931286723352969, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.093, 'eval_steps_per_second': 17.093, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.003829649416729808, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 100/100 [00:35<00:00,  2.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 418.93it/s][A
+                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+                                                 100%|██████████| 100/100 [00:36<00:00,  2.39it/s]100%|██████████| 100/100 [00:36<00:00,  2.75it/s]
+2026-04-05 22:13:03,807 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+{'eval_loss': 0.0006708040600642562, 'eval_accuracy': 1.0, 'eval_ece': 0.0006705522537231445, 'eval_nll': 0.0006708040600642562, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.139, 'eval_steps_per_second': 17.139, 'epoch': 33.33}
+{'train_runtime': 36.4129, 'train_samples_per_second': 10.985, 'train_steps_per_second': 2.746, 'train_loss': 0.20449888836708852, 'epoch': 33.33}
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 614.46it/s]
+2026-04-05 22:13:03,867 - ib-edl - [92mINFO[0m: [base] val_loss: 0.0006708040600642562
+2026-04-05 22:13:03,868 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:13:03,868 - ib-edl - [92mINFO[0m: [base] val_ece: 0.0006705522537231445
+2026-04-05 22:13:03,868 - ib-edl - [92mINFO[0m: [base] val_nll: 0.0006708040600642562
+2026-04-05 22:13:03,868 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0588
+2026-04-05 22:13:03,868 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 17.011
+2026-04-05 22:13:03,869 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 17.011
+2026-04-05 22:13:03,869 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 24.07it/s]
+2026-04-05 22:13:03,972 - ib-edl - [92mINFO[0m: [base] test_loss: 4.684791565523483e-05
+2026-04-05 22:13:03,973 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:13:03,973 - ib-edl - [92mINFO[0m: [base] test_ece: 4.678964614868164e-05
+2026-04-05 22:13:03,979 - ib-edl - [92mINFO[0m: [base] test_nll: 4.678831101045944e-05
+2026-04-05 22:13:03,980 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1018
+2026-04-05 22:13:03,980 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.653
+2026-04-05 22:13:03,980 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.827
+2026-04-05 22:13:03,980 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 582.22it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 30.99it/s]
+2026-04-05 22:13:04,151 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+2026-04-05 22:13:04,154 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz
+wandb: updating run metadata
+wandb: uploading wandb-summary.json; uploading config.yaml
+wandb: uploading console lines 85-142
+wandb: 
+wandb: Run history:
+wandb:           eval/accuracy ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/ece ▇▇▇█▇▇▇▆▅▃▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               eval/loss ▇▇▇█▇▇▆▆▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/nll ▇▇▇█▇▇▆▆▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            eval/runtime █▁▁▁▁▂▁▁▂▁▁▂▁▁▁▁▁▁▁▂▁▃▁▁▁▁▁▂▁▁▁▂▁▁
+wandb: eval/samples_per_second ▁████▇██▇██▇███████▇█▆█████▇███▇██
+wandb:   eval/steps_per_second ▁████▇██▇██▇███████▇█▆█████▇███▇██
+wandb:           test/accuracy ▁▁▁
+wandb:                test/ece ▁█▁
+wandb:               test/loss ▁█▁
+wandb:                     +16 ...
+wandb: 
+wandb: Run summary:
+wandb:           eval/accuracy 1
+wandb:                eval/ece 0.00067
+wandb:               eval/loss 0.00067
+wandb:                eval/nll 0.00067
+wandb:            eval/runtime 0.0583
+wandb: eval/samples_per_second 17.139
+wandb:   eval/steps_per_second 17.139
+wandb:           test/accuracy 1
+wandb:                test/ece 5e-05
+wandb:               test/loss 5e-05
+wandb:                     +21 ...
+wandb: 
+wandb: 🚀 View run 0405_2212_09 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/bku25grb
+wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221209-bku25grb/logs
+Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
+
+Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
+
+Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
+
+Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
+
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
+wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run 4npsaou4
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221314-4npsaou4
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 0405_2213_14
+wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/4npsaou4
+2026-04-05 22:13:15,664 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=2,
+        type='CSQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[10%:]'),
+        subset_size=10,
+        type='CSQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train[:10%]'),
+        subset_size=1,
+        type='CSQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='csqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 22:13:15,666 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+`torch_dtype` is deprecated! Use `dtype` instead!
+
+[train] Seed=5 | output -> data/results/csqa/qwen2_7b/lora
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 119.83it/s]
+2026-04-05 22:13:16,213 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/100 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  1%|          | 1/100 [00:01<02:02,  1.24s/it]  2%|▏         | 2/100 [00:01<01:00,  1.63it/s]  3%|▎         | 3/100 [00:01<00:39,  2.43it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  3%|▎         | 3/100 [00:01<00:39,  2.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 247.92it/s][A
+                                              [A  4%|▍         | 4/100 [00:02<00:52,  1.84it/s]  5%|▌         | 5/100 [00:02<00:38,  2.46it/s]  6%|▌         | 6/100 [00:02<00:31,  3.01it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.0602, 'eval_samples_per_second': 16.62, 'eval_steps_per_second': 16.62, 'epoch': 1.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  6%|▌         | 6/100 [00:02<00:31,  3.01it/s]
+100%|██████████| 1/1 [00:00<00:00, 377.36it/s][A
+                                              [A  7%|▋         | 7/100 [00:03<00:42,  2.19it/s]  8%|▊         | 8/100 [00:03<00:33,  2.75it/s]  9%|▉         | 9/100 [00:03<00:27,  3.33it/s]{'eval_loss': 0.3859686851501465, 'eval_accuracy': 1.0, 'eval_ece': 0.3202083110809326, 'eval_nll': 0.3859688341617584, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.041, 'eval_steps_per_second': 17.041, 'epoch': 2.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                               
+                                     [A  9%|▉         | 9/100 [00:03<00:27,  3.33it/s]
+100%|██████████| 1/1 [00:00<00:00, 387.43it/s][A
+                                              [A 10%|█         | 10/100 [00:04<00:39,  2.27it/s] 11%|█         | 11/100 [00:04<00:31,  2.82it/s] 12%|█▏        | 12/100 [00:04<00:26,  3.38it/s]{'eval_loss': 0.3859686851501465, 'eval_accuracy': 1.0, 'eval_ece': 0.3202083110809326, 'eval_nll': 0.3859688341617584, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.096, 'eval_steps_per_second': 17.096, 'epoch': 3.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 12%|█▏        | 12/100 [00:04<00:26,  3.38it/s]
+100%|██████████| 1/1 [00:00<00:00, 359.59it/s][A
+                                              [A 13%|█▎        | 13/100 [00:05<00:36,  2.36it/s] 14%|█▍        | 14/100 [00:05<00:29,  2.90it/s] 15%|█▌        | 15/100 [00:05<00:24,  3.44it/s]{'eval_loss': 0.3950110077857971, 'eval_accuracy': 1.0, 'eval_ece': 0.326327383518219, 'eval_nll': 0.3950110077857971, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.965, 'eval_steps_per_second': 16.965, 'epoch': 4.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 15%|█▌        | 15/100 [00:05<00:24,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 357.88it/s][A
+                                              [A 16%|█▌        | 16/100 [00:06<00:35,  2.37it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.91it/s] 18%|█▊        | 18/100 [00:06<00:23,  3.46it/s]{'eval_loss': 0.41047805547714233, 'eval_accuracy': 1.0, 'eval_ece': 0.33666694164276123, 'eval_nll': 0.41047805547714233, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.941, 'eval_steps_per_second': 16.941, 'epoch': 5.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 18%|█▊        | 18/100 [00:06<00:23,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 365.07it/s][A
+                                              [A 19%|█▉        | 19/100 [00:07<00:33,  2.38it/s] 20%|██        | 20/100 [00:07<00:27,  2.92it/s]                                                 20%|██        | 20/100 [00:07<00:27,  2.92it/s] 21%|██        | 21/100 [00:07<00:22,  3.47it/s]{'eval_loss': 0.33308878540992737, 'eval_accuracy': 1.0, 'eval_ece': 0.2832934856414795, 'eval_nll': 0.33308887481689453, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 6.0}
+{'loss': 0.8767, 'grad_norm': 6.060823440551758, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 21%|██        | 21/100 [00:08<00:22,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 359.38it/s][A
+                                              [A 22%|██▏       | 22/100 [00:08<00:33,  2.33it/s] 23%|██▎       | 23/100 [00:08<00:26,  2.87it/s] 24%|██▍       | 24/100 [00:09<00:22,  3.42it/s]{'eval_loss': 0.337828665971756, 'eval_accuracy': 1.0, 'eval_ece': 0.2866825461387634, 'eval_nll': 0.33782875537872314, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.03, 'eval_steps_per_second': 17.03, 'epoch': 7.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 24%|██▍       | 24/100 [00:09<00:22,  3.42it/s]
+100%|██████████| 1/1 [00:00<00:00, 338.93it/s][A
+                                              [A 25%|██▌       | 25/100 [00:09<00:31,  2.39it/s] 26%|██▌       | 26/100 [00:09<00:25,  2.93it/s] 27%|██▋       | 27/100 [00:10<00:21,  3.45it/s]{'eval_loss': 0.2591317296028137, 'eval_accuracy': 1.0, 'eval_ece': 0.22827863693237305, 'eval_nll': 0.2591317296028137, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.061, 'eval_steps_per_second': 17.061, 'epoch': 8.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 27%|██▋       | 27/100 [00:10<00:21,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 371.41it/s][A
+                                              [A 28%|██▊       | 28/100 [00:10<00:30,  2.35it/s] 29%|██▉       | 29/100 [00:10<00:24,  2.88it/s] 30%|███       | 30/100 [00:11<00:20,  3.44it/s]{'eval_loss': 0.2022874802350998, 'eval_accuracy': 1.0, 'eval_ece': 0.18313992023468018, 'eval_nll': 0.2022874802350998, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.079, 'eval_steps_per_second': 17.079, 'epoch': 9.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 30%|███       | 30/100 [00:11<00:20,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 389.08it/s][A
+                                              [A 31%|███       | 31/100 [00:11<00:29,  2.36it/s] 32%|███▏      | 32/100 [00:12<00:23,  2.89it/s] 33%|███▎      | 33/100 [00:12<00:19,  3.45it/s]{'eval_loss': 0.1286313682794571, 'eval_accuracy': 1.0, 'eval_ece': 0.12070202827453613, 'eval_nll': 0.12863147258758545, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.043, 'eval_steps_per_second': 17.043, 'epoch': 10.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 33%|███▎      | 33/100 [00:12<00:19,  3.45it/s]
+100%|██████████| 1/1 [00:00<00:00, 367.37it/s][A
+                                              [A 34%|███▍      | 34/100 [00:12<00:27,  2.39it/s] 35%|███▌      | 35/100 [00:13<00:22,  2.93it/s] 36%|███▌      | 36/100 [00:13<00:18,  3.48it/s]{'eval_loss': 0.08366165310144424, 'eval_accuracy': 1.0, 'eval_ece': 0.0802575945854187, 'eval_nll': 0.08366165310144424, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.087, 'eval_steps_per_second': 17.087, 'epoch': 11.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 36%|███▌      | 36/100 [00:13<00:18,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 376.95it/s][A
+                                              [A 37%|███▋      | 37/100 [00:13<00:26,  2.40it/s] 38%|███▊      | 38/100 [00:14<00:21,  2.94it/s] 39%|███▉      | 39/100 [00:14<00:17,  3.49it/s]{'eval_loss': 0.0314258374273777, 'eval_accuracy': 1.0, 'eval_ece': 0.03093719482421875, 'eval_nll': 0.0314258374273777, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.777, 'eval_steps_per_second': 16.777, 'epoch': 12.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 39%|███▉      | 39/100 [00:14<00:17,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 373.92it/s][A
+                                              [A 40%|████      | 40/100 [00:14<00:25,  2.40it/s]                                                 40%|████      | 40/100 [00:14<00:25,  2.40it/s] 41%|████      | 41/100 [00:15<00:20,  2.93it/s] 42%|████▏     | 42/100 [00:15<00:16,  3.49it/s]{'eval_loss': 0.015832196921110153, 'eval_accuracy': 1.0, 'eval_ece': 0.015707552433013916, 'eval_nll': 0.015832196921110153, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.077, 'eval_steps_per_second': 17.077, 'epoch': 13.0}
+{'loss': 0.1657, 'grad_norm': 0.05964019522070885, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 42%|████▏     | 42/100 [00:15<00:16,  3.49it/s]
+100%|██████████| 1/1 [00:00<00:00, 341.83it/s][A
+                                              [A 43%|████▎     | 43/100 [00:16<00:24,  2.33it/s] 44%|████▍     | 44/100 [00:16<00:19,  2.85it/s] 45%|████▌     | 45/100 [00:16<00:16,  3.40it/s]{'eval_loss': 0.007767945993691683, 'eval_accuracy': 1.0, 'eval_ece': 0.007737874984741211, 'eval_nll': 0.007767945993691683, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.804, 'eval_steps_per_second': 16.804, 'epoch': 14.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 45%|████▌     | 45/100 [00:16<00:16,  3.40it/s]
+100%|██████████| 1/1 [00:00<00:00, 366.83it/s][A
+                                              [A 46%|████▌     | 46/100 [00:17<00:22,  2.36it/s] 47%|████▋     | 47/100 [00:17<00:18,  2.89it/s] 48%|████▊     | 48/100 [00:17<00:15,  3.44it/s]{'eval_loss': 0.003689507720991969, 'eval_accuracy': 1.0, 'eval_ece': 0.003682732582092285, 'eval_nll': 0.003689507720991969, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.819, 'eval_steps_per_second': 16.819, 'epoch': 15.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 48%|████▊     | 48/100 [00:17<00:15,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 362.20it/s][A
+                                              [A 49%|████▉     | 49/100 [00:18<00:21,  2.38it/s] 50%|█████     | 50/100 [00:18<00:17,  2.92it/s] 51%|█████     | 51/100 [00:18<00:14,  3.47it/s]{'eval_loss': 0.002489089034497738, 'eval_accuracy': 1.0, 'eval_ece': 0.002485990524291992, 'eval_nll': 0.002489089034497738, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.024, 'eval_steps_per_second': 17.024, 'epoch': 16.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 51%|█████     | 51/100 [00:18<00:14,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 379.20it/s][A
+                                              [A 52%|█████▏    | 52/100 [00:19<00:20,  2.40it/s] 53%|█████▎    | 53/100 [00:19<00:15,  2.95it/s] 54%|█████▍    | 54/100 [00:19<00:13,  3.51it/s]{'eval_loss': 0.0017686928622424603, 'eval_accuracy': 1.0, 'eval_ece': 0.0017671585083007812, 'eval_nll': 0.0017686928622424603, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.019, 'eval_steps_per_second': 17.019, 'epoch': 17.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 54%|█████▍    | 54/100 [00:19<00:13,  3.51it/s]
+100%|██████████| 1/1 [00:00<00:00, 296.71it/s][A
+                                              [A 55%|█████▌    | 55/100 [00:20<00:19,  2.32it/s] 56%|█████▌    | 56/100 [00:20<00:15,  2.87it/s] 57%|█████▋    | 57/100 [00:20<00:12,  3.43it/s]{'eval_loss': 0.001134586171247065, 'eval_accuracy': 1.0, 'eval_ece': 0.0011339187622070312, 'eval_nll': 0.001134586171247065, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.991, 'eval_steps_per_second': 16.991, 'epoch': 18.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 57%|█████▋    | 57/100 [00:20<00:12,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 396.17it/s][A
+                                              [A 58%|█████▊    | 58/100 [00:21<00:17,  2.35it/s] 59%|█████▉    | 59/100 [00:21<00:14,  2.89it/s] 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]                                                 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]{'eval_loss': 0.0010787388309836388, 'eval_accuracy': 1.0, 'eval_ece': 0.0010781288146972656, 'eval_nll': 0.0010787388309836388, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.141, 'eval_steps_per_second': 17.141, 'epoch': 19.0}
+{'loss': 0.0013, 'grad_norm': 0.0022542141377925873, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 60%|██████    | 60/100 [00:21<00:11,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 326.81it/s][A
+                                              [A 61%|██████    | 61/100 [00:22<00:16,  2.39it/s] 62%|██████▏   | 62/100 [00:22<00:13,  2.92it/s] 63%|██████▎   | 63/100 [00:22<00:10,  3.46it/s]{'eval_loss': 0.0009488132782280445, 'eval_accuracy': 1.0, 'eval_ece': 0.0009483695030212402, 'eval_nll': 0.0009488132782280445, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.008, 'eval_steps_per_second': 17.008, 'epoch': 20.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 63%|██████▎   | 63/100 [00:22<00:10,  3.46it/s]
+100%|██████████| 1/1 [00:00<00:00, 375.16it/s][A
+                                              [A 64%|██████▍   | 64/100 [00:23<00:16,  2.15it/s] 65%|██████▌   | 65/100 [00:23<00:13,  2.67it/s] 66%|██████▌   | 66/100 [00:23<00:10,  3.22it/s]{'eval_loss': 0.0007701530121266842, 'eval_accuracy': 1.0, 'eval_ece': 0.0007698535919189453, 'eval_nll': 0.0007701530121266842, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.05, 'eval_steps_per_second': 17.05, 'epoch': 21.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 66%|██████▌   | 66/100 [00:23<00:10,  3.22it/s]
+100%|██████████| 1/1 [00:00<00:00, 297.87it/s][A
+                                              [A 67%|██████▋   | 67/100 [00:24<00:14,  2.31it/s] 68%|██████▊   | 68/100 [00:24<00:11,  2.84it/s] 69%|██████▉   | 69/100 [00:24<00:09,  3.39it/s]{'eval_loss': 0.0006884350441396236, 'eval_accuracy': 1.0, 'eval_ece': 0.0006881952285766602, 'eval_nll': 0.0006884350441396236, 'eval_runtime': 0.0616, 'eval_samples_per_second': 16.244, 'eval_steps_per_second': 16.244, 'epoch': 22.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 69%|██████▉   | 69/100 [00:25<00:09,  3.39it/s]
+100%|██████████| 1/1 [00:00<00:00, 337.24it/s][A
+                                              [A 70%|███████   | 70/100 [00:25<00:12,  2.39it/s] 71%|███████   | 71/100 [00:25<00:09,  2.93it/s] 72%|███████▏  | 72/100 [00:26<00:08,  3.48it/s]{'eval_loss': 0.0006544832140207291, 'eval_accuracy': 1.0, 'eval_ece': 0.0006542801856994629, 'eval_nll': 0.0006544832140207291, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.058, 'eval_steps_per_second': 17.058, 'epoch': 23.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 72%|███████▏  | 72/100 [00:26<00:08,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 350.52it/s][A
+                                              [A 73%|███████▎  | 73/100 [00:28<00:27,  1.03s/it] 74%|███████▍  | 74/100 [00:28<00:20,  1.30it/s] 75%|███████▌  | 75/100 [00:29<00:14,  1.70it/s]{'eval_loss': 0.0006544832140207291, 'eval_accuracy': 1.0, 'eval_ece': 0.0006542801856994629, 'eval_nll': 0.0006544832140207291, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.026, 'eval_steps_per_second': 17.026, 'epoch': 24.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 75%|███████▌  | 75/100 [00:29<00:14,  1.70it/s]
+100%|██████████| 1/1 [00:00<00:00, 325.67it/s][A
+                                              [A 76%|███████▌  | 76/100 [00:29<00:15,  1.59it/s] 77%|███████▋  | 77/100 [00:29<00:11,  2.05it/s] 78%|███████▊  | 78/100 [00:30<00:08,  2.56it/s]{'eval_loss': 0.0006532918778248131, 'eval_accuracy': 1.0, 'eval_ece': 0.0006530880928039551, 'eval_nll': 0.0006532918778248131, 'eval_runtime': 0.0593, 'eval_samples_per_second': 16.873, 'eval_steps_per_second': 16.873, 'epoch': 25.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 78%|███████▊  | 78/100 [00:30<00:08,  2.56it/s]
+100%|██████████| 1/1 [00:00<00:00, 317.51it/s][A
+                                              [A 79%|███████▉  | 79/100 [00:30<00:10,  2.05it/s] 80%|████████  | 80/100 [00:31<00:07,  2.57it/s]                                                 80%|████████  | 80/100 [00:31<00:07,  2.57it/s] 81%|████████  | 81/100 [00:31<00:06,  3.11it/s]{'eval_loss': 0.0005787128466181457, 'eval_accuracy': 1.0, 'eval_ece': 0.0005785226821899414, 'eval_nll': 0.0005787128466181457, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.947, 'eval_steps_per_second': 16.947, 'epoch': 26.0}
+{'loss': 0.0001, 'grad_norm': 0.003976179752498865, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 81%|████████  | 81/100 [00:31<00:06,  3.11it/s]
+100%|██████████| 1/1 [00:00<00:00, 366.38it/s][A
+                                              [A 82%|████████▏ | 82/100 [00:31<00:08,  2.24it/s] 83%|████████▎ | 83/100 [00:32<00:06,  2.76it/s] 84%|████████▍ | 84/100 [00:32<00:04,  3.30it/s]{'eval_loss': 0.0006086166249588132, 'eval_accuracy': 1.0, 'eval_ece': 0.0006084442138671875, 'eval_nll': 0.0006086166249588132, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.043, 'eval_steps_per_second': 17.043, 'epoch': 27.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 84%|████████▍ | 84/100 [00:32<00:04,  3.30it/s]
+100%|██████████| 1/1 [00:00<00:00, 319.88it/s][A
+                                              [A 85%|████████▌ | 85/100 [00:33<00:06,  2.27it/s] 86%|████████▌ | 86/100 [00:33<00:04,  2.80it/s] 87%|████████▋ | 87/100 [00:33<00:03,  3.35it/s]{'eval_loss': 0.0007416835287585855, 'eval_accuracy': 1.0, 'eval_ece': 0.0007413029670715332, 'eval_nll': 0.0007415643776766956, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.765, 'eval_steps_per_second': 16.765, 'epoch': 28.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 87%|████████▋ | 87/100 [00:33<00:03,  3.35it/s]
+100%|██████████| 1/1 [00:00<00:00, 356.60it/s][A
+                                              [A 88%|████████▊ | 88/100 [00:34<00:05,  2.35it/s] 89%|████████▉ | 89/100 [00:34<00:03,  2.88it/s] 90%|█████████ | 90/100 [00:34<00:02,  3.43it/s]{'eval_loss': 0.0006784282741136849, 'eval_accuracy': 1.0, 'eval_ece': 0.0006781816482543945, 'eval_nll': 0.0006784282741136849, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.03, 'eval_steps_per_second': 17.03, 'epoch': 29.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 90%|█████████ | 90/100 [00:34<00:02,  3.43it/s]
+100%|██████████| 1/1 [00:00<00:00, 374.09it/s][A
+                                              [A 91%|█████████ | 91/100 [00:35<00:03,  2.39it/s] 92%|█████████▏| 92/100 [00:35<00:02,  2.93it/s] 93%|█████████▎| 93/100 [00:35<00:02,  3.47it/s]{'eval_loss': 0.0005371319712139666, 'eval_accuracy': 1.0, 'eval_ece': 0.0005368590354919434, 'eval_nll': 0.0005370128201320767, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.949, 'eval_steps_per_second': 16.949, 'epoch': 30.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 93%|█████████▎| 93/100 [00:35<00:02,  3.47it/s]
+100%|██████████| 1/1 [00:00<00:00, 363.08it/s][A
+                                              [A 94%|█████████▍| 94/100 [00:36<00:02,  2.39it/s] 95%|█████████▌| 95/100 [00:36<00:01,  2.93it/s] 96%|█████████▌| 96/100 [00:36<00:01,  3.48it/s]{'eval_loss': 0.0005986090400256217, 'eval_accuracy': 1.0, 'eval_ece': 0.0005984306335449219, 'eval_nll': 0.0005986090400256217, 'eval_runtime': 0.0589, 'eval_samples_per_second': 16.97, 'eval_steps_per_second': 16.97, 'epoch': 31.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 96%|█████████▌| 96/100 [00:36<00:01,  3.48it/s]
+100%|██████████| 1/1 [00:00<00:00, 356.26it/s][A
+                                              [A 97%|█████████▋| 97/100 [00:37<00:01,  2.34it/s] 98%|█████████▊| 98/100 [00:37<00:00,  2.88it/s] 99%|█████████▉| 99/100 [00:37<00:00,  3.44it/s]{'eval_loss': 0.0005998004344291985, 'eval_accuracy': 1.0, 'eval_ece': 0.0005996227264404297, 'eval_nll': 0.0005998004344291985, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.062, 'eval_steps_per_second': 17.062, 'epoch': 32.0}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                
+                                     [A 99%|█████████▉| 99/100 [00:37<00:00,  3.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 380.30it/s][A
+                                              [A100%|██████████| 100/100 [00:38<00:00,  2.40it/s]                                                 100%|██████████| 100/100 [00:38<00:00,  2.40it/s]{'eval_loss': 0.000474936212413013, 'eval_accuracy': 1.0, 'eval_ece': 0.0004749298095703125, 'eval_nll': 0.00047505536349490285, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.168, 'eval_steps_per_second': 17.168, 'epoch': 33.0}
+{'loss': 0.0001, 'grad_norm': 0.001854854403063655, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 100/100 [00:38<00:00,  2.40it/s]
+100%|██████████| 1/1 [00:00<00:00, 361.70it/s][A
+                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+                                                 100%|██████████| 100/100 [00:38<00:00,  2.40it/s]100%|██████████| 100/100 [00:38<00:00,  2.58it/s]
+2026-04-05 22:14:11,175 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+{'eval_loss': 0.0004945961991325021, 'eval_accuracy': 1.0, 'eval_ece': 0.0004944801330566406, 'eval_nll': 0.0004945961991325021, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.882, 'eval_steps_per_second': 16.882, 'epoch': 33.33}
+{'train_runtime': 38.8204, 'train_samples_per_second': 10.304, 'train_steps_per_second': 2.576, 'train_loss': 0.2087724852806423, 'epoch': 33.33}
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 570.96it/s]
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_loss: 0.0004945961991325021
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_ece: 0.0004944801330566406
+2026-04-05 22:14:11,236 - ib-edl - [92mINFO[0m: [base] val_nll: 0.0004945961991325021
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0592
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.893
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.893
+2026-04-05 22:14:11,237 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 22.47it/s]
+2026-04-05 22:14:11,344 - ib-edl - [92mINFO[0m: [base] test_loss: 5.858964141225442e-05
+2026-04-05 22:14:11,344 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_ece: 5.8591365814208984e-05
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_nll: 5.858964141225442e-05
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1052
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.016
+2026-04-05 22:14:11,345 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.508
+2026-04-05 22:14:11,346 - ib-edl - [92mINFO[0m: [base] epoch: 33.333333333333336
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 593.51it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 24.45it/s]
+2026-04-05 22:14:11,520 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/csqa/qwen2_7b/lora/base/val_preds/csqa.npz
+2026-04-05 22:14:11,523 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/csqa/qwen2_7b/lora/base/test_preds/csqa.npz
+wandb: updating run metadata
+wandb: uploading output.log
+wandb: uploading history steps 27-43, summary, console lines 70-71
+wandb: uploading console lines 85-142
+wandb: 
+wandb: Run history:
+wandb:           eval/accuracy ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/ece █████▇▇▆▅▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:               eval/loss █████▇▇▅▄▃▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                eval/nll █████▇▇▅▄▃▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:            eval/runtime ▅▂▂▂▃▂▂▂▂▂▂▄▂▄▄▂▂▂▁▂▂█▂▂▃▃▂▄▂▃▂▂▁▃
+wandb: eval/samples_per_second ▄▇▇▆▆▇▇▇▇▇▇▅▇▅▅▇▇▇█▇▇▁▇▇▆▆▇▅▇▆▇▇█▆
+wandb:   eval/steps_per_second ▄▇▇▆▆▇▇▇▇▇▇▅▇▅▅▇▇▇█▇▇▁▇▇▆▆▇▅▇▆▇▇█▆
+wandb:           test/accuracy ▁▁▁
+wandb:                test/ece ▁█▁
+wandb:               test/loss ▁█▁
+wandb:                     +16 ...
+wandb: 
+wandb: Run summary:
+wandb:           eval/accuracy 1
+wandb:                eval/ece 0.00049
+wandb:               eval/loss 0.00049
+wandb:                eval/nll 0.00049
+wandb:            eval/runtime 0.0592
+wandb: eval/samples_per_second 16.882
+wandb:   eval/steps_per_second 16.882
+wandb:           test/accuracy 1
+wandb:                test/ece 6e-05
+wandb:               test/loss 6e-05
+wandb:                     +21 ...
+wandb: 
+wandb: 🚀 View run 0405_2213_14 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/4npsaou4
+wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: data/results/csqa/qwen2_7b/lora/base/wandb/run-20260405_221314-4npsaou4/logs
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
+
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
+

@@ -1,0 +1,187 @@
+2026-04-05 22:06:33,619 - ib-edl - [92mINFO[0m: Config for sidekick:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='test'),
+        name_suffix='C',
+        subset_size=2,
+        type='ARCDataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train'),
+        name_suffix='C',
+        subset_size=10,
+        type='ARCDataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        name_suffix='C',
+        subset_size=1,
+        type='ARCDataset'))
+edl_loss_cfg = dict(
+    bayesian_loss=dict(smooth=None, type='ss'),
+    reg_loss=dict(modify_alphas=True, type='kl'),
+    reg_weight_cfg=dict(final_reg_weight=0.0, start_epoch=0.1))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-1.5B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False,
+    npz_file='arc_c.npz',
+    plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_grad_norm=20.0,
+    max_steps=100,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.001)
+vib = dict(beta=9e-05, num_noises=20, sigma_mult=0.0)
+
+============================================================
+2026-04-05 22:06:33,621 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+2026-04-05 22:06:34,088 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+2026-04-05 22:06:41,265 - ib-edl - [92mINFO[0m: EvidentialTrainer: initialized reg_weight to 0.0
+  0%|          | 0/100 [00:00<?, ?it/s]2026-04-05 22:06:41,266 - ib-edl - [92mINFO[0m: Epoch [0] - EvidentialTrainer: updated reg_weight to 0.0000
+Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  3%|▎         | 3/100 [00:00<00:19,  4.95it/s2026-04-05 22:06:42,456 - ib-edl - [92mINFO[0m: Epoch [1.0] - EvidentialTrainer: updated reg_weight to 0.0000
+  6%|▌         | 6/100 [00:01<00:25,  3.70it/s2026-04-05 22:06:43,515 - ib-edl - [92mINFO[0m: Epoch [2.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8278953433036804, 'eval_accuracy': 1.0, 'eval_ece': 0.6431496143341064, 'eval_nll': 1.4982491731643677, 'eval_runtime': 0.0601, 'eval_samples_per_second': 16.639, 'eval_steps_per_second': 16.639, 'epoch': 1.0}
+  9%|▉         | 9/100 [00:02<00:26,  3.50it/s2026-04-05 22:06:44,594 - ib-edl - [92mINFO[0m: Epoch [3.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8275695443153381, 'eval_accuracy': 1.0, 'eval_ece': 0.6385354995727539, 'eval_nll': 1.497543454170227, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.789, 'eval_steps_per_second': 16.789, 'epoch': 2.0}
+ 12%|█▏        | 12/100 [00:03<00:25,  3.41it/2026-04-05 22:06:45,648 - ib-edl - [92mINFO[0m: Epoch [4.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8276548981666565, 'eval_accuracy': 1.0, 'eval_ece': 0.6387349367141724, 'eval_nll': 1.4976449012756348, 'eval_runtime': 0.0601, 'eval_samples_per_second': 16.631, 'eval_steps_per_second': 16.631, 'epoch': 3.0}
+ 15%|█▌        | 15/100 [00:04<00:24,  3.42it/2026-04-05 22:06:46,714 - ib-edl - [92mINFO[0m: Epoch [5.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8284719586372375, 'eval_accuracy': 1.0, 'eval_ece': 0.6385447978973389, 'eval_nll': 1.4989937543869019, 'eval_runtime': 0.0603, 'eval_samples_per_second': 16.585, 'eval_steps_per_second': 16.585, 'epoch': 4.0}
+ 18%|█▊        | 18/100 [00:06<00:24,  3.40it/2026-04-05 22:06:47,778 - ib-edl - [92mINFO[0m: Epoch [6.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8249748349189758, 'eval_accuracy': 1.0, 'eval_ece': 0.6246678829193115, 'eval_nll': 1.4924837350845337, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.724, 'eval_steps_per_second': 16.724, 'epoch': 5.0}
+ 21%|██        | 21/100 [00:07<00:23,  3.40it/2026-04-05 22:06:48,853 - ib-edl - [92mINFO[0m: Epoch [7.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8243669271469116, 'eval_accuracy': 1.0, 'eval_ece': 0.616926908493042, 'eval_nll': 1.4924461841583252, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.741, 'eval_steps_per_second': 16.741, 'epoch': 6.0}
+{'loss': 0.8095, 'grad_norm': 0.8338040113449097, 'learning_rate': 4.75e-05, 'epoch': 6.67}
+ 24%|██▍       | 24/100 [00:08<00:22,  3.39it/2026-04-05 22:06:50,051 - ib-edl - [92mINFO[0m: Epoch [8.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8222947716712952, 'eval_accuracy': 1.0, 'eval_ece': 0.5993871688842773, 'eval_nll': 1.489471435546875, 'eval_runtime': 0.0603, 'eval_samples_per_second': 16.593, 'eval_steps_per_second': 16.593, 'epoch': 7.0}
+ 27%|██▋       | 27/100 [00:09<00:22,  3.19it2026-04-05 22:06:51,237 - ib-edl - [92mINFO[0m: Epoch [9.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8185110092163086, 'eval_accuracy': 1.0, 'eval_ece': 0.5814546346664429, 'eval_nll': 1.483381986618042, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.81, 'eval_steps_per_second': 16.81, 'epoch': 8.0}
+ 30%|███       | 30/100 [00:10<00:22,  3.14it/2026-04-05 22:06:52,312 - ib-edl - [92mINFO[0m: Epoch [10.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8153898119926453, 'eval_accuracy': 1.0, 'eval_ece': 0.5522216558456421, 'eval_nll': 1.4780170917510986, 'eval_runtime': 0.06, 'eval_samples_per_second': 16.679, 'eval_steps_per_second': 16.679, 'epoch': 9.0}
+ 33%|███▎      | 33/100 [00:11<00:20,  3.30it/2026-04-05 22:06:53,418 - ib-edl - [92mINFO[0m: Epoch [11.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.8054259419441223, 'eval_accuracy': 1.0, 'eval_ece': 0.5112795829772949, 'eval_nll': 1.4602316617965698, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.731, 'eval_steps_per_second': 16.731, 'epoch': 10.0}
+ 36%|███▌      | 36/100 [00:12<00:19,  3.29it/2026-04-05 22:06:54,500 - ib-edl - [92mINFO[0m: Epoch [12.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7977479100227356, 'eval_accuracy': 1.0, 'eval_ece': 0.47336721420288086, 'eval_nll': 1.446492075920105, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.782, 'eval_steps_per_second': 16.782, 'epoch': 11.0}
+ 39%|███▉      | 39/100 [00:13<00:18,  3.34it/2026-04-05 22:06:55,586 - ib-edl - [92mINFO[0m: Epoch [13.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.790756344795227, 'eval_accuracy': 1.0, 'eval_ece': 0.422976016998291, 'eval_nll': 1.435457468032837, 'eval_runtime': 0.0601, 'eval_samples_per_second': 16.643, 'eval_steps_per_second': 16.643, 'epoch': 12.0}
+ 42%|████▏     | 42/100 [00:14<00:17,  3.34it/2026-04-05 22:06:56,665 - ib-edl - [92mINFO[0m: Epoch [14.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7802183032035828, 'eval_accuracy': 1.0, 'eval_ece': 0.37366294860839844, 'eval_nll': 1.4160524606704712, 'eval_runtime': 0.06, 'eval_samples_per_second': 16.673, 'eval_steps_per_second': 16.673, 'epoch': 13.0}
+{'loss': 0.7799, 'grad_norm': 0.6870313882827759, 'learning_rate': 4.335806273589214e-05, 'epoch': 13.33}
+ 45%|████▌     | 45/100 [00:15<00:16,  3.37it/2026-04-05 22:06:57,761 - ib-edl - [92mINFO[0m: Epoch [15.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7658870816230774, 'eval_accuracy': 1.0, 'eval_ece': 0.3137075901031494, 'eval_nll': 1.3906559944152832, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.81, 'eval_steps_per_second': 16.81, 'epoch': 14.0}
+ 48%|████▊     | 48/100 [00:17<00:15,  3.34it/2026-04-05 22:06:58,877 - ib-edl - [92mINFO[0m: Epoch [16.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7553548812866211, 'eval_accuracy': 1.0, 'eval_ece': 0.262951135635376, 'eval_nll': 1.3728358745574951, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.755, 'eval_steps_per_second': 16.755, 'epoch': 15.0}
+ 51%|█████     | 51/100 [00:18<00:14,  3.30it/2026-04-05 22:06:59,950 - ib-edl - [92mINFO[0m: Epoch [17.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7356250882148743, 'eval_accuracy': 1.0, 'eval_ece': 0.18376421928405762, 'eval_nll': 1.3371169567108154, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.721, 'eval_steps_per_second': 16.721, 'epoch': 16.0}
+ 54%|█████▍    | 54/100 [00:19<00:13,  3.35it/2026-04-05 22:07:01,013 - ib-edl - [92mINFO[0m: Epoch [18.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.7084410190582275, 'eval_accuracy': 1.0, 'eval_ece': 0.08285045623779297, 'eval_nll': 1.287015438079834, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.717, 'eval_steps_per_second': 16.717, 'epoch': 17.0}
+ 57%|█████▋    | 57/100 [00:20<00:12,  3.39it/2026-04-05 22:07:02,097 - ib-edl - [92mINFO[0m: Epoch [19.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6813337206840515, 'eval_accuracy': 1.0, 'eval_ece': 0.709894597530365, 'eval_nll': 1.2375109195709229, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.748, 'eval_steps_per_second': 16.748, 'epoch': 18.0}
+ 60%|██████    | 60/100 [00:21<00:11,  3.37it/2026-04-05 22:07:03,194 - ib-edl - [92mINFO[0m: Epoch [20.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6635053157806396, 'eval_accuracy': 1.0, 'eval_ece': 0.7006573677062988, 'eval_nll': 1.206166386604309, 'eval_runtime': 0.0594, 'eval_samples_per_second': 16.826, 'eval_steps_per_second': 16.826, 'epoch': 19.0}
+{'loss': 0.6939, 'grad_norm': 1.0516012907028198, 'learning_rate': 2.598149539397672e-05, 'epoch': 20.0}
+ 63%|██████▎   | 63/100 [00:22<00:11,  3.33it/2026-04-05 22:07:04,279 - ib-edl - [92mINFO[0m: Epoch [21.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6564064621925354, 'eval_accuracy': 1.0, 'eval_ece': 0.6965502500534058, 'eval_nll': 1.1925393342971802, 'eval_runtime': 0.06, 'eval_samples_per_second': 16.677, 'eval_steps_per_second': 16.677, 'epoch': 20.0}
+ 66%|██████▌   | 66/100 [00:23<00:10,  3.35it/2026-04-05 22:07:05,361 - ib-edl - [92mINFO[0m: Epoch [22.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6412360072135925, 'eval_accuracy': 1.0, 'eval_ece': 0.6879451274871826, 'eval_nll': 1.1645764112472534, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.74, 'eval_steps_per_second': 16.74, 'epoch': 21.0}
+ 69%|██████▉   | 69/100 [00:24<00:09,  3.36it/2026-04-05 22:07:06,414 - ib-edl - [92mINFO[0m: Epoch [23.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.62939453125, 'eval_accuracy': 1.0, 'eval_ece': 0.680392861366272, 'eval_nll': 1.140662670135498, 'eval_runtime': 0.0599, 'eval_samples_per_second': 16.691, 'eval_steps_per_second': 16.691, 'epoch': 22.0}
+ 72%|███████▏  | 72/100 [00:25<00:08,  3.41it/2026-04-05 22:07:07,504 - ib-edl - [92mINFO[0m: Epoch [24.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6020955443382263, 'eval_accuracy': 1.0, 'eval_ece': 0.6640282869338989, 'eval_nll': 1.0907282829284668, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.759, 'eval_steps_per_second': 16.759, 'epoch': 23.0}
+ 75%|███████▌  | 75/100 [00:26<00:07,  3.40it/2026-04-05 22:07:08,576 - ib-edl - [92mINFO[0m: Epoch [25.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.610529363155365, 'eval_accuracy': 1.0, 'eval_ece': 0.6682065725326538, 'eval_nll': 1.1032426357269287, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.734, 'eval_steps_per_second': 16.734, 'epoch': 24.0}
+ 78%|███████▊  | 78/100 [00:27<00:06,  3.40it/2026-04-05 22:07:09,664 - ib-edl - [92mINFO[0m: Epoch [26.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6065125465393066, 'eval_accuracy': 1.0, 'eval_ece': 0.6650031208992004, 'eval_nll': 1.093634009361267, 'eval_runtime': 0.0597, 'eval_samples_per_second': 16.743, 'eval_steps_per_second': 16.743, 'epoch': 25.0}
+ 81%|████████  | 81/100 [00:28<00:05,  3.37it/2026-04-05 22:07:10,887 - ib-edl - [92mINFO[0m: Epoch [27.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6105349063873291, 'eval_accuracy': 1.0, 'eval_ece': 0.6661852598190308, 'eval_nll': 1.0971691608428955, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.778, 'eval_steps_per_second': 16.778, 'epoch': 26.0}
+{'loss': 0.5377, 'grad_norm': 2.5901291370391846, 'learning_rate': 8.029981361676456e-06, 'epoch': 26.67}
+ 84%|████████▍ | 84/100 [00:30<00:05,  3.16it/2026-04-05 22:07:11,994 - ib-edl - [92mINFO[0m: Epoch [28.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6093042492866516, 'eval_accuracy': 1.0, 'eval_ece': 0.6649289131164551, 'eval_nll': 1.0934125185012817, 'eval_runtime': 0.0594, 'eval_samples_per_second': 16.836, 'eval_steps_per_second': 16.836, 'epoch': 27.0}
+ 87%|████████▋ | 87/100 [00:31<00:03,  3.26it/2026-04-05 22:07:13,040 - ib-edl - [92mINFO[0m: Epoch [29.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.590279757976532, 'eval_accuracy': 1.0, 'eval_ece': 0.6536209583282471, 'eval_nll': 1.0602216720581055, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.879, 'eval_steps_per_second': 16.879, 'epoch': 28.0}
+ 90%|█████████ | 90/100 [00:32<00:02,  3.40it/2026-04-05 22:07:14,085 - ib-edl - [92mINFO[0m: Epoch [30.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6055322885513306, 'eval_accuracy': 1.0, 'eval_ece': 0.6617861986160278, 'eval_nll': 1.0840771198272705, 'eval_runtime': 0.0596, 'eval_samples_per_second': 16.785, 'eval_steps_per_second': 16.785, 'epoch': 29.0}
+ 93%|█████████▎| 93/100 [00:33<00:02,  3.37it/2026-04-05 22:07:15,163 - ib-edl - [92mINFO[0m: Epoch [31.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6220197081565857, 'eval_accuracy': 1.0, 'eval_ece': 0.6705827713012695, 'eval_nll': 1.1104302406311035, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.811, 'eval_steps_per_second': 16.811, 'epoch': 30.0}
+ 96%|█████████▌| 96/100 [00:34<00:01,  3.42it/2026-04-05 22:07:16,203 - ib-edl - [92mINFO[0m: Epoch [32.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6085085868835449, 'eval_accuracy': 1.0, 'eval_ece': 0.6627537608146667, 'eval_nll': 1.0869419574737549, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.817, 'eval_steps_per_second': 16.817, 'epoch': 31.0}
+ 99%|█████████▉| 99/100 [00:35<00:00,  3.48it/2026-04-05 22:07:17,252 - ib-edl - [92mINFO[0m: Epoch [33.0] - EvidentialTrainer: updated reg_weight to 0.0000
+{'eval_loss': 0.6192883849143982, 'eval_accuracy': 1.0, 'eval_ece': 0.6682135462760925, 'eval_nll': 1.1032637357711792, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.715, 'eval_steps_per_second': 16.715, 'epoch': 32.0}
+100%|██████████| 100/100 [00:36<00:00,  2.39it/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+{'eval_loss': 0.574049711227417, 'eval_accuracy': 1.0, 'eval_ece': 0.6431635618209839, 'eval_nll': 1.0304776430130005, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.8, 'eval_steps_per_second': 16.8, 'epoch': 33.0}
+{'loss': 0.4461, 'grad_norm': 3.792283058166504, 'learning_rate': 1.9274093981927478e-08, 'epoch': 33.33}
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+{'eval_loss': 0.5852380990982056, 'eval_accuracy': 1.0, 'eval_ece': 0.6494879722595215, 'eval_nll': 1.0483603477478027, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.711, 'eval_steps_per_second': 16.711, 'epoch': 33.33}
+100%|██████████| 100/100 [00:36<00:00,  2.72it/s]
+{'train_runtime': 36.7203, 'train_samples_per_second': 10.893, 'train_steps_per_second': 2.723, 'train_loss': 0.6533913135528564, 'epoch': 33.33}
+2026-04-05 22:07:17,978 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
+100%|██████████| 1/1 [00:00<00:00, 568.26it/s]
+2026-04-05 22:07:18,040 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.5852109789848328
+2026-04-05 22:07:18,040 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
+2026-04-05 22:07:18,040 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.6494746208190918
+2026-04-05 22:07:18,040 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 1.0483222007751465
+2026-04-05 22:07:18,041 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0603
+2026-04-05 22:07:18,041 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.585
+2026-04-05 22:07:18,041 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.585
+2026-04-05 22:07:18,041 - ib-edl - [92mINFO[0m: [sidekick] epoch: 33.333333333333336
+100%|██████████| 1/1 [00:00<00:00, 28.35it/s]
+2026-04-05 22:07:18,140 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.550572395324707
+2026-04-05 22:07:18,140 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
+2026-04-05 22:07:18,140 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.3563242256641388
+2026-04-05 22:07:18,141 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 1.0455368757247925
+2026-04-05 22:07:18,141 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0974
+2026-04-05 22:07:18,141 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 20.537
+2026-04-05 22:07:18,141 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 10.269
+2026-04-05 22:07:18,141 - ib-edl - [92mINFO[0m: [sidekick] epoch: 33.333333333333336
+100%|██████████| 1/1 [00:00<00:00, 543.44it/s]
+100%|██████████| 1/1 [00:00<00:00, 29.96it/s]
+Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3'])
+
+Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4'])
+2026-04-05 22:07:18,307 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/arc_c/qwen2_7b_qwen2_15b/ib_edl_duo_constrained/sidekick/val_preds/arc_c.npz
+
+Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3'])
+
+Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4'])
+2026-04-05 22:07:18,310 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/arc_c/qwen2_7b_qwen2_15b/ib_edl_duo_constrained/sidekick/test_preds/arc_c.npz

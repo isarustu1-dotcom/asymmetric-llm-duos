@@ -1,0 +1,89 @@
+{
+  "os": "Linux-5.15.0-1098-nvidia-x86_64-with-glibc2.35",
+  "python": "CPython 3.12.12",
+  "startedAt": "2026-04-05T20:05:35.987447Z",
+  "args": [
+    "--config_base",
+    "configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml",
+    "--config_sidekick",
+    "configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml",
+    "-w",
+    "data/results",
+    "--ib-edl",
+    "--duo",
+    "--duo-constrained",
+    "--seed",
+    "4"
+  ],
+  "program": "/dss/dsshome1/03/ra58yed2/asymmetric-llm-duos/tools/train.py",
+  "codePath": "tools/train.py",
+  "codePathLocal": "tools/train.py",
+  "git": {
+    "remote": "git@github.com:isarustu1-dotcom/asymmetric-llm-duos.git",
+    "commit": "058bd262eede7b37c718416f3347d138848ddb08"
+  },
+  "email": "isarustu1@gmail.com",
+  "root": "data/results/arc_c/qwen2_7b_qwen2_15b/ib_edl_duo_constrained/base",
+  "host": "mcml-dgx-002",
+  "executable": "/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/bin/python",
+  "cpu_count": 128,
+  "cpu_count_logical": 256,
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1887374536704",
+      "used": "59862556672"
+    }
+  },
+  "memory": {
+    "total": "1081967087616"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA A100-SXM4-40GB",
+      "memoryTotal": "42949672960",
+      "cudaCores": 6912,
+      "architecture": "Ampere",
+      "uuid": "GPU-b2e88cca-c331-ea20-c6e6-c0a29c1730ae"
+    }
+  ],
+  "cudaVersion": "12.2",
+  "slurm": {
+    "cluster_name": "lrz",
+    "conf": "/etc/slurm-llnl/slurm.conf",
+    "cpus_on_node": "30",
+    "gpus_on_node": "1",
+    "gtids": "0",
+    "job_account": "default",
+    "job_cpus_per_node": "30",
+    "job_end_time": "1775422774",
+    "job_gid": "3647528",
+    "job_gpus": "5",
+    "job_id": "5539886",
+    "job_name": "mcqa_test_run_arc_c.sbatch",
+    "job_nodelist": "mcml-dgx-002",
+    "job_num_nodes": "1",
+    "job_partition": "mcml-dgx-a100-40x8",
+    "job_qos": "mcml",
+    "job_start_time": "1775419174",
+    "job_uid": "4425947",
+    "job_user": "ra58yed2",
+    "jobid": "5539886",
+    "localid": "0",
+    "nnodes": "1",
+    "nodeid": "0",
+    "nodelist": "mcml-dgx-002",
+    "nprocs": "1",
+    "ntasks": "1",
+    "prio_process": "0",
+    "procid": "0",
+    "submit_dir": "/dss/dsshome1/03/ra58yed2/asymmetric-llm-duos",
+    "submit_host": "login-05",
+    "task_pid": "1398863",
+    "tasks_per_node": "1",
+    "topology_addr": "mcml-dgx-002",
+    "topology_addr_pattern": "node"
+  },
+  "writerId": "6bueaphoygzmv1n2lbj7p1sgbn0s9os2"
+}

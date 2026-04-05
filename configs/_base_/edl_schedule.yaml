@@ -8,7 +8,7 @@ train_cfg:
     weight_decay: 0.001
     # gradient clipping is important for EDL
     max_grad_norm: 20.0
-    max_steps: 10080
+    max_steps: 100
     lr_scheduler_type: 'cosine'
     warmup_steps: 20
     logging_steps: 20

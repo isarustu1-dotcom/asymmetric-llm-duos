@@ -1,0 +1,170 @@
+2026-04-05 21:24:12,914 - ib-edl - [92mINFO[0m: Config for base:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='test'),
+        subset_size=2,
+        type='OBQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train'),
+        subset_size=10,
+        type='OBQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=1,
+        type='OBQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-7B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=10,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 21:24:12,915 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+2026-04-05 21:24:13,443 - ib-edl - [92mINFO[0m: Setting up PEFT.
+2026-04-05 21:24:34,291 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
+2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005900583229959011
+2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
+2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005883216857910156
+2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005900583229959011
+2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0589
+2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.98
+2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.98
+2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
+2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_loss: 0.48840779066085815
+2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
+2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_ece: 0.3193732798099518
+2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_nll: 0.48840779066085815
+2026-04-05 21:24:34,458 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1034
+2026-04-05 21:24:34,458 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.348
+2026-04-05 21:24:34,461 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.674
+2026-04-05 21:24:34,462 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
+2026-04-05 21:24:34,630 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
+2026-04-05 21:24:34,633 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
+2026-04-05 21:24:36,730 - ib-edl - [92mINFO[0m: Config for sidekick:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='test'),
+        subset_size=2,
+        type='OBQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train'),
+        subset_size=10,
+        type='OBQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=1,
+        type='OBQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-1.5B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=10,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 21:24:36,732 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+2026-04-05 21:24:37,189 - ib-edl - [92mINFO[0m: Setting up PEFT.
+2026-04-05 21:24:48,402 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
+2026-04-05 21:24:48,462 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.15789860486984253
+2026-04-05 21:24:48,462 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
+2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.14606362581253052
+2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.15789860486984253
+2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0589
+2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.984
+2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.984
+2026-04-05 21:24:48,464 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
+2026-04-05 21:24:48,567 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.875037670135498
+2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
+2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.4135116934776306
+2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8750377297401428
+2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.1024
+2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 19.539
+2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 9.77
+2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
+2026-04-05 21:24:48,702 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
+2026-04-05 21:24:48,705 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz

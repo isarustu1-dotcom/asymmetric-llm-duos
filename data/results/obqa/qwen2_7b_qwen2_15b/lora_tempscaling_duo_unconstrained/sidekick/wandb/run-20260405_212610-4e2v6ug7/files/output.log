@@ -1,0 +1,106 @@
+2026-04-05 21:26:10,792 - ib-edl - [92mINFO[0m: Config for sidekick:
+============================================================
+data = dict(
+    test=dict(
+        add_space=True,
+        dataset_cfg=dict(split='test'),
+        subset_size=2,
+        type='OBQADataset'),
+    train=dict(
+        add_space=True,
+        dataset_cfg=dict(split='train'),
+        subset_size=10,
+        type='OBQADataset'),
+    val=dict(
+        add_space=True,
+        dataset_cfg=dict(split='validation'),
+        subset_size=1,
+        type='OBQADataset'))
+model = dict(
+    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
+    model_name_or_path='Qwen/Qwen2-1.5B',
+    peft_cfg=dict(
+        bias='lora_only',
+        inference_mode=False,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        r=8,
+        target_modules=[
+            'q_proj',
+            'k_proj',
+            'v_proj',
+            'o_proj',
+        ],
+        task_type='CAUSAL_LM',
+        type='LoraConfig'),
+    peft_path=None,
+    special_tokens=dict(pad_token='<|endoftext|>'),
+    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
+    use_peft=True)
+process_preds = dict(
+    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
+        5,
+        5,
+    ]))
+tokenizer_run_cfg = dict(
+    max_length=300, padding=True, return_tensors='pt', truncation=True)
+train_cfg = dict(
+    bf16=True,
+    do_eval=True,
+    do_train=True,
+    eval_strategy='epoch',
+    learning_rate=5e-05,
+    logging_steps=20,
+    lr_scheduler_type='cosine',
+    max_steps=10,
+    per_device_eval_batch_size=4,
+    per_device_train_batch_size=4,
+    save_only_model=True,
+    save_strategy='epoch',
+    save_total_limit=1,
+    warmup_steps=20,
+    weight_decay=0.0)
+
+============================================================
+2026-04-05 21:26:10,794 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
+2026-04-05 21:26:11,242 - ib-edl - [92mINFO[0m: Setting up PEFT.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
+  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
+100%|██████████| 10/10 [00:03<00:00,  2.41it/s/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
+  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
+{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.902, 'eval_steps_per_second': 16.902, 'epoch': 1.0}
+{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.185, 'eval_steps_per_second': 17.185, 'epoch': 2.0}
+{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0578, 'eval_samples_per_second': 17.304, 'eval_steps_per_second': 17.304, 'epoch': 3.0}
+{'eval_loss': 0.17715995013713837, 'eval_accuracy': 1.0, 'eval_ece': 0.1623542308807373, 'eval_nll': 0.17715995013713837, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.132, 'eval_steps_per_second': 17.132, 'epoch': 3.33}
+100%|██████████| 10/10 [00:04<00:00,  2.49it/s]
+{'train_runtime': 4.0262, 'train_samples_per_second': 9.935, 'train_steps_per_second': 2.484, 'train_loss': 1.2881701469421387, 'epoch': 3.33}
+2026-04-05 21:26:22,379 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
+100%|██████████| 1/1 [00:00<00:00, 511.94it/s]
+2026-04-05 21:26:22,439 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.17715995013713837
+2026-04-05 21:26:22,439 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
+2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.1623542308807373
+2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.17715995013713837
+2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0587
+2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 17.049
+2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 17.049
+2026-04-05 21:26:22,441 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
+100%|██████████| 1/1 [00:00<00:00, 31.13it/s]
+2026-04-05 21:26:22,536 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.8087759017944336
+2026-04-05 21:26:22,536 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
+2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.3801819682121277
+2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8087759017944336
+2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0926
+2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 21.607
+2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 10.803
+2026-04-05 21:26:22,538 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
+100%|██████████| 1/1 [00:00<00:00, 590.41it/s]
+100%|██████████| 1/1 [00:00<00:00, 508.59it/s]
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4'])
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5'])
+2026-04-05 21:26:22,670 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
+
+Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4'])
+
+Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5'])
+2026-04-05 21:26:22,673 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
