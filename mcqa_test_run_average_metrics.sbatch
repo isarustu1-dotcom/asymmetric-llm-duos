@@ -3,7 +3,8 @@
 #SBATCH --qos=cpu
 #SBATCH --ntasks=1
 s#SBATCH -t 00:20:00
-source ~/.bashrc
+source $HOME/miniforge3/bin/activate
+eval "$(mamba shell hook --shell bash)"
 mamba activate adl-asymmetric-lm-duos
 
 pip install -e .
