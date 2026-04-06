@@ -3,9 +3,9 @@
 Usage
 -----
 python tools/average_metrics.py \\
-    --config_base    configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
+    --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
     --config_sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \\
-    --work-dir /data/results \\
+    --work-dir data/results \\
     --dataset_name arc_c \\
     --duo --deep-ensemble --deep-ensemble-size 2
 
@@ -127,9 +127,19 @@ def _summarize(data: pd.DataFrame, model_type: str, split: str) -> pd.DataFrame:
 def _create_metrics_df(data: dict, splits: list, model_types: list,
                        output_path: str) -> pd.DataFrame:
     """Flatten the per-seed NPZ metrics dict into a tidy DataFrame."""
-    # Discover metric names from the first seed
     first = data[next(iter(data))].item()
-    metrics = [k.replace('duo_', '') for k in first['val'] if k.startswith('duo_')]
+
+    # Discover metric names from the first model_type's keys in the stored dict.
+    # Keys are stored as '{model_type}_{metric}', e.g. 'base_nll', 'duo_brier'.
+    # We strip the model_type prefix from any matching key.
+    # Fallback to old 'duo_'-only discovery if model_types is empty.
+    metric_names: set = set()
+    for mt in (model_types or ['duo']):
+        prefix = f'{mt}_'
+        for k in first['val']:
+            if k.startswith(prefix):
+                metric_names.add(k[len(prefix):])
+    metrics = sorted(metric_names)
 
     rows = []
     for seed in data.keys():
@@ -139,7 +149,7 @@ def _create_metrics_df(data: dict, splits: list, model_types: list,
                        'model': m_type, 'split': split}
                 for metric in metrics:
                     col_name = f'{m_type}_{metric}'
-                    row[metric] = data[seed].item()[split][col_name]
+                    row[metric] = data[seed].item()[split].get(col_name, float('nan'))
                 rows.append(row)
 
     df = pd.DataFrame(rows)
@@ -206,6 +216,62 @@ def _deep_ensemble_metrics(pred_df: pd.DataFrame, combos: list,
 
 
 # ---------------------------------------------------------------------------
+# Fallback: build metrics/csqa.npz from raw prediction files
+# ---------------------------------------------------------------------------
+
+def _build_metrics_from_preds(work_dir: str, npz_file: str,
+                               model_types_present: list) -> dict:
+    """Compute per-seed metrics from raw val/test prediction NPZs.
+
+    Used when no duo optimisation or temperature scaling was run, so
+    metrics/<npz_file> was never written by those steps.  Produces the
+    same nested dict structure that duo_optimizer / temperature_scaling
+    would have written, so the rest of main() can proceed unchanged.
+    """
+    from sklearn.metrics import accuracy_score, f1_score
+    from ib_edl import compute_uncertainty_metrics
+
+    # Discover seeds from the base model's val predictions
+    base_val_path = osp.join(work_dir, 'base', 'val_preds', npz_file)
+    base_val_raw = dict(np.load(base_val_path, allow_pickle=True))
+    seeds = list(base_val_raw.keys())
+
+    metrics_data = {}
+    for seed in seeds:
+        val_metrics: dict = {}
+        tst_metrics: dict = {}
+
+        for mt in model_types_present:
+            for split_label, preds_dir in [('val', 'val_preds'), ('tst', 'test_preds')]:
+                path = osp.join(work_dir, mt, preds_dir, npz_file)
+                raw = dict(np.load(path, allow_pickle=True))
+                sd = raw[seed].item()
+                probs = _softmax_from_log(sd['logits'])
+                y_true = sd['true_labels']
+                preds = probs.argmax(axis=1)
+                m: dict = {
+                    f'{mt}_accuracy': float(accuracy_score(y_true, preds)),
+                    f'{mt}_f1_macro': float(f1_score(y_true, preds, average='macro')),
+                }
+                m.update({
+                    f'{mt}_{k}': v
+                    for k, v in compute_uncertainty_metrics(probs, y_true).items()
+                })
+                if split_label == 'val':
+                    val_metrics.update(m)
+                else:
+                    tst_metrics.update(m)
+
+        metrics_data[seed] = np.array({
+            'data': npz_file,
+            'val': val_metrics,
+            'test': tst_metrics,
+        })
+
+    return metrics_data
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -220,8 +286,20 @@ def main():
     summary_dir  = osp.join(work_dir, 'overall_metrics_summary')
     os.makedirs(summary_dir, exist_ok=True)
 
-    # --- load per-seed duo metrics --------------------------------------
-    metrics_data = dict(np.load(metrics_path, allow_pickle=True))
+    # --- load per-seed metrics -----------------------------------------
+    # metrics/<npz> is written by duo_optimizer / temperature_scaling.
+    # For a plain LoRA run without those steps, fall back to computing
+    # metrics directly from the raw prediction files.
+    if not osp.exists(metrics_path):
+        print(f'[average_metrics] {metrics_path} not found — '
+              'computing metrics from raw prediction files.')
+        present = ['base'] + (['sidekick'] if has_sidekick else [])
+        metrics_data = _build_metrics_from_preds(work_dir, npz_file, present)
+        os.makedirs(osp.dirname(metrics_path), exist_ok=True)
+        np.savez_compressed(metrics_path, **metrics_data)
+        print(f'[average_metrics] Saved computed metrics to {metrics_path}')
+    else:
+        metrics_data = dict(np.load(metrics_path, allow_pickle=True))
 
     # Discover which model types are present from metric keys
     first_val = metrics_data[next(iter(metrics_data))].item()['val']
