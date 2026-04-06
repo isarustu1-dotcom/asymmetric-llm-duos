@@ -4,16 +4,16 @@ data:
         dataset_cfg:
             split: train
         add_space: True
-        subset_size: 1000
+        subset_size: 10000
     val:
         type: OBQADataset
         dataset_cfg:
             split: validation
         add_space: True
-        subset_size: 100
+        subset_size: 1000
     test:
         type: OBQADataset
         dataset_cfg:
             split: test
         add_space: True
-        subset_size: 200
+        subset_size: 2000
