@@ -3,9 +3,9 @@
 Usage
 -----
 python tools/average_metrics.py \\
-    --config_base    configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
+    --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
     --config_sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \\
-    --work-dir /data/results \\
+    --work-dir data/results \\
     --dataset_name arc_c \\
     --duo --deep-ensemble --deep-ensemble-size 2
 

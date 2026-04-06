@@ -4,19 +4,19 @@ Usage examples
 --------------
 # Plain LoRA, single model only
 python tools/train.py --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
-    -w /data/results --seed 1
+    -w data/results --seed 1
 
 # Plain LoRA + unconstrained duo + temperature scaling
 python tools/train.py \\
     --config_base    configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \\
     --config_sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \\
-    -w /data/results --duo --temperature-scaling --seed 1
+    -w data/results --duo --temperature-scaling --seed 1
 
 # IB-EDL + constrained duo
 python tools/train.py \\
     --config_base    configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml \\
     --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml \\
-    -w /data/results --ib-edl --duo --duo-constrained --seed 1
+    -w data/results --ib-edl --duo --duo-constrained --seed 1
 """
 
 import argparse
