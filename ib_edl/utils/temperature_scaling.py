@@ -44,6 +44,12 @@ def _fit_temperature(logits: np.ndarray, y_true: np.ndarray,
     if not res.success:
         raise RuntimeError(f'Temperature scaling failed for {model_label}: {res.message}')
     T = float(res.x[0])
+    nll_before = _nll_single(np.array([1.0]), logits, y_true)
+    nll_after  = _nll_single(res.x, logits, y_true)
+    print(f'  [temperature_scaling] {model_label}: '
+          f'T={T:.6f}, scale=1/T={1.0/T:.6f}, '
+          f'NLL before={nll_before:.6f}, NLL after={nll_after:.6f}, '
+          f'delta={nll_after - nll_before:.6f}')
     return {'temperature': T, 'scale': 1.0 / T}
 
 

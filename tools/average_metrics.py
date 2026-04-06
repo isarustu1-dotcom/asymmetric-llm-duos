@@ -129,16 +129,22 @@ def _create_metrics_df(data: dict, splits: list, model_types: list,
     """Flatten the per-seed NPZ metrics dict into a tidy DataFrame."""
     first = data[next(iter(data))].item()
 
-    # Discover metric names from the first model_type's keys in the stored dict.
+    # Discover metric names from the stored dict.
     # Keys are stored as '{model_type}_{metric}', e.g. 'base_nll', 'duo_brier'.
-    # We strip the model_type prefix from any matching key.
-    # Fallback to old 'duo_'-only discovery if model_types is empty.
+    # Use the LONGEST matching model_type prefix to avoid 'base_' accidentally
+    # matching 'base_ts_nll' (which belongs to model_type 'base_ts').
+    # Sort model_types by length descending so longer prefixes are tried first.
     metric_names: set = set()
-    for mt in (model_types or ['duo']):
-        prefix = f'{mt}_'
-        for k in first['val']:
-            if k.startswith(prefix):
+    sorted_mts = sorted(model_types or ['duo'], key=len, reverse=True)
+    for k in first['val']:
+        for mt in sorted_mts:
+            prefix = f'{mt}_'
+            if k.startswith(prefix) and not any(
+                k.startswith(f'{other}_') and len(other) > len(mt)
+                for other in sorted_mts
+            ):
                 metric_names.add(k[len(prefix):])
+                break
     metrics = sorted(metric_names)
 
     rows = []
