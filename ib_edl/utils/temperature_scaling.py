@@ -21,8 +21,8 @@ from .uncertainty_metrics import compute_uncertainty_metrics
 # NLL loss
 # ---------------------------------------------------------------------------
 
-def _nll_single(temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> float:
-    T = float(temperature[0])
+def _nll_single(log_temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> float:
+    T = float(np.exp(log_temperature[0]))
     log_p = (1.0 / T) * logits
     log_p_norm = log_p - _logsumexp(log_p, axis=1, keepdims=True)
     return float(-np.mean(log_p_norm[np.arange(len(y)), y]))
@@ -35,16 +35,15 @@ def _nll_single(temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> f
 def _fit_temperature(logits: np.ndarray, y_true: np.ndarray,
                      verbose: bool = True, model_label: str = '') -> dict:
     """Fit a single temperature scalar via L-BFGS-B."""
-    x0 = np.array([100.0], dtype=np.float64)
-    bounds = [(1e-6, None)]
-    cb = (lambda xk: print(f'  T_{model_label}={xk[0]:.4f}')) if verbose else None
+    x0 = np.array([np.log(100.0)], dtype=np.float64)
+    cb = (lambda xk: print(f'  T_{model_label}={np.exp(xk[0]):.4f}')) if verbose else None
     res = minimize(_nll_single, x0, args=(logits, y_true),
-                   method='L-BFGS-B', bounds=bounds, callback=cb,
+                   method='L-BFGS-B', bounds=None, callback=cb,
                    options={'disp': verbose})
     if not res.success:
         raise RuntimeError(f'Temperature scaling failed for {model_label}: {res.message}')
-    T = float(res.x[0])
-    nll_before = _nll_single(np.array([1.0]), logits, y_true)
+    T = float(np.exp(res.x[0]))
+    nll_before = _nll_single(np.array([0.0]), logits, y_true)  # log(1.0) = 0
     nll_after  = _nll_single(res.x, logits, y_true)
     print(f'  [temperature_scaling] {model_label}: '
           f'T={T:.6f}, scale=1/T={1.0/T:.6f}, '
