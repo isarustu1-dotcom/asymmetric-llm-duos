@@ -12,7 +12,7 @@ data:
             split: validation
         name_suffix: "C"
         add_space: True
-        subset_size: null
+        subset_size: null    
     test:
         type: ARCDataset
         dataset_cfg:

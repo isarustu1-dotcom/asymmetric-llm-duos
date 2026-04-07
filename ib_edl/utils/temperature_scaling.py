@@ -18,14 +18,37 @@ from .uncertainty_metrics import compute_uncertainty_metrics
 
 
 # ---------------------------------------------------------------------------
-# NLL loss
+# NLL loss + analytical gradient (w.r.t. log T)
 # ---------------------------------------------------------------------------
 
-def _nll_single(temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> float:
-    T = float(temperature[0])
-    log_p = (1.0 / T) * logits
-    log_p_norm = log_p - _logsumexp(log_p, axis=1, keepdims=True)
-    return float(-np.mean(log_p_norm[np.arange(len(y)), y]))
+def _nll_and_grad(log_temperature: np.ndarray, logits: np.ndarray, y: np.ndarray):
+    """Return (NLL, d_NLL/d_log_T) for the log-space parameterisation.
+
+    Logits are cast to float64 internally so that the gradient is never
+    corrupted by float32 precision loss (which would make finite-difference
+    estimates return exactly zero and cause L-BFGS-B to stop at x0).
+
+    Analytical gradient:
+        d NLL / d log T  =  (1/T) * mean_i( logits[i, y_i] - E_{p_i}[logits_i] )
+    where p_i = softmax(logits_i / T).
+    """
+    logits = logits.astype(np.float64)          # guard against float32 inputs
+    T = float(np.exp(log_temperature[0]))
+    scaled = logits / T
+    log_p_norm = scaled - _logsumexp(scaled, axis=1, keepdims=True)
+    nll = float(-np.mean(log_p_norm[np.arange(len(y)), y]))
+
+    probs = np.exp(log_p_norm)                  # (N, C)
+    expected_logits = (probs * logits).sum(axis=1)   # E_{p_i}[logits_i]
+    true_logits     = logits[np.arange(len(y)), y]
+    grad_log_T = float((1.0 / T) * np.mean(true_logits - expected_logits))
+
+    return nll, np.array([grad_log_T])
+
+
+def _nll_single(log_temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> float:
+    """Convenience wrapper that returns only the NLL value."""
+    return _nll_and_grad(log_temperature, logits, y)[0]
 
 
 # ---------------------------------------------------------------------------
@@ -35,15 +58,20 @@ def _nll_single(temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) -> f
 def _fit_temperature(logits: np.ndarray, y_true: np.ndarray,
                      verbose: bool = True, model_label: str = '') -> dict:
     """Fit a single temperature scalar via L-BFGS-B."""
-    x0 = np.array([1.0], dtype=np.float64)
-    bounds = [(1e-6, None)]
-    cb = (lambda xk: print(f'  T_{model_label}={xk[0]:.4f}')) if verbose else None
-    res = minimize(_nll_single, x0, args=(logits, y_true),
-                   method='L-BFGS-B', bounds=bounds, callback=cb,
+    x0 = np.array([np.log(100.0)], dtype=np.float64)
+    cb = (lambda xk: print(f'  T_{model_label}={np.exp(xk[0]):.4f}')) if verbose else None
+    res = minimize(_nll_and_grad, x0, args=(logits, y_true),
+                   method='L-BFGS-B', jac=True, bounds=None, callback=cb,
                    options={'disp': verbose})
     if not res.success:
         raise RuntimeError(f'Temperature scaling failed for {model_label}: {res.message}')
-    T = float(res.x[0])
+    T = float(np.exp(res.x[0]))
+    nll_before = _nll_single(np.array([0.0]), logits, y_true)  # log(1.0) = 0
+    nll_after  = _nll_single(res.x, logits, y_true)
+    print(f'  [temperature_scaling] {model_label}: '
+          f'T={T:.6f}, scale=1/T={1.0/T:.6f}, '
+          f'NLL before={nll_before:.6f}, NLL after={nll_after:.6f}, '
+          f'delta={nll_after - nll_before:.6f}')
     return {'temperature': T, 'scale': 1.0 / T}
 
 

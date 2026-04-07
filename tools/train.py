@@ -181,7 +181,7 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
     target_ids = train_tids if type(train_set) is type(test_set) else test_tids
 
     training_args = TrainingArguments(
-        output_dir=osp.join(work_dir, model_type, 'checkpoints'),
+        output_dir=osp.join(work_dir, model_type, 'checkpoints', f'seed_{args.seed}'),
         logging_dir=osp.join(work_dir, model_type),
         report_to='wandb' if not args.no_wandb else 'none',
         remove_unused_columns=False,
