@@ -1,1937 +1,0 @@
-Obtaining file:///dss/dsshome1/03/ra58yed2/asymmetric-llm-duos
-  Installing build dependencies: started
-  Installing build dependencies: finished with status 'done'
-  Checking if build backend supports build_editable: started
-  Checking if build backend supports build_editable: finished with status 'done'
-  Getting requirements to build editable: started
-  Getting requirements to build editable: finished with status 'done'
-  Preparing editable metadata (pyproject.toml): started
-  Preparing editable metadata (pyproject.toml): finished with status 'done'
-Requirement already satisfied: accelerate in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.12.0)
-Requirement already satisfied: alive-progress in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (3.3.0)
-Requirement already satisfied: datasets in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (4.4.1)
-Requirement already satisfied: mmengine in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.10.7)
-Requirement already satisfied: numpy in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (2.3.5)
-Requirement already satisfied: peft in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.18.0)
-Requirement already satisfied: protobuf in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (6.33.4)
-Requirement already satisfied: sentencepiece in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.2.1)
-Requirement already satisfied: scipy in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.16.3)
-Requirement already satisfied: tabulate in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.9.0)
-Requirement already satisfied: tokenizers in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.22.1)
-Requirement already satisfied: torch>=2.4.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (2.9.1)
-Requirement already satisfied: torchmetrics in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (1.8.2)
-Requirement already satisfied: transformers>=4.46.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (4.57.3)
-Requirement already satisfied: wandb in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from ib-edl==0.1.0) (0.24.0)
-Requirement already satisfied: filelock in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.20.0)
-Requirement already satisfied: typing-extensions>=4.10.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (4.15.0)
-Requirement already satisfied: setuptools in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (80.9.0)
-Requirement already satisfied: sympy>=1.13.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (1.14.0)
-Requirement already satisfied: networkx>=2.5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.6.1)
-Requirement already satisfied: jinja2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.1.6)
-Requirement already satisfied: fsspec>=0.8.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (2025.10.0)
-Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.93)
-Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
-Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
-Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (9.10.2.21)
-Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.4.1)
-Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (11.3.3.83)
-Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (10.3.9.90)
-Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (11.7.3.90)
-Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.5.8.93)
-Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (0.7.1)
-Requirement already satisfied: nvidia-nccl-cu12==2.27.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (2.27.5)
-Requirement already satisfied: nvidia-nvshmem-cu12==3.3.20 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.3.20)
-Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.90)
-Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (12.8.93)
-Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (1.13.1.3)
-Requirement already satisfied: triton==3.5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torch>=2.4.0->ib-edl==0.1.0) (3.5.1)
-Requirement already satisfied: mpmath<1.4,>=1.1.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from sympy>=1.13.3->torch>=2.4.0->ib-edl==0.1.0) (1.3.0)
-Requirement already satisfied: huggingface-hub<1.0,>=0.34.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (0.36.0)
-Requirement already satisfied: packaging>=20.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (25.0)
-Requirement already satisfied: pyyaml>=5.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (6.0.3)
-Requirement already satisfied: regex!=2019.12.17 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (2025.11.3)
-Requirement already satisfied: requests in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (2.32.5)
-Requirement already satisfied: safetensors>=0.4.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (0.7.0)
-Requirement already satisfied: tqdm>=4.27 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from transformers>=4.46.2->ib-edl==0.1.0) (4.67.1)
-Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from huggingface-hub<1.0,>=0.34.0->transformers>=4.46.2->ib-edl==0.1.0) (1.2.0)
-Requirement already satisfied: psutil in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from accelerate->ib-edl==0.1.0) (7.1.3)
-Requirement already satisfied: about-time==4.2.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from alive-progress->ib-edl==0.1.0) (4.2.1)
-Requirement already satisfied: graphemeu==0.7.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from alive-progress->ib-edl==0.1.0) (0.7.2)
-Requirement already satisfied: pyarrow>=21.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (22.0.0)
-Requirement already satisfied: dill<0.4.1,>=0.3.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.4.0)
-Requirement already satisfied: pandas in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (2.3.3)
-Requirement already satisfied: httpx<1.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.28.1)
-Requirement already satisfied: xxhash in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (3.6.0)
-Requirement already satisfied: multiprocess<0.70.19 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from datasets->ib-edl==0.1.0) (0.70.18)
-Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (3.13.2)
-Requirement already satisfied: anyio in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (4.12.0)
-Requirement already satisfied: certifi in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (2025.11.12)
-Requirement already satisfied: httpcore==1.* in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (1.0.9)
-Requirement already satisfied: idna in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpx<1.0.0->datasets->ib-edl==0.1.0) (3.11)
-Requirement already satisfied: h11>=0.16 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from httpcore==1.*->httpx<1.0.0->datasets->ib-edl==0.1.0) (0.16.0)
-Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (2.6.1)
-Requirement already satisfied: aiosignal>=1.4.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.4.0)
-Requirement already satisfied: attrs>=17.3.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (25.4.0)
-Requirement already satisfied: frozenlist>=1.1.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.8.0)
-Requirement already satisfied: multidict<7.0,>=4.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (6.7.0)
-Requirement already satisfied: propcache>=0.2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (0.4.1)
-Requirement already satisfied: yarl<2.0,>=1.17.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.10.0,>=2023.1.0->datasets->ib-edl==0.1.0) (1.22.0)
-Requirement already satisfied: charset_normalizer<4,>=2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from requests->transformers>=4.46.2->ib-edl==0.1.0) (3.4.4)
-Requirement already satisfied: urllib3<3,>=1.21.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from requests->transformers>=4.46.2->ib-edl==0.1.0) (2.6.2)
-Requirement already satisfied: MarkupSafe>=2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from jinja2->torch>=2.4.0->ib-edl==0.1.0) (3.0.3)
-Requirement already satisfied: addict in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (2.4.0)
-Requirement already satisfied: matplotlib in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (3.10.8)
-Requirement already satisfied: rich in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (14.2.0)
-Requirement already satisfied: termcolor in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (3.2.0)
-Requirement already satisfied: yapf in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (0.43.0)
-Requirement already satisfied: opencv-python>=3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from mmengine->ib-edl==0.1.0) (4.13.0.90)
-Requirement already satisfied: contourpy>=1.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (1.3.3)
-Requirement already satisfied: cycler>=0.10 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (0.12.1)
-Requirement already satisfied: fonttools>=4.22.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (4.61.1)
-Requirement already satisfied: kiwisolver>=1.3.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (1.4.9)
-Requirement already satisfied: pillow>=8 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (12.0.0)
-Requirement already satisfied: pyparsing>=3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (3.2.5)
-Requirement already satisfied: python-dateutil>=2.7 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from matplotlib->mmengine->ib-edl==0.1.0) (2.9.0.post0)
-Requirement already satisfied: six>=1.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from python-dateutil>=2.7->matplotlib->mmengine->ib-edl==0.1.0) (1.17.0)
-Requirement already satisfied: pytz>=2020.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pandas->datasets->ib-edl==0.1.0) (2025.2)
-Requirement already satisfied: tzdata>=2022.7 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pandas->datasets->ib-edl==0.1.0) (2025.2)
-Requirement already satisfied: markdown-it-py>=2.2.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from rich->mmengine->ib-edl==0.1.0) (4.0.0)
-Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from rich->mmengine->ib-edl==0.1.0) (2.19.2)
-Requirement already satisfied: mdurl~=0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from markdown-it-py>=2.2.0->rich->mmengine->ib-edl==0.1.0) (0.1.2)
-Requirement already satisfied: lightning-utilities>=0.8.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from torchmetrics->ib-edl==0.1.0) (0.15.2)
-Requirement already satisfied: click>=8.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (8.3.1)
-Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (3.1.46)
-Requirement already satisfied: platformdirs in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (4.5.1)
-Requirement already satisfied: pydantic<3 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (2.12.5)
-Requirement already satisfied: sentry-sdk>=2.0.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from wandb->ib-edl==0.1.0) (2.50.0)
-Requirement already satisfied: annotated-types>=0.6.0 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (0.7.0)
-Requirement already satisfied: pydantic-core==2.41.5 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (2.41.5)
-Requirement already satisfied: typing-inspection>=0.4.2 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from pydantic<3->wandb->ib-edl==0.1.0) (0.4.2)
-Requirement already satisfied: gitdb<5,>=4.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb->ib-edl==0.1.0) (4.0.12)
-Requirement already satisfied: smmap<6,>=3.0.1 in /dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb->ib-edl==0.1.0) (5.0.2)
-Building wheels for collected packages: ib-edl
-  Building editable for ib-edl (pyproject.toml): started
-  Building editable for ib-edl (pyproject.toml): finished with status 'done'
-  Created wheel for ib-edl: filename=ib_edl-0.1.0-0.editable-py3-none-any.whl size=3824 sha256=b223db94921af45e92668dc905df8a3948a6053e7bd38813e47b2e7208e6d2e3
-  Stored in directory: /tmp/pip-ephem-wheel-cache-5rnze_9s/wheels/dd/e1/c8/20101cbea653c13009178c1120a7414eb6b85d5fb6220f526e
-Successfully built ib-edl
-Installing collected packages: ib-edl
-  Attempting uninstall: ib-edl
-    Found existing installation: ib-edl 0.1.0
-    Uninstalling ib-edl-0.1.0:
-      Successfully uninstalled ib-edl-0.1.0
-Successfully installed ib-edl-0.1.0
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
-wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run q4g6z0yr
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212143-q4g6z0yr
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2121_42
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/q4g6z0yr
-2026-04-05 21:21:46,276 - ib-edl - [92mINFO[0m: Config for base:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-7B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:21:46,278 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-[train] Seed=1 | output -> data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained
-
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:03,  1.28s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.48s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:04<00:01,  1.46s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:05<00:00,  1.28s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:05<00:00,  1.34s/it]
-2026-04-05 21:21:53,564 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:05<00:51,  5.74s/it] 20%|██        | 2/10 [00:05<00:20,  2.52s/it] 30%|███       | 3/10 [00:06<00:10,  1.44s/it]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:06<00:10,  1.44s/it]
-100%|██████████| 1/1 [00:00<00:00, 18.33it/s][A
-                                             [A 40%|████      | 4/10 [00:07<00:07,  1.23s/it] 50%|█████     | 5/10 [00:07<00:04,  1.18it/s] 60%|██████    | 6/10 [00:07<00:02,  1.52it/s]{'eval_loss': 0.00680415378883481, 'eval_accuracy': 1.0, 'eval_ece': 0.006781041622161865, 'eval_nll': 0.00680415378883481, 'eval_runtime': 0.1583, 'eval_samples_per_second': 6.315, 'eval_steps_per_second': 6.315, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:07<00:02,  1.52it/s]
-100%|██████████| 1/1 [00:00<00:00, 358.00it/s][A
-                                              [A 70%|███████   | 7/10 [00:08<00:02,  1.47it/s] 80%|████████  | 8/10 [00:08<00:01,  1.94it/s] 90%|█████████ | 9/10 [00:08<00:00,  2.47it/s]{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.078, 'eval_steps_per_second': 17.078, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:08<00:00,  2.47it/s]
-100%|██████████| 1/1 [00:00<00:00, 329.04it/s][A
-                                              [A100%|██████████| 10/10 [00:09<00:00,  1.96it/s]{'eval_loss': 0.0065771532244980335, 'eval_accuracy': 1.0, 'eval_ece': 0.0065555572509765625, 'eval_nll': 0.0065771532244980335, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.085, 'eval_steps_per_second': 17.085, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:09<00:00,  1.96it/s]
-100%|██████████| 1/1 [00:00<00:00, 336.24it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:09<00:00,  1.96it/s]100%|██████████| 10/10 [00:09<00:00,  1.01it/s]
-2026-04-05 21:22:49,440 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
-{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.15, 'eval_steps_per_second': 17.15, 'epoch': 3.33}
-{'train_runtime': 9.9048, 'train_samples_per_second': 4.038, 'train_steps_per_second': 1.01, 'train_loss': 0.560542106628418, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 565.80it/s]
-2026-04-05 21:22:49,501 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005900583229959011
-2026-04-05 21:22:49,501 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
-2026-04-05 21:22:49,501 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005883216857910156
-2026-04-05 21:22:49,501 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005900583229959011
-2026-04-05 21:22:49,502 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0592
-2026-04-05 21:22:49,502 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.894
-2026-04-05 21:22:49,502 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.894
-2026-04-05 21:22:49,502 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 21.12it/s]
-2026-04-05 21:22:49,612 - ib-edl - [92mINFO[0m: [base] test_loss: 0.45757076144218445
-2026-04-05 21:22:49,612 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
-2026-04-05 21:22:49,612 - ib-edl - [92mINFO[0m: [base] test_ece: 0.30648377537727356
-2026-04-05 21:22:49,613 - ib-edl - [92mINFO[0m: [base] test_nll: 0.45757079124450684
-2026-04-05 21:22:49,613 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1085
-2026-04-05 21:22:49,613 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 18.431
-2026-04-05 21:22:49,613 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.215
-2026-04-05 21:22:49,613 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 472.65it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 27.08it/s]
-2026-04-05 21:22:49,790 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
-2026-04-05 21:22:49,792 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading output.log; uploading config.yaml
-wandb: uploading history steps 1-8, summary, console lines 70-71
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece █▁▆▁
-wandb:               eval/loss █▁▆▁
-wandb:                eval/nll █▁▆▁
-wandb:            eval/runtime █▁▁▁
-wandb: eval/samples_per_second ▁███
-wandb:   eval/steps_per_second ▁███
-wandb:           test/accuracy ▁▁▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.00588
-wandb:               eval/loss 0.0059
-wandb:                eval/nll 0.0059
-wandb:            eval/runtime 0.0583
-wandb: eval/samples_per_second 17.15
-wandb:   eval/steps_per_second 17.15
-wandb:           test/accuracy 1
-wandb:                test/ece 0.30648
-wandb:               test/loss 0.45757
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2121_42 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/q4g6z0yr
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212143-q4g6z0yr/logs
-wandb: setting up run y3h6g3yl
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212251-y3h6g3yl
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2121_42
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/y3h6g3yl
-2026-04-05 21:22:52,503 - ib-edl - [92mINFO[0m: Config for sidekick:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-1.5B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:22:52,505 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-2026-04-05 21:22:57,408 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-Seeds in the output file before update with seed 1: dict_keys([]) 
-
-Seeds in the output file after update with seed 1: dict_keys(['1']) 
-
-Seeds in the output file before update with seed 1: dict_keys([]) 
-
-Seeds in the output file after update with seed 1: dict_keys(['1']) 
-
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:00<00:02,  3.68it/s] 20%|██        | 2/10 [00:00<00:01,  4.58it/s] 30%|███       | 3/10 [00:00<00:01,  5.20it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 321.45it/s][A 30%|███       | 3/10 [00:00<00:01,  5.20it/s]
-                                              [A 40%|████      | 4/10 [00:01<00:02,  2.42it/s] 50%|█████     | 5/10 [00:01<00:01,  3.11it/s] 60%|██████    | 6/10 [00:01<00:01,  3.73it/s]{'eval_loss': 0.15015892684459686, 'eval_accuracy': 1.0, 'eval_ece': 0.13942879438400269, 'eval_nll': 0.15015892684459686, 'eval_runtime': 0.0595, 'eval_samples_per_second': 16.798, 'eval_steps_per_second': 16.798, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 373.76it/s][A 60%|██████    | 6/10 [00:01<00:01,  3.73it/s]
-                                              [A 70%|███████   | 7/10 [00:02<00:01,  2.39it/s] 80%|████████  | 8/10 [00:02<00:00,  2.97it/s] 90%|█████████ | 9/10 [00:02<00:00,  3.55it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.122, 'eval_steps_per_second': 17.122, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 374.63it/s][A 90%|█████████ | 9/10 [00:02<00:00,  3.55it/s]
-                                              [A100%|██████████| 10/10 [00:03<00:00,  2.36it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0585, 'eval_samples_per_second': 17.099, 'eval_steps_per_second': 17.099, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                               
-100%|██████████| 1/1 [00:00<00:00, 366.41it/s][A100%|██████████| 10/10 [00:03<00:00,  2.36it/s]
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.36it/s]100%|██████████| 10/10 [00:04<00:00,  2.48it/s]
-2026-04-05 21:23:13,948 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
-{'eval_loss': 0.14893193542957306, 'eval_accuracy': 1.0, 'eval_ece': 0.1383723020553589, 'eval_nll': 0.14893203973770142, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.044, 'eval_steps_per_second': 17.044, 'epoch': 3.33}
-{'train_runtime': 4.046, 'train_samples_per_second': 9.886, 'train_steps_per_second': 2.472, 'train_loss': 1.7445436477661134, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 559.69it/s]
-2026-04-05 21:23:14,008 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.14893193542957306
-2026-04-05 21:23:14,009 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
-2026-04-05 21:23:14,009 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.1383723020553589
-2026-04-05 21:23:14,009 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.14893203973770142
-2026-04-05 21:23:14,010 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.059
-2026-04-05 21:23:14,010 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.942
-2026-04-05 21:23:14,010 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.942
-2026-04-05 21:23:14,010 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 39.26it/s]
-2026-04-05 21:23:14,099 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.8436234593391418
-2026-04-05 21:23:14,100 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
-2026-04-05 21:23:14,100 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.3985840976238251
-2026-04-05 21:23:14,100 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8436234593391418
-2026-04-05 21:23:14,100 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0878
-2026-04-05 21:23:14,101 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 22.788
-2026-04-05 21:23:14,101 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 11.394
-2026-04-05 21:23:14,101 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 569.26it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 454.96it/s]
-2026-04-05 21:23:14,235 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
-2026-04-05 21:23:14,237 - ib-edl - [92mINFO[0m: Predictions with seed 1 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading output.log; uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ▂██▁
-wandb:               eval/loss ▂██▁
-wandb:                eval/nll ▂██▁
-wandb:            eval/runtime █▁▂▃
-wandb: eval/samples_per_second ▁██▆
-wandb:   eval/steps_per_second ▁██▆
-wandb:           test/accuracy ▁█▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.13837
-wandb:               eval/loss 0.14893
-wandb:                eval/nll 0.14893
-wandb:            eval/runtime 0.0587
-wandb: eval/samples_per_second 17.044
-wandb:   eval/steps_per_second 17.044
-wandb:           test/accuracy 0.5
-wandb:                test/ece 0.39858
-wandb:               test/loss 0.84362
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2121_42 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/y3h6g3yl
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212251-y3h6g3yl/logs
-Seeds in the output file before update with seed 1: dict_keys([]) 
-
-Seeds in the output file after update with seed 1: dict_keys(['1']) 
-
-Seeds in the output file before update with seed 1: dict_keys([]) 
-
-Seeds in the output file after update with seed 1: dict_keys(['1']) 
-
-
-[train] Running temperature scaling ...
-
-[temperature_scaling] Fitting base temperature for seed 1 ...
-[base_tempscaled] n=1, sum-of-probs=1.0000
-[base_tempscaled] n=2, sum-of-probs=2.0000
-[temperature_scaling] Fitting sidekick temperature for seed 1 ...
-[sidekick_tempscaled] n=1, sum-of-probs=1.0000
-[sidekick_tempscaled] n=2, sum-of-probs=2.0000
-
-[train] Running duo optimisation ...
-
-[duo_optimizer] Fitting unconstrained duo for seed 1 ...
-  scales -> base=1.0023, sidekick=1.0010
-  scales -> base=1.1415, sidekick=1.0653
-  scales -> base=1.2224, sidekick=1.1024
-  scales -> base=1.3254, sidekick=1.1495
-  scales -> base=1.4201, sidekick=1.1926
-  scales -> base=1.5191, sidekick=1.2382
-  scales -> base=1.6144, sidekick=1.2813
-  scales -> base=1.7122, sidekick=1.3270
-  scales -> base=1.8104, sidekick=1.3831
-  scale_base=1.8104, scale_sidekick=1.3831, w_base=0.5669, w_sidekick=0.4331
-[base] n=1, sum-of-probs=1.0000
-[sidekick] n=1, sum-of-probs=1.0000
-[duo] n=1, sum-of-probs=1.0000
-[base] n=2, sum-of-probs=2.0000
-[sidekick] n=2, sum-of-probs=2.0000
-[duo] n=2, sum-of-probs=2.0000
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
-wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run 272c6in8
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212324-272c6in8
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2123_24
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/272c6in8
-2026-04-05 21:23:25,518 - ib-edl - [92mINFO[0m: Config for base:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-7B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:23:25,519 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-[train] Seed=2 | output -> data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained
-
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 122.19it/s]
-2026-04-05 21:23:26,090 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:01<00:10,  1.12s/it] 20%|██        | 2/10 [00:01<00:04,  1.77it/s] 30%|███       | 3/10 [00:01<00:02,  2.51it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:01<00:02,  2.51it/s]
-100%|██████████| 1/1 [00:00<00:00, 257.76it/s][A
-                                              [A 40%|████      | 4/10 [00:02<00:03,  1.84it/s] 50%|█████     | 5/10 [00:02<00:02,  2.46it/s] 60%|██████    | 6/10 [00:02<00:01,  3.09it/s]{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0638, 'eval_samples_per_second': 15.683, 'eval_steps_per_second': 15.683, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:02<00:01,  3.09it/s]
-100%|██████████| 1/1 [00:00<00:00, 357.75it/s][A
-                                              [A 70%|███████   | 7/10 [00:03<00:01,  2.18it/s] 80%|████████  | 8/10 [00:03<00:00,  2.75it/s] 90%|█████████ | 9/10 [00:03<00:00,  3.34it/s]{'eval_loss': 0.006683495827019215, 'eval_accuracy': 1.0, 'eval_ece': 0.00666123628616333, 'eval_nll': 0.006683495827019215, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.961, 'eval_steps_per_second': 16.961, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:03<00:00,  3.34it/s]
-100%|██████████| 1/1 [00:00<00:00, 396.92it/s][A
-                                              [A100%|██████████| 10/10 [00:04<00:00,  2.32it/s]{'eval_loss': 0.006428159773349762, 'eval_accuracy': 1.0, 'eval_ece': 0.006407558917999268, 'eval_nll': 0.006428159773349762, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.037, 'eval_steps_per_second': 17.037, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:04<00:00,  2.32it/s]
-100%|██████████| 1/1 [00:00<00:00, 344.93it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.32it/s]100%|██████████| 10/10 [00:04<00:00,  2.03it/s]
-2026-04-05 21:23:47,036 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
-{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.945, 'eval_steps_per_second': 16.945, 'epoch': 3.33}
-{'train_runtime': 4.9395, 'train_samples_per_second': 8.098, 'train_steps_per_second': 2.024, 'train_loss': 0.5744785785675048, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 583.51it/s]
-2026-04-05 21:23:47,097 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005900583229959011
-2026-04-05 21:23:47,097 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
-2026-04-05 21:23:47,097 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005883216857910156
-2026-04-05 21:23:47,097 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005900583229959011
-2026-04-05 21:23:47,097 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0591
-2026-04-05 21:23:47,098 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.924
-2026-04-05 21:23:47,098 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.924
-2026-04-05 21:23:47,098 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 20.44it/s]
-2026-04-05 21:23:47,210 - ib-edl - [92mINFO[0m: [base] test_loss: 0.48578548431396484
-2026-04-05 21:23:47,210 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
-2026-04-05 21:23:47,210 - ib-edl - [92mINFO[0m: [base] test_ece: 0.3183581233024597
-2026-04-05 21:23:47,211 - ib-edl - [92mINFO[0m: [base] test_nll: 0.48578548431396484
-2026-04-05 21:23:47,211 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1105
-2026-04-05 21:23:47,211 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 18.096
-2026-04-05 21:23:47,211 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.048
-2026-04-05 21:23:47,212 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 591.00it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 29.00it/s]
-2026-04-05 21:23:47,378 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
-2026-04-05 21:23:47,381 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ▁█▆▁
-wandb:               eval/loss ▁█▆▁
-wandb:                eval/nll ▁█▆▁
-wandb:            eval/runtime █▁▁▁
-wandb: eval/samples_per_second ▁███
-wandb:   eval/steps_per_second ▁███
-wandb:           test/accuracy ▁▁▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.00588
-wandb:               eval/loss 0.0059
-wandb:                eval/nll 0.0059
-wandb:            eval/runtime 0.059
-wandb: eval/samples_per_second 16.945
-wandb:   eval/steps_per_second 16.945
-wandb:           test/accuracy 1
-wandb:                test/ece 0.31836
-wandb:               test/loss 0.48579
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2123_24 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/272c6in8
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212324-272c6in8/logs
-wandb: setting up run bg1nfcp2
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212348-bg1nfcp2
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2123_24
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/bg1nfcp2
-2026-04-05 21:23:49,474 - ib-edl - [92mINFO[0m: Config for sidekick:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-1.5B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:23:49,476 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-2026-04-05 21:23:49,943 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-Seeds in the output file before update with seed 2: dict_keys(['1']) 
-
-Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
-
-Seeds in the output file before update with seed 2: dict_keys(['1']) 
-
-Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
-
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:00<00:02,  3.64it/s] 20%|██        | 2/10 [00:00<00:01,  4.54it/s] 30%|███       | 3/10 [00:00<00:01,  5.01it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:00<00:01,  5.01it/s]
-100%|██████████| 1/1 [00:00<00:00, 304.44it/s][A
-                                              [A 40%|████      | 4/10 [00:01<00:02,  2.43it/s] 50%|█████     | 5/10 [00:01<00:01,  3.10it/s] 60%|██████    | 6/10 [00:01<00:01,  3.71it/s]{'eval_loss': 0.17571930587291718, 'eval_accuracy': 1.0, 'eval_ece': 0.16114658117294312, 'eval_nll': 0.17571930587291718, 'eval_runtime': 0.0591, 'eval_samples_per_second': 16.912, 'eval_steps_per_second': 16.912, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:01<00:01,  3.71it/s]
-100%|██████████| 1/1 [00:00<00:00, 342.64it/s][A
-                                              [A 70%|███████   | 7/10 [00:02<00:01,  2.36it/s] 80%|████████  | 8/10 [00:02<00:00,  2.92it/s] 90%|█████████ | 9/10 [00:02<00:00,  3.48it/s]{'eval_loss': 0.17571930587291718, 'eval_accuracy': 1.0, 'eval_ece': 0.16114658117294312, 'eval_nll': 0.17571930587291718, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.053, 'eval_steps_per_second': 17.053, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:02<00:00,  3.48it/s]
-100%|██████████| 1/1 [00:00<00:00, 332.75it/s][A
-                                              [A100%|██████████| 10/10 [00:03<00:00,  2.39it/s]{'eval_loss': 0.15660250186920166, 'eval_accuracy': 1.0, 'eval_ece': 0.14495611190795898, 'eval_nll': 0.15660250186920166, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.019, 'eval_steps_per_second': 17.019, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:03<00:00,  2.39it/s]
-100%|██████████| 1/1 [00:00<00:00, 327.94it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.39it/s]100%|██████████| 10/10 [00:04<00:00,  2.47it/s]
-2026-04-05 21:24:01,086 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
-{'eval_loss': 0.17571930587291718, 'eval_accuracy': 1.0, 'eval_ece': 0.16114658117294312, 'eval_nll': 0.17571930587291718, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.023, 'eval_steps_per_second': 17.023, 'epoch': 3.33}
-{'train_runtime': 4.0644, 'train_samples_per_second': 9.842, 'train_steps_per_second': 2.46, 'train_loss': 1.8693220138549804, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 554.88it/s]
-2026-04-05 21:24:01,147 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.17571930587291718
-2026-04-05 21:24:01,148 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
-2026-04-05 21:24:01,148 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.16114658117294312
-2026-04-05 21:24:01,148 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.17571930587291718
-2026-04-05 21:24:01,148 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0595
-2026-04-05 21:24:01,148 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.801
-2026-04-05 21:24:01,149 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.801
-2026-04-05 21:24:01,149 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 26.22it/s]
-2026-04-05 21:24:01,250 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.8424491286277771
-2026-04-05 21:24:01,250 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
-2026-04-05 21:24:01,250 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.4158080220222473
-2026-04-05 21:24:01,251 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8424491286277771
-2026-04-05 21:24:01,251 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0996
-2026-04-05 21:24:01,251 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 20.085
-2026-04-05 21:24:01,252 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 10.042
-2026-04-05 21:24:01,252 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 584.33it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 31.82it/s]
-2026-04-05 21:24:01,419 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
-2026-04-05 21:24:01,421 - ib-edl - [92mINFO[0m: Predictions with seed 2 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading wandb-summary.json
-wandb: uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ██▁█
-wandb:               eval/loss ██▁█
-wandb:                eval/nll ██▁█
-wandb:            eval/runtime █▁▄▂
-wandb: eval/samples_per_second ▁█▆▇
-wandb:   eval/steps_per_second ▁█▆▇
-wandb:           test/accuracy ▁█▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.16115
-wandb:               eval/loss 0.17572
-wandb:                eval/nll 0.17572
-wandb:            eval/runtime 0.0587
-wandb: eval/samples_per_second 17.023
-wandb:   eval/steps_per_second 17.023
-wandb:           test/accuracy 0.5
-wandb:                test/ece 0.41581
-wandb:               test/loss 0.84245
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2123_24 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/bg1nfcp2
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212348-bg1nfcp2/logs
-Seeds in the output file before update with seed 2: dict_keys(['1']) 
-
-Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
-
-Seeds in the output file before update with seed 2: dict_keys(['1']) 
-
-Seeds in the output file after update with seed 2: dict_keys(['1', '2']) 
-
-
-[train] Running temperature scaling ...
-
-[temperature_scaling] Fitting base temperature for seed 2 ...
-[base_tempscaled] n=1, sum-of-probs=1.0000
-[base_tempscaled] n=2, sum-of-probs=2.0000
-[temperature_scaling] Fitting sidekick temperature for seed 2 ...
-[sidekick_tempscaled] n=1, sum-of-probs=1.0000
-[sidekick_tempscaled] n=2, sum-of-probs=2.0000
-
-[train] Running duo optimisation ...
-
-[duo_optimizer] Fitting unconstrained duo for seed 2 ...
-  scales -> base=1.0027, sidekick=1.0011
-  scales -> base=1.1435, sidekick=1.0598
-  scales -> base=1.2269, sidekick=1.0944
-  scales -> base=1.3322, sidekick=1.1378
-  scales -> base=1.4297, sidekick=1.1778
-  scales -> base=1.5293, sidekick=1.2184
-  scales -> base=1.6310, sidekick=1.2600
-  scales -> base=1.7245, sidekick=1.3015
-  scales -> base=1.8267, sidekick=1.3430
-  scale_base=1.8267, scale_sidekick=1.3430, w_base=0.5763, w_sidekick=0.4237
-[base] n=1, sum-of-probs=1.0000
-[sidekick] n=1, sum-of-probs=1.0000
-[duo] n=1, sum-of-probs=1.0000
-[base] n=2, sum-of-probs=2.0000
-[sidekick] n=2, sum-of-probs=2.0000
-[duo] n=2, sum-of-probs=2.0000
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
-wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run b7wnbmv6
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212411-b7wnbmv6
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2124_11
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/b7wnbmv6
-2026-04-05 21:24:12,914 - ib-edl - [92mINFO[0m: Config for base:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-7B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:24:12,915 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-[train] Seed=3 | output -> data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained
-
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 122.20it/s]
-2026-04-05 21:24:13,443 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:01<00:09,  1.09s/it] 20%|██        | 2/10 [00:01<00:04,  1.79it/s] 30%|███       | 3/10 [00:01<00:02,  2.58it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:01<00:02,  2.58it/s]
-100%|██████████| 1/1 [00:00<00:00, 260.74it/s][A
-                                              [A 40%|████      | 4/10 [00:02<00:03,  1.86it/s] 50%|█████     | 5/10 [00:02<00:02,  2.48it/s] 60%|██████    | 6/10 [00:02<00:01,  3.12it/s]{'eval_loss': 0.006428159773349762, 'eval_accuracy': 1.0, 'eval_ece': 0.006407558917999268, 'eval_nll': 0.006428159773349762, 'eval_runtime': 0.0636, 'eval_samples_per_second': 15.712, 'eval_steps_per_second': 15.712, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:02<00:01,  3.12it/s]
-100%|██████████| 1/1 [00:00<00:00, 365.80it/s][A
-                                              [A 70%|███████   | 7/10 [00:03<00:01,  2.21it/s] 80%|████████  | 8/10 [00:03<00:00,  2.78it/s] 90%|█████████ | 9/10 [00:03<00:00,  3.33it/s]{'eval_loss': 0.006006997544318438, 'eval_accuracy': 1.0, 'eval_ece': 0.005989015102386475, 'eval_nll': 0.006006997544318438, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.069, 'eval_steps_per_second': 17.069, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:03<00:00,  3.33it/s]
-100%|██████████| 1/1 [00:00<00:00, 358.03it/s][A
-                                              [A100%|██████████| 10/10 [00:04<00:00,  2.22it/s]{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.061, 'eval_steps_per_second': 17.061, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:04<00:00,  2.22it/s]
-100%|██████████| 1/1 [00:00<00:00, 359.26it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.22it/s]100%|██████████| 10/10 [00:04<00:00,  2.01it/s]
-2026-04-05 21:24:34,291 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
-{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0591, 'eval_samples_per_second': 16.914, 'eval_steps_per_second': 16.914, 'epoch': 3.33}
-{'train_runtime': 4.9822, 'train_samples_per_second': 8.029, 'train_steps_per_second': 2.007, 'train_loss': 0.5891903877258301, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 576.62it/s]
-2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005900583229959011
-2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
-2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005883216857910156
-2026-04-05 21:24:34,351 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005900583229959011
-2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0589
-2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.98
-2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.98
-2026-04-05 21:24:34,352 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 24.00it/s]
-2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_loss: 0.48840779066085815
-2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
-2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_ece: 0.3193732798099518
-2026-04-05 21:24:34,457 - ib-edl - [92mINFO[0m: [base] test_nll: 0.48840779066085815
-2026-04-05 21:24:34,458 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1034
-2026-04-05 21:24:34,458 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.348
-2026-04-05 21:24:34,461 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.674
-2026-04-05 21:24:34,462 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 594.26it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 27.86it/s]
-2026-04-05 21:24:34,630 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
-2026-04-05 21:24:34,633 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading wandb-summary.json
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece █▂▁▁
-wandb:               eval/loss █▂▁▁
-wandb:                eval/nll █▂▁▁
-wandb:            eval/runtime █▁▁▂
-wandb: eval/samples_per_second ▁██▇
-wandb:   eval/steps_per_second ▁██▇
-wandb:           test/accuracy ▁▁▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.00588
-wandb:               eval/loss 0.0059
-wandb:                eval/nll 0.0059
-wandb:            eval/runtime 0.0591
-wandb: eval/samples_per_second 16.914
-wandb:   eval/steps_per_second 16.914
-wandb:           test/accuracy 1
-wandb:                test/ece 0.31937
-wandb:               test/loss 0.48841
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2124_11 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/b7wnbmv6
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212411-b7wnbmv6/logs
-wandb: setting up run jayclfwq
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212435-jayclfwq
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2124_11
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/jayclfwq
-2026-04-05 21:24:36,730 - ib-edl - [92mINFO[0m: Config for sidekick:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-1.5B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:24:36,732 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-2026-04-05 21:24:37,189 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
-
-Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
-
-Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
-
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:00<00:02,  3.19it/s] 20%|██        | 2/10 [00:00<00:01,  4.36it/s] 30%|███       | 3/10 [00:00<00:01,  4.88it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 340.03it/s][A 30%|███       | 3/10 [00:00<00:01,  4.88it/s]
-                                              [A 40%|████      | 4/10 [00:01<00:02,  2.37it/s] 50%|█████     | 5/10 [00:01<00:01,  3.03it/s] 60%|██████    | 6/10 [00:01<00:01,  3.65it/s]{'eval_loss': 0.15660250186920166, 'eval_accuracy': 1.0, 'eval_ece': 0.14495611190795898, 'eval_nll': 0.15660250186920166, 'eval_runtime': 0.0591, 'eval_samples_per_second': 16.91, 'eval_steps_per_second': 16.91, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 335.01it/s][A 60%|██████    | 6/10 [00:01<00:01,  3.65it/s]
-                                              [A 70%|███████   | 7/10 [00:02<00:01,  2.34it/s] 80%|████████  | 8/10 [00:02<00:00,  2.91it/s] 90%|█████████ | 9/10 [00:02<00:00,  3.47it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0586, 'eval_samples_per_second': 17.069, 'eval_steps_per_second': 17.069, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 368.83it/s][A 90%|█████████ | 9/10 [00:02<00:00,  3.47it/s]
-                                              [A100%|██████████| 10/10 [00:03<00:00,  2.35it/s]{'eval_loss': 0.1685534417629242, 'eval_accuracy': 1.0, 'eval_ece': 0.15511387586593628, 'eval_nll': 0.1685534417629242, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.007, 'eval_steps_per_second': 17.007, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                               
-100%|██████████| 1/1 [00:00<00:00, 357.45it/s][A100%|██████████| 10/10 [00:03<00:00,  2.35it/s]
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.35it/s]100%|██████████| 10/10 [00:04<00:00,  2.42it/s]
-2026-04-05 21:24:48,402 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
-{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.138, 'eval_steps_per_second': 17.138, 'epoch': 3.33}
-{'train_runtime': 4.1366, 'train_samples_per_second': 9.67, 'train_steps_per_second': 2.417, 'train_loss': 1.9186317443847656, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 568.87it/s]
-2026-04-05 21:24:48,462 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.15789860486984253
-2026-04-05 21:24:48,462 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
-2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.14606362581253052
-2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.15789860486984253
-2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0589
-2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.984
-2026-04-05 21:24:48,463 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.984
-2026-04-05 21:24:48,464 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 24.09it/s]
-2026-04-05 21:24:48,567 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.875037670135498
-2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
-2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.4135116934776306
-2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8750377297401428
-2026-04-05 21:24:48,568 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.1024
-2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 19.539
-2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 9.77
-2026-04-05 21:24:48,569 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 550.14it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 308.59it/s]
-2026-04-05 21:24:48,702 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
-2026-04-05 21:24:48,705 - ib-edl - [92mINFO[0m: Predictions with seed 3 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading wandb-summary.json
-wandb: uploading history steps 0-8, summary, console lines 12-105
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ▁▂█▂
-wandb:               eval/loss ▁▂█▂
-wandb:                eval/nll ▁▂█▂
-wandb:            eval/runtime █▃▅▁
-wandb: eval/samples_per_second ▁▆▄█
-wandb:   eval/steps_per_second ▁▆▄█
-wandb:           test/accuracy ▁█▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.14606
-wandb:               eval/loss 0.1579
-wandb:                eval/nll 0.1579
-wandb:            eval/runtime 0.0584
-wandb: eval/samples_per_second 17.138
-wandb:   eval/steps_per_second 17.138
-wandb:           test/accuracy 0.5
-wandb:                test/ece 0.41351
-wandb:               test/loss 0.87504
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2124_11 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/jayclfwq
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212435-jayclfwq/logs
-Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
-
-Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file before update with seed 3: dict_keys(['1', '2']) 
-
-Seeds in the output file after update with seed 3: dict_keys(['1', '2', '3']) 
-
-
-[train] Running temperature scaling ...
-
-[temperature_scaling] Fitting base temperature for seed 3 ...
-[base_tempscaled] n=1, sum-of-probs=1.0000
-[base_tempscaled] n=2, sum-of-probs=2.0000
-[temperature_scaling] Fitting sidekick temperature for seed 3 ...
-[sidekick_tempscaled] n=1, sum-of-probs=1.0000
-[sidekick_tempscaled] n=2, sum-of-probs=2.0000
-
-[train] Running duo optimisation ...
-
-[duo_optimizer] Fitting unconstrained duo for seed 3 ...
-  scales -> base=1.0024, sidekick=1.0011
-  scales -> base=1.1393, sidekick=1.0616
-  scales -> base=1.2218, sidekick=1.0979
-  scales -> base=1.3249, sidekick=1.1431
-  scales -> base=1.4211, sidekick=1.1853
-  scales -> base=1.5202, sidekick=1.2286
-  scales -> base=1.6181, sidekick=1.2708
-  scales -> base=1.7138, sidekick=1.3107
-  scales -> base=1.8191, sidekick=1.3605
-  scale_base=1.8191, scale_sidekick=1.3605, w_base=0.5721, w_sidekick=0.4279
-[base] n=1, sum-of-probs=1.0000
-[sidekick] n=1, sum-of-probs=1.0000
-[duo] n=1, sum-of-probs=1.0000
-[base] n=2, sum-of-probs=2.0000
-[sidekick] n=2, sum-of-probs=2.0000
-[duo] n=2, sum-of-probs=2.0000
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
-wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run p948efju
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212458-p948efju
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2124_58
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/p948efju
-2026-04-05 21:24:59,896 - ib-edl - [92mINFO[0m: Config for base:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-7B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:24:59,897 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-[train] Seed=4 | output -> data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained
-
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 120.42it/s]
-2026-04-05 21:25:00,423 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:01<00:09,  1.09s/it] 20%|██        | 2/10 [00:01<00:04,  1.79it/s] 30%|███       | 3/10 [00:01<00:02,  2.57it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:01<00:02,  2.57it/s]
-100%|██████████| 1/1 [00:00<00:00, 220.50it/s][A
-                                              [A 40%|████      | 4/10 [00:02<00:03,  1.89it/s] 50%|█████     | 5/10 [00:02<00:01,  2.52it/s] 60%|██████    | 6/10 [00:02<00:01,  3.15it/s]{'eval_loss': 0.006683495827019215, 'eval_accuracy': 1.0, 'eval_ece': 0.00666123628616333, 'eval_nll': 0.006683495827019215, 'eval_runtime': 0.0647, 'eval_samples_per_second': 15.455, 'eval_steps_per_second': 15.455, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:02<00:01,  3.15it/s]
-100%|██████████| 1/1 [00:00<00:00, 376.07it/s][A
-                                              [A 70%|███████   | 7/10 [00:03<00:01,  2.25it/s] 80%|████████  | 8/10 [00:03<00:00,  2.82it/s] 90%|█████████ | 9/10 [00:03<00:00,  3.40it/s]{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0587, 'eval_samples_per_second': 17.036, 'eval_steps_per_second': 17.036, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:03<00:00,  3.40it/s]
-100%|██████████| 1/1 [00:00<00:00, 378.79it/s][A
-                                              [A100%|██████████| 10/10 [00:04<00:00,  2.33it/s]{'eval_loss': 0.0055287545546889305, 'eval_accuracy': 1.0, 'eval_ece': 0.005513489246368408, 'eval_nll': 0.0055287545546889305, 'eval_runtime': 0.0594, 'eval_samples_per_second': 16.824, 'eval_steps_per_second': 16.824, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:04<00:00,  2.33it/s]
-100%|██████████| 1/1 [00:00<00:00, 379.71it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.33it/s]100%|██████████| 10/10 [00:04<00:00,  2.06it/s]
-2026-04-05 21:25:21,119 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
-{'eval_loss': 0.005806483328342438, 'eval_accuracy': 1.0, 'eval_ece': 0.005789637565612793, 'eval_nll': 0.005806483328342438, 'eval_runtime': 0.0588, 'eval_samples_per_second': 17.009, 'eval_steps_per_second': 17.009, 'epoch': 3.33}
-{'train_runtime': 4.8642, 'train_samples_per_second': 8.223, 'train_steps_per_second': 2.056, 'train_loss': 0.5312687397003174, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 588.01it/s]
-2026-04-05 21:25:21,179 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005806483328342438
-2026-04-05 21:25:21,179 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
-2026-04-05 21:25:21,179 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005789637565612793
-2026-04-05 21:25:21,179 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005806483328342438
-2026-04-05 21:25:21,180 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0587
-2026-04-05 21:25:21,180 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 17.024
-2026-04-05 21:25:21,180 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 17.024
-2026-04-05 21:25:21,180 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 23.78it/s]
-2026-04-05 21:25:21,286 - ib-edl - [92mINFO[0m: [base] test_loss: 0.46596330404281616
-2026-04-05 21:25:21,286 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
-2026-04-05 21:25:21,286 - ib-edl - [92mINFO[0m: [base] test_ece: 0.31050994992256165
-2026-04-05 21:25:21,286 - ib-edl - [92mINFO[0m: [base] test_nll: 0.46596330404281616
-2026-04-05 21:25:21,287 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.1042
-2026-04-05 21:25:21,287 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 19.195
-2026-04-05 21:25:21,287 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 9.597
-2026-04-05 21:25:21,287 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 579.40it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 27.88it/s]
-2026-04-05 21:25:21,456 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
-2026-04-05 21:25:21,459 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece █▃▁▃
-wandb:               eval/loss █▃▁▃
-wandb:                eval/nll █▃▁▃
-wandb:            eval/runtime █▁▂▁
-wandb: eval/samples_per_second ▁█▇█
-wandb:   eval/steps_per_second ▁█▇█
-wandb:           test/accuracy ▁▁▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.00579
-wandb:               eval/loss 0.00581
-wandb:                eval/nll 0.00581
-wandb:            eval/runtime 0.0588
-wandb: eval/samples_per_second 17.009
-wandb:   eval/steps_per_second 17.009
-wandb:           test/accuracy 1
-wandb:                test/ece 0.31051
-wandb:               test/loss 0.46596
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2124_58 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/p948efju
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212458-p948efju/logs
-wandb: setting up run jfkyg3vg
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212522-jfkyg3vg
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2124_58
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/jfkyg3vg
-2026-04-05 21:25:23,645 - ib-edl - [92mINFO[0m: Config for sidekick:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-1.5B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:25:23,647 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-2026-04-05 21:25:24,101 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
-
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:00<00:02,  3.75it/s] 20%|██        | 2/10 [00:00<00:01,  4.47it/s] 30%|███       | 3/10 [00:00<00:01,  5.02it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:00<00:01,  5.02it/s]
-100%|██████████| 1/1 [00:00<00:00, 326.00it/s][A
-                                              [A 40%|████      | 4/10 [00:01<00:02,  2.39it/s] 50%|█████     | 5/10 [00:01<00:01,  3.06it/s] 60%|██████    | 6/10 [00:01<00:01,  3.67it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0598, 'eval_samples_per_second': 16.736, 'eval_steps_per_second': 16.736, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:01<00:01,  3.67it/s]
-100%|██████████| 1/1 [00:00<00:00, 292.92it/s][A
-                                              [A 70%|███████   | 7/10 [00:02<00:01,  2.32it/s] 80%|████████  | 8/10 [00:02<00:00,  2.88it/s] 90%|█████████ | 9/10 [00:02<00:00,  3.45it/s]{'eval_loss': 0.15660250186920166, 'eval_accuracy': 1.0, 'eval_ece': 0.14495611190795898, 'eval_nll': 0.15660250186920166, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.936, 'eval_steps_per_second': 16.936, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:02<00:00,  3.45it/s]
-100%|██████████| 1/1 [00:00<00:00, 354.31it/s][A
-                                              [A100%|██████████| 10/10 [00:03<00:00,  2.32it/s]{'eval_loss': 0.1671883910894394, 'eval_accuracy': 1.0, 'eval_ece': 0.15395981073379517, 'eval_nll': 0.1671883910894394, 'eval_runtime': 0.059, 'eval_samples_per_second': 16.951, 'eval_steps_per_second': 16.951, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:03<00:00,  2.32it/s]
-100%|██████████| 1/1 [00:00<00:00, 308.04it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.32it/s]100%|██████████| 10/10 [00:04<00:00,  2.42it/s]
-2026-04-05 21:25:35,266 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
-{'eval_loss': 0.17571930587291718, 'eval_accuracy': 1.0, 'eval_ece': 0.16114658117294312, 'eval_nll': 0.17571930587291718, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.894, 'eval_steps_per_second': 16.894, 'epoch': 3.33}
-{'train_runtime': 4.137, 'train_samples_per_second': 9.669, 'train_steps_per_second': 2.417, 'train_loss': 1.5885577201843262, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 287.38it/s]
-2026-04-05 21:25:35,330 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.17571930587291718
-2026-04-05 21:25:35,330 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
-2026-04-05 21:25:35,330 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.16114658117294312
-2026-04-05 21:25:35,330 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.17571930587291718
-2026-04-05 21:25:35,330 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0602
-2026-04-05 21:25:35,331 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 16.604
-2026-04-05 21:25:35,331 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 16.604
-2026-04-05 21:25:35,331 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 30.81it/s]
-2026-04-05 21:25:35,427 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.8020666837692261
-2026-04-05 21:25:35,428 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
-2026-04-05 21:25:35,428 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.3876705467700958
-2026-04-05 21:25:35,428 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8020666837692261
-2026-04-05 21:25:35,428 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0945
-2026-04-05 21:25:35,428 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 21.157
-2026-04-05 21:25:35,429 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 10.579
-2026-04-05 21:25:35,429 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 571.51it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 31.68it/s]
-2026-04-05 21:25:35,591 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
-2026-04-05 21:25:35,594 - ib-edl - [92mINFO[0m: Predictions with seed 4 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ▁▁▅█
-wandb:               eval/loss ▁▁▅█
-wandb:                eval/nll ▁▁▅█
-wandb:            eval/runtime █▁▁▃
-wandb: eval/samples_per_second ▁██▆
-wandb:   eval/steps_per_second ▁██▆
-wandb:           test/accuracy ▁█▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.16115
-wandb:               eval/loss 0.17572
-wandb:                eval/nll 0.17572
-wandb:            eval/runtime 0.0592
-wandb: eval/samples_per_second 16.894
-wandb:   eval/steps_per_second 16.894
-wandb:           test/accuracy 0.5
-wandb:                test/ece 0.38767
-wandb:               test/loss 0.80207
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2124_58 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/jfkyg3vg
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212522-jfkyg3vg/logs
-Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file before update with seed 4: dict_keys(['1', '2', '3']) 
-
-Seeds in the output file after update with seed 4: dict_keys(['1', '2', '3', '4']) 
-
-
-[train] Running temperature scaling ...
-
-[temperature_scaling] Fitting base temperature for seed 4 ...
-[base_tempscaled] n=1, sum-of-probs=1.0000
-[base_tempscaled] n=2, sum-of-probs=2.0000
-[temperature_scaling] Fitting sidekick temperature for seed 4 ...
-[sidekick_tempscaled] n=1, sum-of-probs=1.0000
-[sidekick_tempscaled] n=2, sum-of-probs=2.0000
-
-[train] Running duo optimisation ...
-
-[duo_optimizer] Fitting unconstrained duo for seed 4 ...
-  scales -> base=1.0027, sidekick=1.0011
-  scales -> base=1.1438, sidekick=1.0588
-  scales -> base=1.2276, sidekick=1.0929
-  scales -> base=1.3329, sidekick=1.1357
-  scales -> base=1.4306, sidekick=1.1752
-  scales -> base=1.5314, sidekick=1.2158
-  scales -> base=1.6323, sidekick=1.2553
-  scales -> base=1.7353, sidekick=1.2969
-  scales -> base=1.8225, sidekick=1.3383
-  scale_base=1.8225, scale_sidekick=1.3383, w_base=0.5766, w_sidekick=0.4234
-[base] n=1, sum-of-probs=1.0000
-[sidekick] n=1, sum-of-probs=1.0000
-[duo] n=1, sum-of-probs=1.0000
-[base] n=2, sum-of-probs=2.0000
-[sidekick] n=2, sum-of-probs=2.0000
-[duo] n=2, sum-of-probs=2.0000
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from /dss/dsshome1/03/ra58yed2/.netrc.
-wandb: Currently logged in as: isarustu1 (isarustu1-ludwig-maximilianuniversity-of-munich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: setting up run he06dacr
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212545-he06dacr
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2125_45
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/he06dacr
-2026-04-05 21:25:46,827 - ib-edl - [92mINFO[0m: Config for base:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-7B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:25:46,828 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-[train] Seed=5 | output -> data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained
-
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 123.07it/s]
-2026-04-05 21:25:47,341 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:01<00:10,  1.17s/it] 20%|██        | 2/10 [00:01<00:04,  1.71it/s] 30%|███       | 3/10 [00:01<00:02,  2.49it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 30%|███       | 3/10 [00:01<00:02,  2.49it/s]
-100%|██████████| 1/1 [00:00<00:00, 252.20it/s][A
-                                              [A 40%|████      | 4/10 [00:02<00:03,  1.85it/s] 50%|█████     | 5/10 [00:02<00:02,  2.48it/s] 60%|██████    | 6/10 [00:02<00:01,  3.12it/s]{'eval_loss': 0.0065771532244980335, 'eval_accuracy': 1.0, 'eval_ece': 0.0065555572509765625, 'eval_nll': 0.0065771532244980335, 'eval_runtime': 0.0652, 'eval_samples_per_second': 15.331, 'eval_steps_per_second': 15.331, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 60%|██████    | 6/10 [00:02<00:01,  3.12it/s]
-100%|██████████| 1/1 [00:00<00:00, 392.06it/s][A
-                                              [A 70%|███████   | 7/10 [00:03<00:01,  2.22it/s] 80%|████████  | 8/10 [00:03<00:00,  2.79it/s] 90%|█████████ | 9/10 [00:03<00:00,  3.37it/s]{'eval_loss': 0.005900583229959011, 'eval_accuracy': 1.0, 'eval_ece': 0.005883216857910156, 'eval_nll': 0.005900583229959011, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.141, 'eval_steps_per_second': 17.141, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                              
-                                     [A 90%|█████████ | 9/10 [00:03<00:00,  3.37it/s]
-100%|██████████| 1/1 [00:00<00:00, 350.69it/s][A
-                                              [A100%|██████████| 10/10 [00:04<00:00,  2.35it/s]{'eval_loss': 0.006321790162473917, 'eval_accuracy': 1.0, 'eval_ece': 0.006301820278167725, 'eval_nll': 0.006321790162473917, 'eval_runtime': 0.0583, 'eval_samples_per_second': 17.143, 'eval_steps_per_second': 17.143, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A                                               
-                                     [A100%|██████████| 10/10 [00:04<00:00,  2.35it/s]
-100%|██████████| 1/1 [00:00<00:00, 321.16it/s][A
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.35it/s]100%|██████████| 10/10 [00:04<00:00,  2.04it/s]
-2026-04-05 21:26:08,217 - ib-edl - [92mINFO[0m: Fine-tuning finished for base.
-{'eval_loss': 0.005675037391483784, 'eval_accuracy': 1.0, 'eval_ece': 0.005658984184265137, 'eval_nll': 0.005675037391483784, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.138, 'eval_steps_per_second': 17.138, 'epoch': 3.33}
-{'train_runtime': 4.9182, 'train_samples_per_second': 8.133, 'train_steps_per_second': 2.033, 'train_loss': 0.4969954490661621, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 511.56it/s]
-2026-04-05 21:26:08,279 - ib-edl - [92mINFO[0m: [base] val_loss: 0.005675037391483784
-2026-04-05 21:26:08,279 - ib-edl - [92mINFO[0m: [base] val_accuracy: 1.0
-2026-04-05 21:26:08,279 - ib-edl - [92mINFO[0m: [base] val_ece: 0.005658984184265137
-2026-04-05 21:26:08,279 - ib-edl - [92mINFO[0m: [base] val_nll: 0.005675037391483784
-2026-04-05 21:26:08,280 - ib-edl - [92mINFO[0m: [base] val_runtime: 0.0598
-2026-04-05 21:26:08,280 - ib-edl - [92mINFO[0m: [base] val_samples_per_second: 16.736
-2026-04-05 21:26:08,280 - ib-edl - [92mINFO[0m: [base] val_steps_per_second: 16.736
-2026-04-05 21:26:08,280 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 27.58it/s]
-2026-04-05 21:26:08,380 - ib-edl - [92mINFO[0m: [base] test_loss: 0.5071130990982056
-2026-04-05 21:26:08,380 - ib-edl - [92mINFO[0m: [base] test_accuracy: 1.0
-2026-04-05 21:26:08,380 - ib-edl - [92mINFO[0m: [base] test_ece: 0.32557711005210876
-2026-04-05 21:26:08,380 - ib-edl - [92mINFO[0m: [base] test_nll: 0.5071130394935608
-2026-04-05 21:26:08,380 - ib-edl - [92mINFO[0m: [base] test_runtime: 0.0977
-2026-04-05 21:26:08,381 - ib-edl - [92mINFO[0m: [base] test_samples_per_second: 20.478
-2026-04-05 21:26:08,381 - ib-edl - [92mINFO[0m: [base] test_steps_per_second: 10.239
-2026-04-05 21:26:08,381 - ib-edl - [92mINFO[0m: [base] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 533.15it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 146.75it/s]
-2026-04-05 21:26:08,523 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/val_preds/obqa.npz
-2026-04-05 21:26:08,526 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading wandb-summary.json; uploading config.yaml
-wandb: uploading history steps 0-8, summary, console lines 68-107
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece █▃▆▁
-wandb:               eval/loss █▃▆▁
-wandb:                eval/nll █▃▆▁
-wandb:            eval/runtime █▁▁▁
-wandb: eval/samples_per_second ▁███
-wandb:   eval/steps_per_second ▁███
-wandb:           test/accuracy ▁▁▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.00566
-wandb:               eval/loss 0.00568
-wandb:                eval/nll 0.00568
-wandb:            eval/runtime 0.0584
-wandb: eval/samples_per_second 17.138
-wandb:   eval/steps_per_second 17.138
-wandb:           test/accuracy 1
-wandb:                test/ece 0.32558
-wandb:               test/loss 0.50711
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2125_45 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base/runs/he06dacr
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-base
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/base/wandb/run-20260405_212545-he06dacr/logs
-wandb: setting up run 4e2v6ug7
-wandb: Tracking run with wandb version 0.24.0
-wandb: Run data is saved locally in data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212610-4e2v6ug7
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run 0405_2125_45
-wandb: ⭐️ View project at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: 🚀 View run at https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/4e2v6ug7
-2026-04-05 21:26:10,792 - ib-edl - [92mINFO[0m: Config for sidekick:
-============================================================
-data = dict(
-    test=dict(
-        add_space=True,
-        dataset_cfg=dict(split='test'),
-        subset_size=2,
-        type='OBQADataset'),
-    train=dict(
-        add_space=True,
-        dataset_cfg=dict(split='train'),
-        subset_size=10,
-        type='OBQADataset'),
-    val=dict(
-        add_space=True,
-        dataset_cfg=dict(split='validation'),
-        subset_size=1,
-        type='OBQADataset'))
-model = dict(
-    model_cfg=dict(torch_dtype='bfloat16', type='AutoModelForCausalLM'),
-    model_name_or_path='Qwen/Qwen2-1.5B',
-    peft_cfg=dict(
-        bias='lora_only',
-        inference_mode=False,
-        lora_alpha=16,
-        lora_dropout=0.1,
-        r=8,
-        target_modules=[
-            'q_proj',
-            'k_proj',
-            'v_proj',
-            'o_proj',
-        ],
-        task_type='CAUSAL_LM',
-        type='LoraConfig'),
-    peft_path=None,
-    special_tokens=dict(pad_token='<|endoftext|>'),
-    tokenizer_cfg=dict(type='AutoTokenizer', use_fast=True),
-    use_peft=True)
-process_preds = dict(
-    do_plot=False, npz_file='obqa.npz', plot_cfg=dict(plot_grid_size=[
-        5,
-        5,
-    ]))
-tokenizer_run_cfg = dict(
-    max_length=300, padding=True, return_tensors='pt', truncation=True)
-train_cfg = dict(
-    bf16=True,
-    do_eval=True,
-    do_train=True,
-    eval_strategy='epoch',
-    learning_rate=5e-05,
-    logging_steps=20,
-    lr_scheduler_type='cosine',
-    max_steps=10,
-    per_device_eval_batch_size=4,
-    per_device_train_batch_size=4,
-    save_only_model=True,
-    save_strategy='epoch',
-    save_total_limit=1,
-    warmup_steps=20,
-    weight_decay=0.0)
-
-============================================================
-2026-04-05 21:26:10,794 - ib-edl - [92mINFO[0m: Set torch.backends.cuda.enable_flash_sdp and torch.backends.cuda.enable_mem_efficient_sdp to False.
-2026-04-05 21:26:11,242 - ib-edl - [92mINFO[0m: Setting up PEFT.
-The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None, 'pad_token_id': 151643}.
-Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
-
-Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
-
-  0%|          | 0/10 [00:00<?, ?it/s]Could not estimate the number of tokens of the input, floating-point operations will not be computed
- 10%|█         | 1/10 [00:00<00:02,  3.62it/s] 20%|██        | 2/10 [00:00<00:01,  4.66it/s] 30%|███       | 3/10 [00:00<00:01,  5.18it/s]
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 362.42it/s][A 30%|███       | 3/10 [00:00<00:01,  5.18it/s]
-                                              [A 40%|████      | 4/10 [00:01<00:02,  2.47it/s] 50%|█████     | 5/10 [00:01<00:01,  3.14it/s] 60%|██████    | 6/10 [00:01<00:01,  3.77it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0592, 'eval_samples_per_second': 16.902, 'eval_steps_per_second': 16.902, 'epoch': 1.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 361.64it/s][A 60%|██████    | 6/10 [00:01<00:01,  3.77it/s]
-                                              [A 70%|███████   | 7/10 [00:02<00:01,  2.44it/s] 80%|████████  | 8/10 [00:02<00:00,  3.00it/s] 90%|█████████ | 9/10 [00:02<00:00,  3.55it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0582, 'eval_samples_per_second': 17.185, 'eval_steps_per_second': 17.185, 'epoch': 2.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                              
-100%|██████████| 1/1 [00:00<00:00, 346.78it/s][A 90%|█████████ | 9/10 [00:02<00:00,  3.55it/s]
-                                              [A100%|██████████| 10/10 [00:03<00:00,  2.41it/s]{'eval_loss': 0.15789860486984253, 'eval_accuracy': 1.0, 'eval_ece': 0.14606362581253052, 'eval_nll': 0.15789860486984253, 'eval_runtime': 0.0578, 'eval_samples_per_second': 17.304, 'eval_steps_per_second': 17.304, 'epoch': 3.0}
-
-  0%|          | 0/1 [00:00<?, ?it/s][A
-                                     [A                                               
-100%|██████████| 1/1 [00:00<00:00, 330.42it/s][A100%|██████████| 10/10 [00:03<00:00,  2.41it/s]
-                                              [A/dss/dsshome1/03/ra58yed2/miniforge3/envs/adl-asymmetric-lm-duos/lib/python3.12/site-packages/transformers/trainer.py:4380: UserWarning: mtime may not be reliable on this filesystem, falling back to numerical ordering
-  warnings.warn("mtime may not be reliable on this filesystem, falling back to numerical ordering")
-                                               100%|██████████| 10/10 [00:04<00:00,  2.41it/s]100%|██████████| 10/10 [00:04<00:00,  2.49it/s]
-2026-04-05 21:26:22,379 - ib-edl - [92mINFO[0m: Fine-tuning finished for sidekick.
-{'eval_loss': 0.17715995013713837, 'eval_accuracy': 1.0, 'eval_ece': 0.1623542308807373, 'eval_nll': 0.17715995013713837, 'eval_runtime': 0.0584, 'eval_samples_per_second': 17.132, 'eval_steps_per_second': 17.132, 'epoch': 3.33}
-{'train_runtime': 4.0262, 'train_samples_per_second': 9.935, 'train_steps_per_second': 2.484, 'train_loss': 1.2881701469421387, 'epoch': 3.33}
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 511.94it/s]
-2026-04-05 21:26:22,439 - ib-edl - [92mINFO[0m: [sidekick] val_loss: 0.17715995013713837
-2026-04-05 21:26:22,439 - ib-edl - [92mINFO[0m: [sidekick] val_accuracy: 1.0
-2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_ece: 0.1623542308807373
-2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_nll: 0.17715995013713837
-2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_runtime: 0.0587
-2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_samples_per_second: 17.049
-2026-04-05 21:26:22,440 - ib-edl - [92mINFO[0m: [sidekick] val_steps_per_second: 17.049
-2026-04-05 21:26:22,441 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 31.13it/s]
-2026-04-05 21:26:22,536 - ib-edl - [92mINFO[0m: [sidekick] test_loss: 0.8087759017944336
-2026-04-05 21:26:22,536 - ib-edl - [92mINFO[0m: [sidekick] test_accuracy: 0.5
-2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_ece: 0.3801819682121277
-2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_nll: 0.8087759017944336
-2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_runtime: 0.0926
-2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_samples_per_second: 21.607
-2026-04-05 21:26:22,537 - ib-edl - [92mINFO[0m: [sidekick] test_steps_per_second: 10.803
-2026-04-05 21:26:22,538 - ib-edl - [92mINFO[0m: [sidekick] epoch: 3.3333333333333335
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 590.41it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 508.59it/s]
-2026-04-05 21:26:22,670 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/val_preds/obqa.npz
-2026-04-05 21:26:22,673 - ib-edl - [92mINFO[0m: Predictions with seed 5 saved to data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/test_preds/obqa.npz
-wandb: updating run metadata
-wandb: uploading wandb-summary.json; uploading config.yaml
-wandb: 
-wandb: Run history:
-wandb:           eval/accuracy ▁▁▁▁
-wandb:                eval/ece ▁▁▁█
-wandb:               eval/loss ▁▁▁█
-wandb:                eval/nll ▁▁▁█
-wandb:            eval/runtime █▃▁▄
-wandb: eval/samples_per_second ▁▆█▅
-wandb:   eval/steps_per_second ▁▆█▅
-wandb:           test/accuracy ▁█▁
-wandb:                test/ece █▁█
-wandb:               test/loss █▁█
-wandb:                     +13 ...
-wandb: 
-wandb: Run summary:
-wandb:           eval/accuracy 1
-wandb:                eval/ece 0.16235
-wandb:               eval/loss 0.17716
-wandb:                eval/nll 0.17716
-wandb:            eval/runtime 0.0584
-wandb: eval/samples_per_second 17.132
-wandb:   eval/steps_per_second 17.132
-wandb:           test/accuracy 0.5
-wandb:                test/ece 0.38018
-wandb:               test/loss 0.80878
-wandb:                     +18 ...
-wandb: 
-wandb: 🚀 View run 0405_2125_45 at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick/runs/4e2v6ug7
-wandb: ⭐️ View project at: https://wandb.ai/isarustu1-ludwig-maximilianuniversity-of-munich/asym-duo-sidekick
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: data/results/obqa/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/sidekick/wandb/run-20260405_212610-4e2v6ug7/logs
-Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
-
-Seeds in the output file before update with seed 5: dict_keys(['1', '2', '3', '4']) 
-
-Seeds in the output file after update with seed 5: dict_keys(['1', '2', '3', '4', '5']) 
-
-
-[train] Running temperature scaling ...
-
-[temperature_scaling] Fitting base temperature for seed 5 ...
-[base_tempscaled] n=1, sum-of-probs=1.0000
-[base_tempscaled] n=2, sum-of-probs=2.0000
-[temperature_scaling] Fitting sidekick temperature for seed 5 ...
-[sidekick_tempscaled] n=1, sum-of-probs=1.0000
-[sidekick_tempscaled] n=2, sum-of-probs=2.0000
-
-[train] Running duo optimisation ...
-
-[duo_optimizer] Fitting unconstrained duo for seed 5 ...
-  scales -> base=1.0027, sidekick=1.0011
-  scales -> base=1.1413, sidekick=1.0576
-  scales -> base=1.2254, sidekick=1.0917
-  scales -> base=1.3303, sidekick=1.1344
-  scales -> base=1.4275, sidekick=1.1734
-  scales -> base=1.5285, sidekick=1.2141
-  scales -> base=1.6274, sidekick=1.2526
-  scales -> base=1.7328, sidekick=1.2955
-  scales -> base=1.8221, sidekick=1.3382
-  scale_base=1.8221, scale_sidekick=1.3382, w_base=0.5766, w_sidekick=0.4234
-[base] n=1, sum-of-probs=1.0000
-[sidekick] n=1, sum-of-probs=1.0000
-[duo] n=1, sum-of-probs=1.0000
-[base] n=2, sum-of-probs=2.0000
-[sidekick] n=2, sum-of-probs=2.0000
-[duo] n=2, sum-of-probs=2.0000
