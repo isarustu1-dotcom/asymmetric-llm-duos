@@ -62,7 +62,7 @@ def _model_tag(cfg_path):
     """
     folder = cfg_path.split('/')[1]
     parts = folder.split('_')
-    known_model_starts = ('qwen2', 'llama', 'mistral', 'gemma')
+    known_model_starts = ('qwen2', 'qwen3', 'llama', 'mistral', 'gemma')
     split_idx = next(
         (i for i, p in enumerate(parts) if p in known_model_starts),
         2,  # fallback: old behaviour

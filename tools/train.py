@@ -125,8 +125,8 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
         folder = cfg_path.split('/')[1]           # arc_c_qwen2_7b
         parts = folder.split('_')
         # Find the split index: first part that belongs to the model name.
-        # Model names currently always contain 'qwen2' as a component.
-        known_model_starts = ('qwen2', 'llama', 'mistral', 'gemma')
+        # Model names currently always contain a known family prefix.
+        known_model_starts = ('qwen2', 'qwen3', 'llama', 'mistral', 'gemma')
         split_idx = next(
             (i for i, p in enumerate(parts) if p in known_model_starts),
             2,  # fallback: old behaviour (parts[:2] = dataset)
