@@ -47,6 +47,12 @@ def parse_args():
                    help='Compute deep ensemble metrics from same-model seed pairs.')
     p.add_argument('--deep-ensemble-size', type=int, default=2,
                    help='Number of models in each deep ensemble (default: 2).')
+    p.add_argument('--beta-base', type=float, default=None,
+                   help='IB-EDL beta-base override used during training. If set '
+                        'here, it must match the value used in train.py so the '
+                        'correct work_dir can be reconstructed.')
+    p.add_argument('--beta-sidekick', type=float, default=None,
+                   help='IB-EDL beta-sidekick override used during training.')
     return p.parse_args()
 
 
@@ -81,6 +87,10 @@ def _build_work_dir(root, cfg_base, cfg_sidekick, args):
         model_tag = f'{base_model}_{side_model}'
 
     method_parts = ['ib_edl' if args.ib_edl else 'lora']
+    if args.beta_base is not None:
+        method_parts.append(f'beta_base_{args.beta_base}')
+    if args.beta_sidekick is not None:
+        method_parts.append(f'beta_side_{args.beta_sidekick}')
     if args.temperature_scaling:
         method_parts.append('tempscaling')
     if args.duo:
