@@ -5,6 +5,7 @@ from .optimizer_helpers import _softmax_from_log
 from .duo_optimizer import optimize_weights, optimize_weights_ts
 from .temperature_scaling import optimize_temperature_scaling
 from .uncertainty_metrics import compute_uncertainty_metrics
+from .laplace_lora import optimize_laplace
 
 __all__ = [
     'setup_logger',
@@ -17,4 +18,5 @@ __all__ = [
     'optimize_weights_ts',
     'optimize_temperature_scaling',
     'compute_uncertainty_metrics',
+    'optimize_laplace',
 ]

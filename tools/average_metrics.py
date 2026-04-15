@@ -43,6 +43,8 @@ def parse_args():
     p.add_argument('--duo', action='store_true')
     p.add_argument('--duo-constrained', action='store_true')
     p.add_argument('--temperature-scaling', action='store_true')
+    p.add_argument('--laplace-lora', action='store_true',
+                   help='Run Laplace LoRA after training.')
     p.add_argument('--deep-ensemble', action='store_true',
                    help='Compute deep ensemble metrics from same-model seed pairs.')
     p.add_argument('--deep-ensemble-size', type=int, default=2,
@@ -95,6 +97,8 @@ def _build_work_dir(root, cfg_base, cfg_sidekick, args):
         method_parts.append('tempscaling')
     if args.duo:
         method_parts.append('duo_constrained' if args.duo_constrained else 'duo_unconstrained')
+    if args.laplace_lora:
+        method_parts.append(f'laplace_lora')
     method = '_'.join(method_parts)
     return osp.join(root, dataset, model_tag, method)
 
