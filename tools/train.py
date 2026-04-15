@@ -80,6 +80,18 @@ def parse_args():
     p.add_argument('--temperature-scaling', action='store_true',
                    help='Run per-model temperature scaling after training.')
 
+    # --- IB-EDL hyperparameter tuning (per-model) ---
+    p.add_argument('--beta-base', type=float, default=None,
+                   help='Override vib.beta for the base model. When set, '
+                        '`beta_base_<value>` is appended to the work_dir method '
+                        'tag so tuning runs with the same seed do not overwrite '
+                        'each other. If omitted, the base config yaml value is used.')
+    p.add_argument('--beta-sidekick', type=float, default=None,
+                   help='Override vib.beta for the sidekick model. When set, '
+                        '`beta_side_<value>` is appended to the work_dir method '
+                        'tag. Requires --config_sidekick. If omitted, the sidekick '
+                        'config yaml value is used.')
+
     # --- wandb ---
     p.add_argument('--no-wandb', action='store_true')
     p.add_argument('--run-name', '-n', default=None)
@@ -101,6 +113,11 @@ def _validate_args(args):
         raise ValueError('--duo requires --config_sidekick to be specified.')
     if args.duo_constrained and not args.duo:
         raise ValueError('--duo-constrained only makes sense with --duo.')
+    if (args.beta_base is not None or args.beta_sidekick is not None) and not args.ib_edl:
+        raise ValueError(
+            '--beta-base / --beta-sidekick only apply to IB-EDL runs (requires --ib-edl).')
+    if args.beta_sidekick is not None and args.config_sidekick is None:
+        raise ValueError('--beta-sidekick requires --config_sidekick.')
 
 
 def _validate_cfg(cfg, args, model_type):
@@ -143,6 +160,10 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
         model_tag = f'{base_model}_{side_model}'
 
     method_parts = ['ib_edl' if args.ib_edl else 'lora']
+    if args.beta_base is not None:
+        method_parts.append(f'beta_base_{args.beta_base}')
+    if args.beta_sidekick is not None:
+        method_parts.append(f'beta_side_{args.beta_sidekick}')
     if args.temperature_scaling:
         method_parts.append('tempscaling')
     if args.duo:
@@ -270,11 +291,23 @@ def main():
     if has_sidekick:
         model_specs.append(('sidekick', args.config_sidekick))
 
+    beta_override = {'base': args.beta_base, 'sidekick': args.beta_sidekick}
+
     last_cfg = None
     for model_type, cfg_path in model_specs:
         cfg = mmengine.Config.fromfile(cfg_path)
         if args.cfg_options:
             cfg.merge_from_dict(args.cfg_options)
+        new_beta = beta_override[model_type]
+        if new_beta is not None:
+            if cfg.get('vib') is None:
+                raise ValueError(
+                    f'--beta-{model_type} {new_beta} was given but {model_type} '
+                    f'config {cfg_path} has no vib section to override.')
+            old_beta = cfg.vib.get('beta')
+            cfg.vib['beta'] = new_beta
+            print(f'[train] Overriding vib.beta for {model_type}: '
+                  f'{old_beta} -> {new_beta}')
         _validate_cfg(cfg, args, model_type)
 
         mmengine.mkdir_or_exist(osp.join(work_dir, model_type))
