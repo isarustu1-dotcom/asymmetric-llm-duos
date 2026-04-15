@@ -350,10 +350,39 @@ def main():
             side_de['split'] = 'test'
             de_frames.append(side_de)
 
+        # DE on temperature-scaled outputs
+        if args.temperature_scaling:
+            base_ts_tst_path = osp.join(work_dir, 'temperature_scaling', 'base', 'test_preds', npz_file)
+            if osp.exists(base_ts_tst_path):
+                base_ts_preds_df = _create_predictions_df(
+                    dict(np.load(base_ts_tst_path, allow_pickle=True)),
+                    model_type='base_ts', output_path=base_ts_tst_path)
+                base_ts_de = _deep_ensemble_metrics(base_ts_preds_df, combos, 'base_ts')
+                base_ts_de['model'] = f'base_ts_de({m})'
+                base_ts_de['split'] = 'test'
+                de_frames.append(base_ts_de)
+
+            if has_sidekick:
+                side_ts_tst_path = osp.join(
+                    work_dir, 'temperature_scaling', 'sidekick', 'test_preds', npz_file)
+                if osp.exists(side_ts_tst_path):
+                    side_ts_preds_df = _create_predictions_df(
+                        dict(np.load(side_ts_tst_path, allow_pickle=True)),
+                        model_type='sidekick_ts', output_path=side_ts_tst_path)
+                    side_ts_de = _deep_ensemble_metrics(side_ts_preds_df, combos, 'sidekick_ts')
+                    side_ts_de['model'] = f'sidekick_ts_de({m})'
+                    side_ts_de['split'] = 'test'
+                    de_frames.append(side_ts_de)
+
         de_data = pd.concat(de_frames, ignore_index=True)
         de_model_types = [f'base_de({m})'] + ([f'sidekick_de({m})'] if has_sidekick else [])
+        if args.temperature_scaling:
+            de_model_types.append(f'base_ts_de({m})')
+            if has_sidekick:
+                de_model_types.append(f'sidekick_ts_de({m})')
         for mt in de_model_types:
-            summaries.append(_summarize(de_data, mt, 'test'))
+            if mt in de_data['model'].values:
+                summaries.append(_summarize(de_data, mt, 'test'))
 
     summary_df = pd.concat(summaries, ignore_index=True)
     summary_df.to_csv(osp.join(summary_dir, 'metrics_summary_sd_raw.csv'), index=False)
