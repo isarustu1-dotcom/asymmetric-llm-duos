@@ -196,9 +196,9 @@ def optimize_temperature_scaling(result_dir: str, saved_file_name: str,
 
     new_metrics = {
         'data': saved_file_name,
-        'base_temperature': base_params['temperature'],
+        'base_ts_temperature': base_params['temperature'],
         'base_ts_scale': base_params['scale'],
-        'sidekick_temperature': side_params.get('temperature'),
+        'sidekick_ts_temperature': side_params.get('temperature'),
         'sidekick_ts_scale': side_params.get('scale'),
         'val': val_metrics,
         'test': tst_metrics,

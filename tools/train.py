@@ -39,6 +39,7 @@ from ib_edl import (
     get_model_and_tokenizer,
     optimize_temperature_scaling,
     optimize_weights,
+    optimize_weights_ts,
     plot_predictions,
     save_predictions,
     setup_logger,
@@ -309,6 +310,14 @@ def main():
     if args.duo:
         print('\n[train] Running duo optimisation ...')
         optimize_weights(
+            work_dir, npz_file,
+            seed=args.seed,
+            constrained=args.duo_constrained,
+        )
+
+    if args.duo and args.temperature_scaling:
+        print('\n[train] Running Duo TS optimisation (duo on temperature-scaled outputs) ...')
+        optimize_weights_ts(
             work_dir, npz_file,
             seed=args.seed,
             constrained=args.duo_constrained,
