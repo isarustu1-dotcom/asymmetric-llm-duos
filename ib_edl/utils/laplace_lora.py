@@ -150,8 +150,8 @@ def _laplace_predict(
 
     true_labels = np.concatenate(true_labels_all, axis=0)
     return (
-        avg_logits.numpy().astype(np.float32),
-        avg_probs.numpy().astype(np.float32),
+        avg_logits.float().numpy().astype(np.float32),
+        avg_probs.float().numpy().astype(np.float32),
         true_labels,
     )
 
@@ -266,10 +266,10 @@ def optimize_laplace(
 
     val_metrics, val_preds = _build_metrics(val_probs, val_labels, model_type)
     tst_metrics, tst_preds = _build_metrics(tst_probs, tst_labels, model_type)
-    print(f"  [laplace] val  acc={val_metrics['laplace_accuracy']:.4f}  "
-          f"ece={val_metrics['laplace_ece']:.4f}  nll={val_metrics['laplace_nll']:.4f}")
-    print(f"  [laplace] test acc={tst_metrics['laplace_accuracy']:.4f}  "
-          f"ece={tst_metrics['laplace_ece']:.4f}  nll={tst_metrics['laplace_nll']:.4f}")
+    print(f"  [laplace] val  acc={val_metrics[f'{model_type}_laplace_accuracy']:.4f}  "
+          f"ece={val_metrics[f'{model_type}_laplace_ece']:.4f}  nll={val_metrics[f'{model_type}_laplace_nll']:.4f}")
+    print(f"  [laplace] test acc={tst_metrics[f'{model_type}_laplace_accuracy']:.4f}  "
+          f"ece={tst_metrics[f'{model_type}_laplace_ece']:.4f}  nll={tst_metrics[f'{model_type}_laplace_nll']:.4f}")
 
 
     metrics_path = osp.join(result_dir, "metrics", saved_file_name)
@@ -293,7 +293,7 @@ def optimize_laplace(
         seed, saved_file_name,
         _sort_by_idx(map_val["idx"], mv_ord),
         _sort_by_idx(map_val["input"], mv_ord),
-        _sort_by_idx(val_logits, mv_ord).astype(np.float32),
+        _sort_by_idx(val_logits, mv_ord),
         _sort_by_idx(val_probs, mv_ord),
         _sort_by_idx(val_preds, mv_ord),
         _sort_by_idx(map_val["true_labels"], mv_ord),
@@ -303,7 +303,7 @@ def optimize_laplace(
         seed, saved_file_name,
         _sort_by_idx(map_tst["idx"], mt_ord),
         _sort_by_idx(map_tst["input"], mt_ord),
-        _sort_by_idx(tst_logits, mt_ord).astype(np.float32),
+        _sort_by_idx(tst_logits, mt_ord),
         _sort_by_idx(tst_probs, mt_ord),
         _sort_by_idx(tst_preds, mt_ord),
         _sort_by_idx(map_tst["true_labels"], mt_ord),

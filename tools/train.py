@@ -110,6 +110,11 @@ def parse_args():
     p.add_argument('--cfg-options', '-o', nargs='+', action=mmengine.DictAction,
                    help='Override config values using key=value syntax.')
 
+    # --- test_run ---
+    p.add_argument('--test-run', action='store_true',
+                   help='Run a test run with a small subset of data.')
+    
+
     return p.parse_args()
 
 
@@ -325,6 +330,13 @@ def main():
         cfg = mmengine.Config.fromfile(cfg_path)
         if args.cfg_options:
             cfg.merge_from_dict(args.cfg_options)
+
+        if args.test_run:
+            cfg.data.train.subset_size = 10              # small subset for fast testing
+            cfg.data.val.subset_size   = 1
+            cfg.data.test.subset_size  = 2
+            cfg.train_cfg.max_steps = 10
+            
         new_beta = beta_override[model_type]
         if new_beta is not None:
             if cfg.get('vib') is None:
