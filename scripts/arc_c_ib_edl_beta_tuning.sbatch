@@ -41,7 +41,7 @@ done
 echo "=============================================================="
 echo "[pick-base] best base beta by base_ece"
 echo "=============================================================="
-BEST_BASE=$(python tools/pick_best_beta.py \
+BEST_BASE=$(python tools/pick_best_ib_edl_beta.py \
     --config_base     "$CFG_BASE" \
     --config_sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \
@@ -54,7 +54,7 @@ echo "[pick-base] winner: $BEST_BASE"
 echo "=============================================================="
 echo "[pick-sidekick] best sidekick beta by sidekick_ece"
 echo "=============================================================="
-BEST_SIDE=$(python tools/pick_best_beta.py \
+BEST_SIDE=$(python tools/pick_best_ib_edl_beta.py \
     --config_base     "$CFG_BASE" \
     --config_sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \

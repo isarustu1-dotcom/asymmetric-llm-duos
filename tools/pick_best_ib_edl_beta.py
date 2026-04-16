@@ -1,10 +1,21 @@
-"""Pick the best IB-EDL beta for base or sidekick from a set of tuning runs."""
+"""Pick the best IB-EDL beta for base or sidekick from a set of tuning runs.
+
+Tuning runs do not produce ``<work_dir>/metrics/<dataset>.npz`` (that file is
+only written by the post-hoc TS / duo optimisers and the averaging script).
+Instead, this picker reads the raw per-seed predictions written directly by
+the training script — ``<work_dir>/<side>/<split>_preds/<dataset>.npz`` — and
+computes the target metric on the fly (matching the same softmax / uncertainty
+pipeline used elsewhere in the repo).
+"""
 
 import argparse
 import os.path as osp
 import sys
 
 import numpy as np
+from sklearn.metrics import accuracy_score, f1_score
+
+from ib_edl import _softmax_from_log, compute_uncertainty_metrics
 
 
 def _model_tag(cfg_path):
@@ -113,37 +124,57 @@ def main():
     else:
         lower_better = _default_lower_is_better(target)
 
+    # Tuning runs only emit raw per-side predictions (no merged metrics file),
+    # so look at the unprefixed key name returned by compute_uncertainty_metrics
+    # / accuracy_score / f1_score (e.g. 'ece' rather than 'base_ece').
+    bare_target = target
+    for prefix in (f'{args.tune}_', 'base_', 'sidekick_'):
+        if bare_target.startswith(prefix):
+            bare_target = bare_target[len(prefix):]
+            break
+
     npz_name = f'{args.dataset_name}.npz'
     scores = {}
     for beta in args.betas:
         work_dir = _build_work_dir(
             args.work_dir, args.config_base, args.config_sidekick, beta, args)
-        metrics_path = osp.join(work_dir, 'metrics', npz_name)
+        preds_path = osp.join(work_dir, args.tune, f'{args.split}_preds', npz_name)
 
-        if not osp.exists(metrics_path):
-            print(f'[pick_best_beta] Missing metrics for beta={beta}: '
-                  f'{metrics_path}', file=sys.stderr)
+        if not osp.exists(preds_path):
+            print(f'[pick_best_beta] Missing predictions for beta={beta}: '
+                  f'{preds_path}', file=sys.stderr)
             continue
 
-        data = dict(np.load(metrics_path, allow_pickle=True))
+        data = dict(np.load(preds_path, allow_pickle=True))
         seed_key = str(args.seed)
         if seed_key not in data:
             print(f'[pick_best_beta] Seed {args.seed} not found for '
-                  f'beta={beta} in {metrics_path}', file=sys.stderr)
+                  f'beta={beta} in {preds_path}', file=sys.stderr)
             continue
 
         sd = data[seed_key].item()
-        split = sd.get(args.split, {}) or {}
-        if target not in split:
-            avail = sorted(split.keys())
-            preview = avail[:12]
-            print(f'[pick_best_beta] Target "{target}" not found for '
-                  f'beta={beta} in {args.split} split. First available keys: '
-                  f'{preview}{" ..." if len(avail) > 12 else ""}',
-                  file=sys.stderr)
+        order = np.argsort(sd['idx'])
+        logits = np.asarray(sd['logits'])[order]
+        y_true = np.asarray(sd['true_labels'])[order]
+        probs = _softmax_from_log(logits)
+        preds = probs.argmax(axis=1)
+
+        metric_values = {
+            'accuracy': float(accuracy_score(y_true, preds)),
+            'f1_macro': float(f1_score(y_true, preds, average='macro')),
+        }
+        metric_values.update({
+            k: float(v) for k, v in compute_uncertainty_metrics(probs, y_true).items()
+        })
+
+        if bare_target not in metric_values:
+            avail = sorted(metric_values.keys())
+            print(f'[pick_best_beta] Target "{target}" (unprefixed: '
+                  f'"{bare_target}") not computable for beta={beta}. '
+                  f'Available: {avail}', file=sys.stderr)
             continue
 
-        scores[beta] = float(split[target])
+        scores[beta] = metric_values[bare_target]
 
     if not scores:
         print('[pick_best_beta] No valid tuning runs found — cannot pick a '
