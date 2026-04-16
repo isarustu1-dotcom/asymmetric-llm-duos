@@ -9,6 +9,7 @@ from .utils import (
     optimize_temperature_scaling,
     compute_uncertainty_metrics,
     _softmax_from_log,
+    optimize_laplace,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     'optimize_temperature_scaling',
     'compute_uncertainty_metrics',
     '_softmax_from_log',
+    'optimize_laplace',
 ]
