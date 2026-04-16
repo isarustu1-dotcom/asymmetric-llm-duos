@@ -135,7 +135,7 @@ def _laplace_predict(
             sample_probs.append(F.softmax(logits, dim=-1).cpu())
 
             if not true_labels_collected:
-                true_labels_all.append(batch["labels"].numpy())
+                true_labels_all.append(batch["labels"].cpu().numpy())
 
         true_labels_collected = True
         all_sample_probs.append(torch.cat(sample_probs, dim=0))  # (N, C)
@@ -164,7 +164,9 @@ def _tune_prior_precision(
 ) -> float:
     """Return the prior_precision with lowest NLL on the validation set."""
     if grid is None:
-        grid = [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+        # Log-scale grid matching the range used in the original paper repo
+        # (adamxyang/laplace-lora uses 100 points; 20 is a good compromise).
+        grid = np.logspace(-3, 4, 20).tolist()
 
     best_prec, best_nll = grid[0], float("inf")
     for prec in grid:
