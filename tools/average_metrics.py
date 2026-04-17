@@ -307,7 +307,7 @@ def main():
     os.makedirs(summary_dir, exist_ok=True)
 
     # --- load per-seed metrics -----------------------------------------
-    # metrics/<npz> is written by duo_optimizer / temperature_scaling.
+    # metrics/<npz> is written by duo_optimizer / temperature_scaling / laplace lora.
     # For a plain LoRA run without those steps, fall back to computing
     # metrics directly from the raw prediction files.
     if not osp.exists(metrics_path):

@@ -12,6 +12,7 @@ from .optimizer_helpers import (
     _save_val_test_results,
     _sort_by_idx,
     _logsumexp,
+    _softmax_from_log
 )
 from .uncertainty_metrics import compute_uncertainty_metrics
 
@@ -186,19 +187,33 @@ def _tune_prior_precision(
     print(f"  [laplace] Best prior_precision={best_prec:.4g}  (val_NLL={best_nll:.6f})")
     return best_prec
 
-def _build_metrics(probs, labels, model_type):
+def _build_metrics(model_type_logits, laplace_logits, labels, model_type):
+
+    probs_model_type = _softmax_from_log(model_type_logits)
+    _sanity_check_on_probs(probs_model_type, model_type)
+    pred_model_type = probs_model_type.argmax(axis=1)
+
+    probs_laplace = _softmax_from_log(laplace_logits)
+    _sanity_check_on_probs(probs_laplace, f'{model_type}_laplace')
+    pred_laplace = probs_laplace.argmax(axis=1)
+
     prefix = f"{model_type}_laplace"
-    _sanity_check_on_probs(probs, prefix)
-    preds = probs.argmax(axis=1)
     metrics = {
-        f"{prefix}_accuracy": float(accuracy_score(labels, preds)),
-        f"{prefix}_f1_macro": float(f1_score(labels, preds, average="macro")),
+        f"{model_type}_accuracy": float(accuracy_score(labels, pred_model_type)),
+        f"{model_type}_f1_macro": float(f1_score(labels, pred_model_type, average="macro")),
+        f"{prefix}_accuracy": float(accuracy_score(labels, pred_laplace)),
+        f"{prefix}_f1_macro": float(f1_score(labels, pred_laplace, average="macro")),
     }
+
+    metrics.update({
+        f"{model_type}_{k}": v
+        for k, v in compute_uncertainty_metrics(probs_model_type, labels).items()
+    })
     metrics.update({
         f"{prefix}_{k}": v
-        for k, v in compute_uncertainty_metrics(probs, labels).items()
+        for k, v in compute_uncertainty_metrics(probs_laplace, labels).items()
     })
-    return metrics, preds
+    return metrics, pred_laplace
 
 def optimize_laplace(
     result_dir: str,
@@ -233,6 +248,18 @@ def optimize_laplace(
     tokenizer  = trainer.processing_class
     tok_cfg    = trainer.cfg.tokenizer_run_cfg
 
+    # --- load MAP predictions -----------------------------------------------
+    def _load(split):
+        path  = osp.join(result_dir, model_type, f"{split}_preds", saved_file_name)
+        data  = dict(np.load(path, allow_pickle=True))[str(seed)].item()
+        order = np.argsort(data["idx"])
+        return data, order
+
+    map_val, mv_ord = _load("val")
+    map_val_logits = _sort_by_idx(map_val['logits'], mv_ord)
+    map_tst, mt_ord = _load("test")
+    map_tst_logits = _sort_by_idx(map_tst['logits'], mt_ord)
+
     print(f"\n[laplace] Snapshotting MAP weights for {model_type} ...")
     map_params = {
         name: param.data.clone()
@@ -266,8 +293,14 @@ def optimize_laplace(
         tokenizer, tok_cfg, map_params, diag_F, prior_precision, n_samples, eval_type = 'test'
     )
 
-    val_metrics, val_preds = _build_metrics(val_probs, val_labels, model_type)
-    tst_metrics, tst_preds = _build_metrics(tst_probs, tst_labels, model_type)
+    val_metrics, val_preds = _build_metrics(map_val_logits, 
+                                            _sort_by_idx(val_logits, mv_ord), 
+                                            _sort_by_idx(val_labels, mv_ord), 
+                                            model_type)
+    tst_metrics, tst_preds = _build_metrics(map_tst_logits, 
+                                            _sort_by_idx(tst_logits, mt_ord), 
+                                            _sort_by_idx(tst_labels, mt_ord), 
+                                            model_type)
     print(f"  [laplace] val  acc={val_metrics[f'{model_type}_laplace_accuracy']:.4f}  "
           f"ece={val_metrics[f'{model_type}_laplace_ece']:.4f}  nll={val_metrics[f'{model_type}_laplace_nll']:.4f}")
     print(f"  [laplace] test acc={tst_metrics[f'{model_type}_laplace_accuracy']:.4f}  "
@@ -277,15 +310,6 @@ def optimize_laplace(
     metrics_path = osp.join(result_dir, "metrics", saved_file_name)
     lap_val_path = osp.join(result_dir, "laplace_lora", model_type, "val_preds",  saved_file_name)
     lap_tst_path = osp.join(result_dir, "laplace_lora", model_type, "test_preds", saved_file_name)
-
-    def _load_map_preds(split):
-        path  = osp.join(result_dir, model_type, f"{split}_preds", saved_file_name)
-        data  = dict(np.load(path, allow_pickle=True))[str(seed)].item()
-        order = np.argsort(data["idx"])
-        return data, order
-
-    map_val, mv_ord = _load_map_preds("val")
-    map_tst, mt_ord = _load_map_preds("test")
 
     ex_val = _read_or_create_path(lap_val_path)
     ex_tst = _read_or_create_path(lap_tst_path)
