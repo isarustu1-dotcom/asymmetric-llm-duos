@@ -1,12 +1,4 @@
-"""Pick the best IB-EDL beta for base or sidekick from a set of tuning runs.
-
-Tuning runs do not produce ``<work_dir>/metrics/<dataset>.npz`` (that file is
-only written by the post-hoc TS / duo optimisers and the averaging script).
-Instead, this picker reads the raw per-seed predictions written directly by
-the training script — ``<work_dir>/<side>/<split>_preds/<dataset>.npz`` — and
-computes the target metric on the fly (matching the same softmax / uncertainty
-pipeline used elsewhere in the repo).
-"""
+"""Pick the best IB-EDL beta for base or sidekick from a set of tuning runs."""
 
 import argparse
 import os.path as osp
@@ -124,9 +116,6 @@ def main():
     else:
         lower_better = _default_lower_is_better(target)
 
-    # Tuning runs only emit raw per-side predictions (no merged metrics file),
-    # so look at the unprefixed key name returned by compute_uncertainty_metrics
-    # / accuracy_score / f1_score (e.g. 'ece' rather than 'base_ece').
     bare_target = target
     for prefix in (f'{args.tune}_', 'base_', 'sidekick_'):
         if bare_target.startswith(prefix):
