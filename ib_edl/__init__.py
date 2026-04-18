@@ -10,6 +10,7 @@ from .utils import (
     compute_uncertainty_metrics,
     _softmax_from_log,
     optimize_laplace,
+    optimize_weights_laplace,
 )
 
 __all__ = [
@@ -28,4 +29,5 @@ __all__ = [
     'compute_uncertainty_metrics',
     '_softmax_from_log',
     'optimize_laplace',
+    'optimize_weights_laplace',
 ]

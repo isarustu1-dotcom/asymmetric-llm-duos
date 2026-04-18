@@ -5,6 +5,7 @@ import torch
 import torch.nn.functional as F
 from sklearn.metrics import accuracy_score, f1_score
 import transformers
+from transformers.tokenization_utils_base import BatchEncoding
 from copy import deepcopy
 import peft
 
@@ -88,7 +89,7 @@ def _find_optimal_prior_var(prior_var, trainer, model, tokenizer, tok_cfg, val_d
     
     return s2
 
-def _get_raw_model_tokenizer(cfg, device):
+def _get_raw_model_tokenizer(cfg):
     ## Get raw model
     model_cfg = deepcopy(cfg.model.model_cfg)
     model_cls_name = model_cfg.pop('type')
@@ -130,7 +131,11 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
         return target_logits
     
     loader = trainer.get_eval_dataloader(dataset)
-    
+
+    # Release fragmented allocations left over from training before the
+    # Jacobian loop, which is the most memory-intensive part of Laplace.
+    torch.cuda.empty_cache()
+
     pred_logits_list = []
     pred_mu_list     = []
     pred_var_list    = []
@@ -142,24 +147,33 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
             labels = batch['labels'].to(device)
 
             batch_inputs = tokenizer(prompts, **tok_cfg).to(device)
-            
+
             # Predict the output logit locations
             jacobian, f_mu = jacobian_mean(
                 model, batch_inputs, output_callback=output_callback
             )
             pred_mu_list.append(f_mu.clone().cpu())
 
-            # Predict the output logit variances
-            f_var = variance(
-                batch_inputs,
-                jacobian,
-                factors,
-                s2,
-                len(target_ids),
-                peft_r,
-                n_kfac,
-                device,
-            )
+            # Predict the output logit variances.
+            # Work-around for a bug in bayesian_lora: variance() calls
+            # .squeeze() on every Jacobian tensor without specifying a dim,
+            # so when batch_size == 1 the batch dimension is removed and the
+            # subsequent shape assertion fails.  We duplicate the single
+            # sample to batch_size=2 before passing to variance() so that
+            # squeeze() leaves the batch dim intact, then slice [:1] back.
+            actual_bs = batch_inputs.input_ids.size(0)
+            if actual_bs == 1:
+                var_inputs   = BatchEncoding(
+                    {k: v.expand(2, *v.shape[1:]) for k, v in batch_inputs.items()}
+                )
+                var_jacobian = {k: v.expand(2, *v.shape[1:]) for k, v in jacobian.items()}
+                f_var = variance(
+                    var_inputs, var_jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device
+                )[:1]
+            else:
+                f_var = variance(
+                    batch_inputs, jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device
+                )
             pred_var_list.append(f_var.clone().cpu())
 
             # Sample logits from N(f_mu, f_var) via reparameterisation
@@ -294,8 +308,13 @@ def optimize_laplace(
     )
     print(f"Optimized prior variance is: {s2.item()}")
 
+    # model is no longer needed after this point — delete it and make space in cache
+    # before loading model_laplace so we don't hold two full model copies on the GPU.
+    del model
+    torch.cuda.empty_cache()
+
     ## Get raw model and tokenizer
-    model_laplace, tokenizer_laplace = _get_raw_model_tokenizer(cfg, device)
+    model_laplace, tokenizer_laplace = _get_raw_model_tokenizer(cfg)
 
     ## Get peft model
     model_laplace = peft.PeftModel.from_pretrained(model_laplace, checkpoint_path, is_trainable=True)
