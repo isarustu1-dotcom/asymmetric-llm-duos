@@ -388,12 +388,42 @@ def main():
                     side_ts_de['split'] = 'test'
                     de_frames.append(side_ts_de)
 
+        # DE on laplace lora outputs
+        if args.laplace_lora:
+            base_laplace_tst_path = osp.join(work_dir, 'laplace_lora', 'base', 'test_preds', npz_file)
+            if osp.exists(base_laplace_tst_path):
+                base_laplace_preds_df = _create_predictions_df(
+                    dict(np.load(base_laplace_tst_path, allow_pickle=True)),
+                    model_type='base_laplace', output_path=base_laplace_tst_path)
+                base_laplace_de = _deep_ensemble_metrics(base_laplace_preds_df, combos, 'base_laplace')
+                base_laplace_de['model'] = f'base_laplace_de({m})'
+                base_laplace_de['split'] = 'test'
+                de_frames.append(base_laplace_de)
+
+            if has_sidekick:
+                side_laplace_tst_path = osp.join(
+                    work_dir, 'laplace_lora', 'sidekick', 'test_preds', npz_file)
+                if osp.exists(side_laplace_tst_path):
+                    side_laplace_preds_df = _create_predictions_df(
+                        dict(np.load(side_laplace_tst_path, allow_pickle=True)),
+                        model_type='sidekick_laplace', output_path=side_laplace_tst_path)
+                    side_laplace_de = _deep_ensemble_metrics(side_laplace_preds_df, combos, 'sidekick_laplace')
+                    side_laplace_de['model'] = f'sidekick_laplace_de({m})'
+                    side_laplace_de['split'] = 'test'
+                    de_frames.append(side_laplace_de)
+
         de_data = pd.concat(de_frames, ignore_index=True)
         de_model_types = [f'base_de({m})'] + ([f'sidekick_de({m})'] if has_sidekick else [])
+        ## Add temperature scaling to model_types
         if args.temperature_scaling:
             de_model_types.append(f'base_ts_de({m})')
             if has_sidekick:
                 de_model_types.append(f'sidekick_ts_de({m})')
+        ## Add laplace lora to model_types
+        if args.laplace_lora:
+            de_model_types.append(f'base_laplace_de({m})')
+            if has_sidekick:
+                de_model_types.append(f'sidekick_laplace_de({m})')
         for mt in de_model_types:
             if mt in de_data['model'].values:
                 summaries.append(_summarize(de_data, mt, 'test'))

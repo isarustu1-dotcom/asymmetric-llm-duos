@@ -45,6 +45,7 @@ from ib_edl import (
     save_predictions,
     setup_logger,
     optimize_laplace,
+    optimize_weights_laplace,
 )
 
 
@@ -399,6 +400,13 @@ def main():
             constrained=args.duo_constrained,
         )
 
+    if args.duo and args.laplace_lora:
+        print('\n[train] Running Duo Laplace LoRA optimisation ...')
+        optimize_weights_laplace(
+            work_dir, npz_file,
+            seed=args.seed,
+            constrained=args.duo_constrained,
+        )
 
 if __name__ == '__main__':
     main()
