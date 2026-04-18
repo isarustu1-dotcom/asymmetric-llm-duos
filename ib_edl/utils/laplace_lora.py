@@ -4,6 +4,18 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from sklearn.metrics import accuracy_score, f1_score
+import transformers
+from copy import deepcopy
+import peft
+
+from bayesian_lora import (
+    calculate_kronecker_factors,
+    cholesky_decompose_small_factors,
+    model_evidence,
+    variance,
+    stable_cholesky,
+)
+from bayesian_lora.main import jacobian_mean
 
 from .optimizer_helpers import (
     _merge_dictionaries,
@@ -17,175 +29,164 @@ from .optimizer_helpers import (
 from .uncertainty_metrics import compute_uncertainty_metrics
 
 
-def _compute_diagonal_fisher(
-    model: torch.nn.Module,
-    trainer,
-    target_ids: torch.LongTensor,
-    device: torch.device,
-    tokenizer,
-    tokenizer_run_cfg: dict,
-) -> dict:
-    """Accumulate the diagonal empirical Fisher over LoRA parameters.
+def _find_factors(model, trainer, tokenizer, tok_cfg, target_ids, n_kfac, lr_threshold_kfac, device):
+    # --- forward hook to find factors -----------------------------------------------
+    
+    def fwd_call(model, batch_prompts):
+        prompts = batch_prompts['prompts']
+        inputs = tokenizer(prompts, **tok_cfg).to(device)
+        outputs = model(**inputs)
+        logits = outputs.logits[:, -1, target_ids]  # Get the last token logits
+        return logits
 
-    F_ii ≈ (1/N) Σ_n (d log p(y_n|x_n,θ) / d θ_i)²
+    ## Get train loader
+    train_loader = trainer.get_train_dataloader()
 
-    Uses the true observed labels (empirical Fisher), which is standard for
-    post-hoc Laplace over classification models.
-
-    Returns
-    -------
-    dict  name → Tensor of same shape as the parameter, on *device*.
-    """
-    model.eval()
-    diag_F = {
-        name: torch.zeros_like(param, device=device)
-        for name, param in model.named_parameters()
-        if param.requires_grad  # LoRA adapters only
-    }
-    n_total = 0
-
-    # get_train_dataloader() uses the dataset's collate_fn + TrainingArguments
-    # batch size — identical to how the trainer itself iterates during training.
-    train_dl = trainer.get_train_dataloader()
-
-    for batch in train_dl:
-        # Batch format matches FTTrainer.compute_loss: {'prompts': [...], 'labels': Tensor}
-        prompts = batch["prompts"]
-        labels  = batch["labels"].to(device)
-        B       = labels.size(0)
-
-        inputs = tokenizer(prompts, **tokenizer_run_cfg).to(device)
-
-        model.zero_grad()
-        logits = model(**inputs).logits[:, -1, target_ids]  # (B, C)
-        loss   = F.cross_entropy(logits, labels)
-        loss.backward()
-
-        for name, param in model.named_parameters():
-            if param.requires_grad and param.grad is not None:
-                diag_F[name] += param.grad.data ** 2 * B  # accumulate before normalising
-
-        n_total += B
-
-    # Normalise → per-sample expectation
-    for name in diag_F:
-        diag_F[name] /= n_total
-
-    return diag_F
-
-@torch.no_grad()
-def _laplace_predict(
-    model: torch.nn.Module,
-    trainer,
-    dataset,                  # val_set or test_set
-    target_ids: torch.LongTensor,
-    device: torch.device,
-    tokenizer,
-    tokenizer_run_cfg: dict,
-    map_params: dict,
-    diag_F: dict,
-    prior_precision: float,
-    n_samples: int,
-    eval_type = 'val'
-) -> tuple:
-    """MC-average softmax probs over *n_samples* posterior weight draws.
-
-    Posterior variance per parameter:
-        σ²_i = 1 / (F_ii + prior_precision)
-
-    Returns
-    -------
-    avg_logits : np.ndarray  (N, C) float32  — log of averaged probs (pseudo-logits)
-    avg_probs  : np.ndarray  (N, C) float32
-    true_labels: np.ndarray  (N,)   int
-    """
-    model.eval()
-
-    # Pre-compute posterior std — same shape as each LoRA parameter
-    post_std = {
-        name: (1.0 / (diag_F[name] + prior_precision)).sqrt()
-        for name in map_params
-    }
-
-    # get_eval_dataloader respects eval batch size + collate_fn from TrainingArguments
-    if eval_type == 'val':
-        dl = trainer.get_eval_dataloader(dataset)
-    elif eval_type == 'test':
-        dl = trainer.get_test_dataloader(dataset)
-    else:
-        raise ValueError(f"Invalid eval_type: {eval_type}")
-
-    # Accumulate one list of (N, C) tensors per sample draw
-    all_sample_probs = []  # length = n_samples, each entry (N, C)
-    true_labels_collected = False
-    true_labels_all = []
-
-    for s in range(n_samples):
-        # Perturb weights: θ_s ~ N(θ_MAP, diag(σ²))
-        for name, mu in map_params.items():
-            noise = torch.randn_like(mu) * post_std[name]
-            # Access parameter by name and overwrite in-place
-            param_ref = dict(model.named_parameters())[name]
-            param_ref.data.copy_(mu + noise)
-
-        sample_probs = []
-        for batch in dl:
-            prompts = batch["prompts"]
-            inputs  = tokenizer(prompts, **tokenizer_run_cfg).to(device)
-            logits  = model(**inputs).logits[:, -1, target_ids]  # (B, C)
-            sample_probs.append(F.softmax(logits, dim=-1).cpu())
-
-            if not true_labels_collected:
-                true_labels_all.append(batch["labels"].cpu().numpy())
-
-        true_labels_collected = True
-        all_sample_probs.append(torch.cat(sample_probs, dim=0))  # (N, C)
-
-    # Restore MAP weights so the model is unchanged after this call
-    for name, mu in map_params.items():
-        dict(model.named_parameters())[name].data.copy_(mu)
-
-    # Average over posterior samples  →  (N, C)
-    avg_probs  = torch.stack(all_sample_probs, dim=0).mean(dim=0)  # (S, N, C) → (N, C)
-    avg_logits = torch.log(avg_probs.clamp(min=1e-12))             # pseudo-logits
-
-    true_labels = np.concatenate(true_labels_all, axis=0)
-    return (
-        avg_logits.float().numpy().astype(np.float32),
-        avg_probs.float().numpy().astype(np.float32),
-        true_labels,
+    ## Find Kronecker factors
+    factors = calculate_kronecker_factors(
+        model,            
+        fwd_call,         
+        train_loader,     
+        n_kfac,
+        lr_threshold_kfac,
+        target_module_keywords = ["lora"]
     )
 
-def _tune_prior_precision(
-    model, trainer, val_dataset, target_ids, device,
-    tokenizer, tokenizer_run_cfg,
-    map_params, diag_F,
-    n_samples: int,
-    grid=None,
-) -> float:
-    """Return the prior_precision with lowest NLL on the validation set."""
-    if grid is None:
-        # Log-scale grid matching the range used in the original paper repo
-        # (adamxyang/laplace-lora uses 100 points; 20 is a good compromise).
-        grid = np.logspace(-3, 4, 20).tolist()
-
-    best_prec, best_nll = grid[0], float("inf")
-    for prec in grid:
-        logits, probs, labels = _laplace_predict(
-            model, trainer, val_dataset, target_ids, device,
-            tokenizer, tokenizer_run_cfg,
-            map_params, diag_F, prec,
-            n_samples=min(n_samples, 5),  # cheaper grid: fewer samples
+    ## Cholesky decompose small factors
+    factors = cholesky_decompose_small_factors(
+            factors, lr_threshold_kfac, device,torch.float32
         )
-        log_p_norm = logits - _logsumexp(logits, axis=1, keepdims=True)
-        nll = float(-np.mean(log_p_norm[np.arange(len(labels)), labels]))
-        print(f"  [laplace] prior_precision={prec:.4g}  val_NLL={nll:.6f}")
-        if nll < best_nll:
-            best_nll  = nll
-            best_prec = prec
+    return factors
 
-    print(f"  [laplace] Best prior_precision={best_prec:.4g}  (val_NLL={best_nll:.6f})")
-    return best_prec
+def _find_LL(model, tokenizer, val_loader, tok_cfg, target_ids, device):
+    LL = 0
+    
+    with torch.no_grad(), torch.inference_mode():
+        for batch in val_loader:
+            prompts = batch['prompts']
+            labels = batch['labels'].to(device)
+            inputs = tokenizer(prompts, **tok_cfg).to(device)
+            logits = model(**inputs).logits[:, -1, target_ids]
+            probs = logits.softmax(-1)
+            LL += probs.gather(1, labels[:, None].to(device)).log().sum()
+
+    return LL
+
+def _find_optimal_prior_var(prior_var, trainer, model, tokenizer, tok_cfg, val_dataset, target_ids, factors, peft_r, n_kfac, device):
+    s2 = torch.tensor(prior_var, requires_grad=True)
+    opt = torch.optim.Adam([s2], lr=1e-2)
+    val_loader = trainer.get_eval_dataloader(val_dataset)
+
+    LL = _find_LL(model, tokenizer, val_loader, tok_cfg, target_ids, device)
+
+    for _ in range(100):
+        opt.zero_grad()
+        loss = model_evidence(model, LL, factors, peft_r, n_kfac, s2).log()
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_([s2], 1.0)
+        opt.step()
+    
+    return s2
+
+def _get_raw_model_tokenizer(cfg, device):
+    ## Get raw model
+    model_cfg = deepcopy(cfg.model.model_cfg)
+    model_cls_name = model_cfg.pop('type')
+    model_cls = getattr(transformers, model_cls_name)
+    model_torch_dtype = model_cfg.get('torch_dtype', None)
+
+    model_laplace = model_cls.from_pretrained(cfg.model.model_name_or_path, **model_cfg)
+    
+    ## Get raw tokenizer
+    tokenizer_cfg = deepcopy(cfg.model.tokenizer_cfg)
+    tokenizer_cls = getattr(transformers, tokenizer_cfg.pop('type'))
+    tokenizer_laplace = tokenizer_cls.from_pretrained(cfg.model.model_name_or_path, **tokenizer_cfg)
+    tokenizer_special_tokens = {
+        k: getattr(tokenizer_laplace, v.split('.')[-1]) if isinstance(v, str) and v.startswith('tokenizer') else v
+        for k,
+        v in cfg.model.special_tokens.items()
+    }
+    if len(tokenizer_special_tokens) > 0:
+        tokenizer_laplace.add_special_tokens(tokenizer_special_tokens)
+    if tokenizer_laplace.pad_token is None:
+        tokenizer_laplace.pad_token = tokenizer_laplace.eos_token
+
+    return model_laplace, tokenizer_laplace
+
+def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target_ids, factors, s2, peft_r, n_kfac, device):
+    # --- output callback for Laplace predictions -----------------------------------------------
+    def output_callback(outputs):
+        """Post process model outputs.
+
+        This function will be passed the results of model(**batch_inputs), and
+        should return the relevant logits. For multiple-choice tasks, this is
+        the class logits, but for full next-token prediction, this would just
+        be all the logits.
+        """
+        # Get the last token for CausalLM
+        logits = outputs.logits
+        # Select the logits corresponding to our target classes
+        target_logits = logits[:, -1, target_ids]
+        return target_logits
+    
+    loader = trainer.get_eval_dataloader(dataset)
+    
+    pred_logits_list = []
+    pred_mu_list     = []
+    pred_var_list    = []
+    true_labels_list = []
+
+    with torch.no_grad():
+        for batch in loader:
+            prompts = batch['prompts']
+            labels = batch['labels'].to(device)
+
+            batch_inputs = tokenizer(prompts, **tok_cfg).to(device)
+            
+            # Predict the output logit locations
+            jacobian, f_mu = jacobian_mean(
+                model, batch_inputs, output_callback=output_callback
+            )
+            pred_mu_list.append(f_mu.clone().cpu())
+
+            # Predict the output logit variances
+            f_var = variance(
+                batch_inputs,
+                jacobian,
+                factors,
+                s2,
+                len(target_ids),
+                peft_r,
+                n_kfac,
+                device,
+            )
+            pred_var_list.append(f_var.clone().cpu())
+
+            # Sample logits from N(f_mu, f_var) via reparameterisation
+            # Cast to float32: f_mu may be bfloat16, L is float32 from stable_cholesky
+            L = stable_cholesky(f_var)
+            samples = 100_000
+            f_mu_exp = f_mu.float().expand(samples, *f_mu.shape)
+            L_exp    = L.float().expand(samples, *L.shape)
+            eps      = torch.randn_like(f_mu_exp).unsqueeze(-1)  # float32 via randn_like
+            logits   = f_mu_exp[..., None] + L_exp @ eps
+            logits   = logits.squeeze(-1).mean(0)  # (batch, C) — MC average
+
+            pred_logits_list.append(logits.cpu())
+            true_labels_list.append(labels.cpu())
+
+    all_logits = torch.cat(pred_logits_list, dim=0)          # (N, C)
+    all_labels = torch.cat(true_labels_list, dim=0).numpy()
+
+    kfac_avg_probs   = torch.softmax(all_logits, dim=-1).float().numpy().astype(np.float32)
+    kfac_avg_logits  = np.log(np.clip(kfac_avg_probs, 1e-12, None)).astype(np.float32)
+    kfac_true_labels = all_labels.astype(int)
+
+    kfac_pred_mu  = torch.cat(pred_mu_list,  dim=0).float().numpy().astype(np.float32)  # (N, C)
+    kfac_pred_var = torch.cat(pred_var_list, dim=0).float().numpy().astype(np.float32)
+
+    return kfac_avg_logits, kfac_avg_probs, kfac_true_labels, kfac_pred_mu, kfac_pred_var
+
 
 def _build_metrics(model_type_logits, laplace_logits, labels, model_type):
 
@@ -215,6 +216,7 @@ def _build_metrics(model_type_logits, laplace_logits, labels, model_type):
     })
     return metrics, pred_laplace
 
+
 def optimize_laplace(
     result_dir: str,
     saved_file_name: str,
@@ -222,9 +224,11 @@ def optimize_laplace(
     trainer,
     val_dataset,
     test_dataset,
+    checkpoint_path: str,
     seed: int = 42,
-    prior_precision: Optional[float] = None,
-    n_samples: int = 20,
+    prior_var: Optional[float] = 0.1,
+    n_kfac: int = 100,
+    lr_threshold_kfac: int = 100,
 ) -> None:
     """Fit diagonal Laplace over LoRA params, evaluate on val/test, persist.
 
@@ -240,13 +244,15 @@ def optimize_laplace(
     test_dataset    Used for test evaluation.
     seed            Written as the key into the NPZ (same as other optimisers).
     prior_precision If None, tuned via grid search on val NLL (recommended).
-    n_samples       Number of MC weight draws at inference.
     """
     model      = trainer.model
     device     = trainer.args.device
     target_ids = trainer.target_ids
+    cfg        = trainer.cfg
     tokenizer  = trainer.processing_class
-    tok_cfg    = trainer.cfg.tokenizer_run_cfg
+    tok_cfg    = cfg.tokenizer_run_cfg
+    peft_r     = cfg.model.peft_cfg.r
+
 
     # --- load MAP predictions -----------------------------------------------
     def _load(split):
@@ -269,28 +275,50 @@ def optimize_laplace(
     n_lora = sum(p.numel() for p in map_params.values())
     print(f"  LoRA parameter count: {n_lora:,}")
 
-    print(f"[laplace] Computing diagonal Fisher (train set) ...")
-    diag_F = _compute_diagonal_fisher(
-        model, trainer, target_ids, device, tokenizer, tok_cfg,
+    ## Find Kronecker factors
+    factors = _find_factors(model, trainer, tokenizer, tok_cfg, target_ids, n_kfac, lr_threshold_kfac, device)
+
+    ## Find optimal prior
+    s2 = _find_optimal_prior_var(
+        prior_var, 
+        trainer, 
+        model, 
+        tokenizer, 
+        tok_cfg, 
+        val_dataset, 
+        target_ids, 
+        factors, 
+        peft_r, 
+        n_kfac, 
+        device
+    )
+    print(f"Optimized prior variance is: {s2.item()}")
+
+    ## Get raw model and tokenizer
+    model_laplace, tokenizer_laplace = _get_raw_model_tokenizer(cfg, device)
+
+    ## Get peft model
+    model_laplace = peft.PeftModel.from_pretrained(model_laplace, checkpoint_path, is_trainable=True)
+    model_laplace = model_laplace.to(device)
+
+    ## Freeze non-lora params
+    non_lora = [p for n, p in model_laplace.named_parameters()
+                if p.requires_grad and "lora" not in n.lower()]
+    for p in non_lora:
+        p.requires_grad_(False)
+
+    
+
+    print(f"[laplace] Generating val predictions...")
+    val_logits, val_probs, val_labels, val_pred_mu, val_pred_var = _get_laplace_predictions(
+        model_laplace, tokenizer_laplace, tok_cfg, trainer, val_dataset, target_ids, factors,
+        s2, peft_r, n_kfac, device
     )
 
-    if prior_precision is None:
-        print(f"[laplace] Tuning prior_precision on val ...")
-        prior_precision = _tune_prior_precision(
-            model, trainer, val_dataset, target_ids, device,
-            tokenizer, tok_cfg, map_params, diag_F, n_samples,
-        )
-
-    print(f"[laplace] Generating val predictions  (n_samples={n_samples}) ...")
-    val_logits, val_probs, val_labels = _laplace_predict(
-        model, trainer, val_dataset, target_ids, device,
-        tokenizer, tok_cfg, map_params, diag_F, prior_precision, n_samples
-    )
-
-    print(f"[laplace] Generating test predictions (n_samples={n_samples}) ...")
-    tst_logits, tst_probs, tst_labels = _laplace_predict(
-        model, trainer, test_dataset, target_ids, device,
-        tokenizer, tok_cfg, map_params, diag_F, prior_precision, n_samples, eval_type = 'test'
+    print(f"[laplace] Generating test predictions...")
+    tst_logits, tst_probs, tst_labels, tst_pred_mu, tst_pred_var = _get_laplace_predictions(
+        model_laplace, tokenizer_laplace, tok_cfg, trainer, test_dataset, target_ids, factors,
+        s2, peft_r, n_kfac, device
     )
 
     val_metrics, val_preds = _build_metrics(map_val_logits, 
@@ -338,8 +366,9 @@ def optimize_laplace(
 
     new_metrics = {
         "data": saved_file_name,
-        "laplace_prior_precision": prior_precision,
-        "laplace_n_samples": n_samples,
+        "laplace_optimized_prior_variance": s2.item(),
+        "laplace_n_kfac": n_kfac,
+        "laplace_peft_r": peft_r,
         "val": val_metrics,
         "test": tst_metrics,
     }

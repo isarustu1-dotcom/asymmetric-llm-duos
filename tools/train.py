@@ -29,6 +29,7 @@ import torch
 import wandb
 from mmengine.runner.utils import set_random_seed
 from transformers import TrainingArguments
+from transformers.trainer_utils import get_last_checkpoint
 
 from ib_edl import (
     DATASETS,
@@ -96,10 +97,11 @@ def parse_args():
                         'config yaml value is used.')
 
     # --- Laplace LoRA hyperparameter tuning ---
-    p.add_argument("--laplace-prior", type=float, default=None,
-                   help="Fixed prior precision. None → tuned on val.")
+    p.add_argument("--laplace-prior-var", type=float, default=0.1,
+                   help="Fixed prior variance. None → tuned on val.")
 
-    p.add_argument("--laplace-samples", type=int, default=20)
+    p.add_argument("--laplace-nkfac", type=int, default=100)
+    p.add_argument("--laplace-lr-threshold", type=int, default=100)
 
     # --- wandb ---
     p.add_argument('--no-wandb', action='store_true')
@@ -256,6 +258,8 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
     if not args.skip_ft:
         trainer.train()
         logger.info(f'Fine-tuning finished for {model_type}.')
+        last_checkpoint = get_last_checkpoint(training_args.output_dir)
+        logger.info(f'Last checkpoint: {last_checkpoint}')
 
     for split_name, split_set, prefix in [('val', val_set, 'val'),
                                            ('test', test_set, 'test')]:
@@ -281,19 +285,19 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
                          data_idx=test_idx, input_text=test_set.get_input_text())
 
     if laplace_lora:
-        prior = args.laplace_prior if args.laplace_prior else None
-        
+
         optimize_laplace(
             result_dir=work_dir,
             saved_file_name=npz,
-            model_type= model_type,
-            trainer = trainer,
+            model_type=model_type,
+            trainer=trainer,
             val_dataset=val_set,
             test_dataset=test_set,
-            seed = args.seed,
-            prior_precision=prior,
-            n_samples = args.laplace_samples
-
+            seed=args.seed,
+            checkpoint_path=last_checkpoint,
+            prior_var = args.laplace_prior_var,
+            n_kfac = args.laplace_nkfac,
+            lr_threshold_kfac = args.laplace_lr_threshold,
         )
 
     return cfg   # return last cfg for npz filename lookup
@@ -333,8 +337,8 @@ def main():
 
         if args.test_run:
             cfg.data.train.subset_size = 10              # small subset for fast testing
-            cfg.data.val.subset_size   = 1
-            cfg.data.test.subset_size  = 2
+            cfg.data.val.subset_size   = 4
+            cfg.data.test.subset_size  = 4
             cfg.train_cfg.max_steps = 10
             
         new_beta = beta_override[model_type]
