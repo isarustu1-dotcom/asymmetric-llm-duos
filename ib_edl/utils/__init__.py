@@ -2,9 +2,10 @@ from .logging import setup_logger
 from .misc import get_subset_indices, probs_to_logits, save_predictions
 from .typing import Device
 from .optimizer_helpers import _softmax_from_log
-from .duo_optimizer import optimize_weights, optimize_weights_ts
+from .duo_optimizer import optimize_weights, optimize_weights_ts, optimize_weights_blob
 from .temperature_scaling import optimize_temperature_scaling
 from .uncertainty_metrics import compute_uncertainty_metrics
+from .blob import inject_blob_params, compute_total_kl, get_blob_param_groups
 
 __all__ = [
     'setup_logger',
@@ -15,6 +16,10 @@ __all__ = [
     '_softmax_from_log',
     'optimize_weights',
     'optimize_weights_ts',
+    'optimize_weights_blob',
     'optimize_temperature_scaling',
     'compute_uncertainty_metrics',
+    'inject_blob_params',
+    'compute_total_kl',
+    'get_blob_param_groups',
 ]
