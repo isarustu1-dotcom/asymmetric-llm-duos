@@ -249,7 +249,7 @@ def optimize_laplace(
     checkpoint_path: str,
     seed: int = 42,
     prior_var: Optional[float] = 0.1,
-    n_kfac: int = 100,
+    n_kfac: int = 10,
     lr_threshold_kfac: int = 100,
 ) -> None:
     """Fit diagonal Laplace over LoRA params, evaluate on val/test, persist.
