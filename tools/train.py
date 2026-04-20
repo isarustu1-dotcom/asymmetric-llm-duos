@@ -242,7 +242,7 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
 
     if args.blob:
         _apply_blob_overrides(cfg, args)
-        inject_blob_params(model, cfg.blob_cfg.bayes_eps)
+        inject_blob_params(model, cfg.blob_cfg.bayes_eps, cfg.blob_cfg.bayes_beta)
 
     train_set = DATASETS.build(cfg.data['train'], default_args=dict(tokenizer=tokenizer))
     val_set   = DATASETS.build(cfg.data['val'],   default_args=dict(tokenizer=tokenizer))

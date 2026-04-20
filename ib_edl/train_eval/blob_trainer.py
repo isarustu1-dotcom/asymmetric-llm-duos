@@ -5,11 +5,13 @@ training loop inside HuggingFace Trainer.  Two Adam instances are used:
 
 * ``mu_optimizer``  — updates all trainable parameters *except* rho at the
   main learning rate (NLL + KL gradient).
-* ``rho_optimizer`` — updates only the BLoBLoRAA.rho variance parameters at
+* ``rho_optimizer`` — updates only the BLoB rho variance parameters at
   the dedicated KL learning rate ``blob_cfg.bayes_kllr``.
 
-A ``_DualOptimizer`` wrapper makes both optimizers look like a single one to
-the Trainer machinery (schedulers, logging, checkpointing).
+``_DualOptimizer`` inherits from ``torch.optim.Optimizer`` so that PyTorch
+LR schedulers (which call ``isinstance(opt, Optimizer)``) accept it.  Its
+``param_groups`` and ``state`` delegate to ``mu_optimizer``, so the cosine
+schedule modifies only the mu learning rate.
 
 Reference
 ---------
@@ -25,31 +27,38 @@ import torch.nn.functional as F
 from torch import Tensor
 from transformers import Trainer
 
-from ..utils.blob import compute_total_kl, get_blob_param_groups
+from ..utils.blob import compute_total_kl, get_blob_param_groups, set_blobsample
 
 
 # ---------------------------------------------------------------------------
 # Dual-optimizer wrapper
 # ---------------------------------------------------------------------------
 
-class _DualOptimizer:
-    """Exposes a single optimizer interface over two Adam instances.
+class _DualOptimizer(torch.optim.Optimizer):
+    """Single optimizer interface over two Adam instances.
+
+    Inherits from ``torch.optim.Optimizer`` so that ``isinstance`` checks
+    in PyTorch LR schedulers pass.
 
     ``param_groups`` and ``state`` delegate to ``mu_optimizer`` so that
     HuggingFace Trainer's LR-scheduler and logging work without change.
     ``step()`` calls both optimizers sequentially.
     """
 
-    def __init__(self, mu_optimizer: torch.optim.Optimizer,
-                 rho_optimizer: torch.optim.Optimizer) -> None:
-        self.mu_optimizer = mu_optimizer
+    def __init__(
+        self,
+        mu_optimizer: torch.optim.Optimizer,
+        rho_optimizer: torch.optim.Optimizer,
+    ) -> None:
+        # Satisfy Optimizer.__init__ with a dummy empty group, then replace
+        # internals so that schedulers see the real mu param_groups.
+        super().__init__([{'params': []}], {})
+        self.mu_optimizer  = mu_optimizer
         self.rho_optimizer = rho_optimizer
-        # HF Trainer reads param_groups[0]['lr'] for logging and for the
-        # scheduler.  Delegating to mu_optimizer means the cosine schedule
-        # modifies mu LR while rho LR stays constant.
+        # Overwrite with mu_optimizer's live objects (same reference).
         self.param_groups = mu_optimizer.param_groups
-        self.state = mu_optimizer.state
-        self.defaults = mu_optimizer.defaults
+        self.state        = mu_optimizer.state
+        self.defaults     = mu_optimizer.defaults
 
     def zero_grad(self, set_to_none: bool = True) -> None:
         self.mu_optimizer.zero_grad(set_to_none=set_to_none)
@@ -62,7 +71,7 @@ class _DualOptimizer:
 
     def state_dict(self) -> dict:
         return {
-            'mu': self.mu_optimizer.state_dict(),
+            'mu':  self.mu_optimizer.state_dict(),
             'rho': self.rho_optimizer.state_dict(),
         }
 
@@ -71,7 +80,7 @@ class _DualOptimizer:
             self.mu_optimizer.load_state_dict(state_dict['mu'])
             self.rho_optimizer.load_state_dict(state_dict['rho'])
         else:
-            # Fallback: treat as mu optimizer state (e.g. legacy checkpoint)
+            # Legacy checkpoint that only saved mu state.
             self.mu_optimizer.load_state_dict(state_dict)
 
 
@@ -83,8 +92,9 @@ class BLoBTrainer(Trainer):
     """HuggingFace Trainer subclass for BLoB fine-tuning.
 
     Differences from ``FTTrainer``:
-    * Uses a ``_DualOptimizer`` (two Adam instances, different LRs for mu
-      and rho parameters).
+
+    * Uses a ``_DualOptimizer`` (two Adam instances: mu at the main LR,
+      rho at ``blob_cfg.bayes_kllr``).
     * ``compute_loss`` averages logits over ``bayes_train_n_samples`` MC
       draws and adds the KL penalty scaled by π = 1 / (N · γ).
     * ``prediction_step`` averages logits over ``_blob_eval_n_samples`` draws.
@@ -95,28 +105,35 @@ class BLoBTrainer(Trainer):
         cfg:                 mmengine Config (tokenizer_run_cfg, etc.).
         target_ids:          Long tensor of answer-token IDs, shape (C,).
         blob_cfg:            Config node with all bayes_* hyperparameters.
-        train_dataset_size:  |D_train|, used to compute π.
+        train_dataset_size:  |D_train|, used to compute the KL weight π.
         **kwargs:            Forwarded to ``Trainer.__init__``.
     """
 
-    def __init__(self, cfg: mmengine.Config, target_ids: torch.LongTensor,
-                 blob_cfg, train_dataset_size: int, **kwargs) -> None:
+    def __init__(
+        self,
+        cfg: mmengine.Config,
+        target_ids: torch.LongTensor,
+        blob_cfg,
+        train_dataset_size: int,
+        **kwargs,
+    ) -> None:
         super().__init__(**kwargs)
-        self.cfg = cfg
-        self.target_ids = target_ids.to(self.args.device)
-        self.blob_cfg = blob_cfg
-        # KL weight: π = 1 / (N · γ)  (smaller for larger datasets)
-        self.kl_weight = 1.0 / (train_dataset_size * float(blob_cfg.bayes_gamma))
-        # Overridden before final trainer.predict() calls for MC accuracy.
+        self.cfg         = cfg
+        self.target_ids  = target_ids.to(self.args.device)
+        self.blob_cfg    = blob_cfg
+        # KL weight: π = 1 / (N · γ)
+        self.kl_weight   = 1.0 / (train_dataset_size * float(blob_cfg.bayes_gamma))
+        # Overridden before final trainer.predict() for MC-accurate evaluation.
         self._blob_eval_n_samples: int = int(blob_cfg.bayes_eval_n_samples)
 
     # ------------------------------------------------------------------
-    # Optimiser
+    # Optimizer
     # ------------------------------------------------------------------
 
     def create_optimizer(self) -> _DualOptimizer:
         """Build mu_optimizer and rho_optimizer, wrap in _DualOptimizer."""
         mu_params, rho_params = get_blob_param_groups(self.model)
+
         mu_opt = torch.optim.Adam(
             mu_params,
             lr=self.args.learning_rate,
@@ -128,13 +145,6 @@ class BLoBTrainer(Trainer):
         )
         self.optimizer = _DualOptimizer(mu_opt, rho_opt)
         return self.optimizer
-
-    def create_scheduler(self, num_training_steps: int, optimizer=None):
-        # Pass mu_optimizer to satisfy isinstance(optimizer, Optimizer).
-        # param_groups is the same object reference, so LR updates propagate.
-        if optimizer is None or not isinstance(optimizer, torch.optim.Optimizer):
-            optimizer = self.optimizer.mu_optimizer
-        return super().create_scheduler(num_training_steps, optimizer=optimizer)
 
     # ------------------------------------------------------------------
     # Loss
@@ -150,7 +160,8 @@ class BLoBTrainer(Trainer):
         """ELBO = NLL + kl_weight · KL.
 
         Averages logits over ``bayes_train_n_samples`` MC draws.  Each draw
-        samples new weights inside ``BLoBLoRAA.forward``.
+        adds fresh Bayesian noise inside the patched LoRA forward
+        (``blobsample=True`` is the default set by ``inject_blob_params``).
         """
         prompts = inputs.pop('prompts')
         labels  = inputs.pop('labels').to(self.args.device)
@@ -166,7 +177,7 @@ class BLoBTrainer(Trainer):
         logits = logits_acc / n_samples  # type: ignore[operator]
 
         nll  = F.cross_entropy(logits, labels)
-        kl   = compute_total_kl(model, float(self.blob_cfg.bayes_beta))
+        kl   = compute_total_kl(model)
         loss = nll + self.kl_weight * kl
 
         outputs = {'loss': loss, 'logits': logits}
@@ -185,17 +196,19 @@ class BLoBTrainer(Trainer):
     ) -> Tuple[Optional[Tensor], Optional[Tensor], Optional[Tensor]]:
         """MC-averaged prediction step.
 
-        Uses ``self._blob_eval_n_samples`` draws.  Set this attribute to
-        ``blob_cfg.bayes_eval_n_samples_final`` (default 10) before calling
-        ``trainer.predict()`` for accurate final evaluation.
+        Uses ``self._blob_eval_n_samples`` forward passes with Bayesian
+        sampling enabled, then averages the logits.  Set
+        ``trainer._blob_eval_n_samples = blob_cfg.bayes_eval_n_samples_final``
+        before calling ``trainer.predict()`` for accurate final evaluation.
         """
-        inputs   = self._prepare_inputs(inputs)
-        prompts  = inputs.pop('prompts')
-        labels   = inputs.pop('labels').to(self.args.device)
+        inputs  = self._prepare_inputs(inputs)
+        prompts = inputs.pop('prompts')
+        labels  = inputs.pop('labels').to(self.args.device)
         tok = self.processing_class(
             prompts, **self.cfg.tokenizer_run_cfg).to(self.args.device)
 
         n_samples = self._blob_eval_n_samples
+        set_blobsample(model, True)
         model.eval()
         with torch.no_grad():
             logits_list = []
@@ -205,4 +218,4 @@ class BLoBTrainer(Trainer):
             logits = torch.stack(logits_list, dim=0).mean(dim=0)
 
         loss = F.cross_entropy(logits, labels)
-        return (loss.detach(), logits.detach(), labels.detach())
+        return loss.detach(), logits.detach(), labels.detach()

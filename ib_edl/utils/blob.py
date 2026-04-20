@@ -1,196 +1,330 @@
-"""BLoB (Bayesian Low-rank Adaptation by Backpropagation) model wrapper.
+"""BLoB (Bayesian Low-rank Adaptation by Backpropagation) model utilities.
 
-Replaces every lora_A ``nn.Linear`` inside a PEFT model with a ``BLoBLoRAA``
-module that carries both mean (mu) and standard-deviation (rho) parameters,
-implements the reparameterisation trick in ``forward()``, and exposes a
-closed-form Gaussian KL helper.
+Follows the original implementation closely:
+  Wang et al. (2024) "BLoB: Bayesian Low-Rank Adaptation by Backpropagation"
+  https://arxiv.org/abs/2406.11675
+  Official code: https://github.com/Wang-ML-Lab/bayesian-peft
 
-Reference
----------
-Wang et al. (2024) "BLoB: Bayesian Low-Rank Adaptation by Backpropagation"
-https://arxiv.org/abs/2406.11675
-Official implementation: https://github.com/Wang-ML-Lab/bayesian-peft
+Architecture
+------------
+``lora_A`` (an ``nn.Linear``) is left **untouched**.  A ``lora_A_rho``
+``nn.ParameterDict`` is added alongside it to hold the variance parameters.
+The LoRA layer's ``forward()`` is monkey-patched with ``blob_linear_forward``
+so that Bayesian noise is injected via local reparameterisation when
+``layer.blobsample is True``.
+
+Two separate ``torch.optim`` instances (mu and rho) are used at different
+learning rates, wrapped in ``_DualOptimizer`` for HuggingFace Trainer
+compatibility.
 """
 import math
 from typing import List, Tuple
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch import Tensor
 
 
 # ---------------------------------------------------------------------------
-# Bayesian lora_A layer
+# Standalone functions — monkey-patched onto each LoRA layer
 # ---------------------------------------------------------------------------
 
-class BLoBLoRAA(nn.Module):
-    """Bayesian LoRA-A layer: mean + standard-deviation parameters.
+def blob_linear_forward(self, x: Tensor, *args, **kwargs) -> Tensor:
+    """Replacement ``forward`` for PEFT ``Linear`` LoRA layers.
 
-    Replaces a standard ``nn.Linear`` that lives inside the ``lora_A``
-    ``ModuleDict`` of a PEFT ``LoraLayer``.  Every call to ``forward`` samples
-    a fresh weight matrix via the reparameterisation trick.
+    Performs the standard LoRA forward (base + lora_B(lora_A(dropout(x)))),
+    then — when ``self.blobsample`` is ``True`` — adds Bayesian noise via
+    local reparameterisation using the learned ``lora_A_rho`` parameters.
+    This matches the original bayesian-peft ``blob_linear_forward`` exactly.
+    """
+    previous_dtype = x.dtype
 
-    Two variance parameterisations are supported (controlled by *bayes_eps*):
+    if self.disable_adapters:
+        if self.merged:
+            self.unmerge()
+        result = self.base_layer(x, *args, **kwargs)
+    elif self.merged:
+        result = self.base_layer(x, *args, **kwargs)
+    else:
+        # Standard LoRA path — identical to PEFT's original forward.
+        result = self.base_layer(x, *args, **kwargs)
+        for active_adapter in self.active_adapters:
+            if active_adapter not in self.lora_A.keys():
+                continue
+            lora_A  = self.lora_A[active_adapter]
+            lora_B  = self.lora_B[active_adapter]
+            dropout = self.lora_dropout[active_adapter]
+            scaling = self.scaling[active_adapter]
+            x = x.to(lora_A.weight.dtype)
+            result = result + lora_B(lora_A(dropout(x))) * scaling
 
-    * ``bayes_eps >= 0``:  sigma = rho²,
-      rho initialised ~ Uniform[eps/√2, eps]
-    * ``bayes_eps < 0``:   sigma = softplus(rho),
-      rho initialised ~ Uniform[eps - 1, eps]
+    # BLoB noise injection via local reparameterisation.
+    for active_adapter in self.active_adapters:
+        if active_adapter not in self.lora_A.keys():
+            continue
+        lora_A = self.lora_A[active_adapter]
+        if self.blobsample:
+            if self.bayes_eps < 0:
+                A_sigma = torch.log1p(
+                    torch.exp(self.lora_A_rho[active_adapter]))
+            else:
+                A_sigma = self.lora_A_rho[active_adapter] ** 2
 
-    The default (``bayes_eps = 0.05``) uses the squared parameterisation,
-    which is numerically safer under bfloat16.
+            scaling = self.scaling[active_adapter]
+            dropout = self.lora_dropout[active_adapter]
+            x = x.to(lora_A.weight.dtype)
 
-    Args:
-        in_features:  Number of input features (same as the replaced Linear).
-        out_features: Number of output features (= LoRA rank r).
-        mu_init:      Initial value for the mean — copy of the original weight.
-        bayes_eps:    Variance initialisation scale; sign selects the sigma
-                      parameterisation.
+            # Random ±1 sign vectors for local reparameterisation.
+            if x.dim() == 2:
+                r_A = (
+                    torch.ones(
+                        (x.size(0), self.in_features),
+                        device=x.device, dtype=x.dtype,
+                    ).uniform_(-1, 1).sign()
+                )
+                s_A = (
+                    torch.ones(
+                        (x.size(0), self.r[active_adapter]),
+                        device=x.device, dtype=x.dtype,
+                    ).uniform_(-1, 1).sign()
+                )
+            else:
+                r_A = (
+                    torch.ones(
+                        (x.size(0), x.size(1), self.in_features),
+                        device=x.device, dtype=x.dtype,
+                    ).uniform_(-1, 1).sign()
+                )
+                s_A = (
+                    torch.ones(
+                        (x.size(0), x.size(1), self.r[active_adapter]),
+                        device=x.device, dtype=x.dtype,
+                    ).uniform_(-1, 1).sign()
+                )
+
+            x = dropout(x)
+            lora_noise_a = A_sigma * torch.randn_like(lora_A.weight)
+            noise = (
+                ((x * r_A) @ lora_noise_a.transpose(0, 1)) * s_A
+            ) @ self.lora_B[active_adapter].weight.transpose(0, 1)
+            result = result + noise * scaling
+
+        result = result.to(previous_dtype)
+
+    return result
+
+
+def div_posterior_prior(self) -> Tensor:
+    """KL( N(mu, sigma²) ‖ N(0, bayes_beta²) ) summed over this layer's adapters.
+
+    Uses the numerically stable form from the original repo, computing in
+    float64 to avoid bfloat16 underflow.
     """
 
-    def __init__(self, in_features: int, out_features: int,
-                 mu_init: Tensor, bayes_eps: float) -> None:
-        super().__init__()
-        self.bayes_eps = bayes_eps
-        self.mu = nn.Parameter(mu_init.clone())
-
-        if bayes_eps < 0.0:
-            lo, hi = float(bayes_eps) - 1.0, float(bayes_eps)
-        else:
-            lo, hi = float(bayes_eps) / math.sqrt(2.0), float(bayes_eps)
-
-        rho_init = torch.empty_like(mu_init).uniform_(lo, hi)
-        self.rho = nn.Parameter(rho_init)
-
-    # ------------------------------------------------------------------
-    def _sigma(self) -> Tensor:
-        """Compute the standard deviation from rho."""
-        if self.bayes_eps >= 0.0:
-            return torch.clamp(self.rho, min=1e-4) ** 2
-        return F.softplus(self.rho)
-
-    def forward(self, x: Tensor) -> Tensor:
-        """Sample a weight and apply the linear transformation."""
-        sigma = self._sigma()
-        w = self.mu + sigma * torch.randn_like(self.mu)
-        return F.linear(x, w)
-
-    def kl(self, prior_var: float) -> Tensor:
-        """Closed-form KL( N(mu, sigma²) ‖ N(0, prior_var) ).
-
-        KL = 0.5 · Σ[ sigma² / prior_var
-                       + mu²   / prior_var
-                       − 1
-                       + log(prior_var)
-                       − 2 · log(sigma) ]
-        """
-        sigma = self._sigma()
-        return 0.5 * (
-            sigma.pow(2) / prior_var
-            + self.mu.pow(2) / prior_var
-            - 1.0
-            + math.log(prior_var)
-            - 2.0 * torch.log(sigma)
+    def kl_div_stable(
+        mu_q: Tensor, sigma_q: Tensor, mu_p: float, sigma_p: float,
+    ) -> Tensor:
+        eps = 1e-6
+        return (
+            math.log(sigma_p + eps)
+            - torch.log(sigma_q.to(torch.float64) + eps)
+            + (
+                sigma_q.to(torch.float64) ** 2
+                + (mu_q.to(torch.float64) - mu_p) ** 2
+            ) / (2.0 * sigma_p ** 2 + eps)
+            - 0.5
         ).sum()
 
+    kl: Tensor = torch.tensor(0.0)
+    for active_adapter in self.active_adapters:
+        if self.bayes_eps < 0:
+            sigma_weight = torch.log1p(
+                torch.exp(self.lora_A_rho[active_adapter]))
+        else:
+            sigma_weight = self.lora_A_rho[active_adapter] ** 2
+        kl = kl + kl_div_stable(
+            self.lora_A[active_adapter].weight,
+            sigma_weight,
+            0.0,
+            self.bayes_beta,
+        )
+    return kl
+
+
+def _blob_sample(self, status: bool = True) -> None:
+    """Toggle Bayesian noise sampling on this layer."""
+    self.blobsample = status
+
 
 # ---------------------------------------------------------------------------
-# Model-level helpers
+# Layer wrapping helper (internal)
 # ---------------------------------------------------------------------------
 
-def inject_blob_params(model: nn.Module, bayes_eps: float) -> None:
-    """Walk a PEFT model and replace every lora_A Linear with BLoBLoRAA.
+def _wrap_lora_layer(
+    lora_layer: nn.Module, bayes_eps: float, bayes_beta: float,
+) -> None:
+    """Add ``lora_A_rho`` and BLoB attributes to a LoRA layer in-place.
 
-    The replacement is done in-place by assigning to
-    ``module.lora_A[adapter_name]`` on each ``LoraLayer``.  Because
-    ``lora_A`` is an ``nn.ModuleDict``, the new ``BLoBLoRAA`` is
-    automatically registered in the parameter tree.
+    ``lora_A`` (the existing ``nn.Linear``) is **not replaced**.  A new
+    ``nn.ParameterDict`` called ``lora_A_rho`` is registered alongside it.
+    Initialisation follows the original repo exactly.
+    """
+    lora_layer.lora_A_rho = nn.ParameterDict({})
+    lora_layer.bayes_eps  = bayes_eps
+    lora_layer.bayes_beta = bayes_beta
+    lora_layer.blobsample = True
+
+    # Allocate rho tensors.
+    for adapter_name in lora_layer._active_adapter:
+        lora_layer.lora_A_rho[adapter_name] = nn.Parameter(
+            lora_layer.lora_A[adapter_name].weight.new_zeros(
+                lora_layer.r[adapter_name], lora_layer.in_features,
+            )
+        )
+
+    # Initialise rho tensors.
+    for adapter_name in lora_layer._active_adapter:
+        if adapter_name not in lora_layer.lora_A.keys():
+            continue
+        if bayes_eps < 0:
+            nn.init.uniform_(
+                lora_layer.lora_A_rho[adapter_name],
+                bayes_eps - 1.0,
+                bayes_eps,
+            )
+        else:
+            nn.init.uniform_(
+                lora_layer.lora_A_rho[adapter_name],
+                bayes_eps / math.sqrt(2.0),
+                bayes_eps,
+            )
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+def inject_blob_params(
+    model: nn.Module, bayes_eps: float, bayes_beta: float,
+) -> None:
+    """Walk a PEFT model and patch every LoRA Linear layer for BLoB training.
+
+    For each ``peft.tuners.lora.Linear`` layer:
+
+    * Adds ``lora_A_rho`` — an ``nn.ParameterDict`` of variance parameters.
+    * Adds scalar attributes ``bayes_eps``, ``bayes_beta``, ``blobsample``.
+    * Monkey-patches ``forward`` → ``blob_linear_forward``.
+    * Monkey-patches ``div_posterior_prior`` → KL computation.
+    * Monkey-patches ``sample`` → blobsample toggle.
+
+    ``lora_A`` (the original ``nn.Linear``) is left completely untouched so
+    PEFT internals that read ``lora_A.weight.dtype`` continue to work.
 
     Args:
-        model:     A ``PeftModel`` (or any model containing PEFT LoRA layers).
-        bayes_eps: Variance initialisation scale; sign selects parameterisation.
+        model:      A ``PeftModel`` with LoRA adapters already applied.
+        bayes_eps:  Variance init scale; sign selects sigma parameterisation.
+        bayes_beta: Prior standard deviation σ_p (not variance).
+    """
+    try:
+        from peft.tuners.lora.layer import LoraLayer
+        from peft.tuners.lora import Linear as LoraLinear
+    except ImportError as exc:
+        raise ImportError(
+            'peft >= 0.6 is required for BLoB '
+            '(import peft.tuners.lora failed).') from exc
+
+    patched = 0
+    for module in model.modules():
+        if not (isinstance(module, LoraLayer) and isinstance(module, LoraLinear)):
+            continue
+        _wrap_lora_layer(module, bayes_eps, bayes_beta)
+        setattr(module, 'forward',
+                blob_linear_forward.__get__(module, module.__class__))
+        setattr(module, 'div_posterior_prior',
+                div_posterior_prior.__get__(module, module.__class__))
+        setattr(module, 'sample',
+                _blob_sample.__get__(module, module.__class__))
+        patched += 1
+
+    if patched == 0:
+        raise RuntimeError(
+            'inject_blob_params: no peft.tuners.lora.Linear layers found. '
+            'Ensure the model was built with use_peft=True.')
+    print(f'[blob] Patched {patched} LoRA layers with BLoB '
+          f'(bayes_eps={bayes_eps}, bayes_beta={bayes_beta}).')
+
+
+def compute_total_kl(model: nn.Module) -> Tensor:
+    """Sum KL divergences over all BLoB-patched LoRA layers in *model*.
+
+    Args:
+        model: A model whose LoRA layers have been patched by
+               ``inject_blob_params``.
 
     Raises:
-        ImportError:  If PEFT >= 0.6 is not available.
-        RuntimeError: If no lora_A layers are found (model not built with
-                      use_peft=True).
+        RuntimeError: If no patched layers are found.
     """
     try:
         from peft.tuners.lora.layer import LoraLayer
     except ImportError as exc:
-        raise ImportError(
-            'peft >= 0.6 is required for BLoB '
-            '(import peft.tuners.lora.layer.LoraLayer failed).') from exc
+        raise ImportError('peft >= 0.6 required.') from exc
 
-    replaced = 0
-    for module in model.modules():
-        if not (isinstance(module, LoraLayer) and hasattr(module, 'lora_A')):
-            continue
-        for adapter_name, linear in list(module.lora_A.items()):
-            if not isinstance(linear, nn.Linear):
-                continue  # already replaced or unexpected type — skip
-            blob_layer = BLoBLoRAA(
-                in_features=linear.in_features,
-                out_features=linear.out_features,
-                mu_init=linear.weight.data,
-                bayes_eps=bayes_eps,
-            )
-            blob_layer = blob_layer.to(device=linear.weight.device,
-                                       dtype=linear.weight.dtype)
-            module.lora_A[adapter_name] = blob_layer
-            replaced += 1
-
-    if replaced == 0:
-        raise RuntimeError(
-            'inject_blob_params: no lora_A nn.Linear layers were found. '
-            'Make sure the model was built with use_peft=True and that PEFT '
-            'LoRA adapters are active.')
-    print(f'[blob] Replaced {replaced} lora_A layers with BLoBLoRAA '
-          f'(bayes_eps={bayes_eps}).')
-
-
-def compute_total_kl(model: nn.Module, prior_var: float) -> Tensor:
-    """Sum KL divergences over all BLoBLoRAA layers in *model*.
-
-    Args:
-        model:     Model whose BLoBLoRAA layers to aggregate.
-        prior_var: Prior variance σ² for all layers (= blob_cfg.bayes_beta).
-
-    Raises:
-        RuntimeError: If no BLoBLoRAA layers are found.
-    """
     total: Tensor | None = None
     for module in model.modules():
-        if isinstance(module, BLoBLoRAA):
-            kl = module.kl(prior_var)
+        if isinstance(module, LoraLayer) and hasattr(module, 'lora_A_rho'):
+            kl = module.div_posterior_prior()
             total = kl if total is None else total + kl
+
     if total is None:
         raise RuntimeError(
-            'compute_total_kl: no BLoBLoRAA layers found. '
+            'compute_total_kl: no BLoB-patched LoRA layers found. '
             'Call inject_blob_params before training.')
     return total
 
 
-def get_blob_param_groups(
-        model: nn.Module) -> Tuple[List[Tensor], List[Tensor]]:
-    """Separate trainable parameters into (mu_params, rho_params).
+def set_blobsample(model: nn.Module, status: bool) -> None:
+    """Toggle Bayesian noise sampling on every BLoB-patched LoRA layer.
 
-    All trainable parameters that are *not* a ``BLoBLoRAA.rho`` go into
-    *mu_params* — this includes lora_B weights and any other fine-tuned
-    parameters.  ``rho`` parameters are updated by the KL optimizer at a
-    separate (typically higher) learning rate.
+    Args:
+        model:  Model whose layers to toggle.
+        status: ``True`` to enable sampling (training), ``False`` for MAP
+                inference.
+    """
+    try:
+        from peft.tuners.lora.layer import LoraLayer
+    except ImportError as exc:
+        raise ImportError('peft >= 0.6 required.') from exc
+
+    for module in model.modules():
+        if isinstance(module, LoraLayer) and hasattr(module, 'blobsample'):
+            module.blobsample = status
+
+
+def get_blob_param_groups(
+    model: nn.Module,
+) -> Tuple[List[Tensor], List[Tensor]]:
+    """Separate trainable parameters into ``(mu_params, rho_params)``.
+
+    ``rho_params``:  all ``lora_A_rho`` tensors (variance parameters).
+    ``mu_params``:   every other trainable parameter (``lora_A.weight``,
+                     ``lora_B.weight``, bias terms, …).
 
     Returns:
-        Tuple of (mu_params, rho_params), each a list of ``Tensor``.
+        Tuple ``(mu_params, rho_params)``, each a list of ``Tensor``.
     """
+    try:
+        from peft.tuners.lora.layer import LoraLayer
+    except ImportError as exc:
+        raise ImportError('peft >= 0.6 required.') from exc
+
     rho_ids: set = set()
     rho_params: List[Tensor] = []
 
     for module in model.modules():
-        if isinstance(module, BLoBLoRAA):
-            rho_params.append(module.rho)
-            rho_ids.add(id(module.rho))
+        if isinstance(module, LoraLayer) and hasattr(module, 'lora_A_rho'):
+            for p in module.lora_A_rho.values():
+                rho_params.append(p)
+                rho_ids.add(id(p))
 
     mu_params: List[Tensor] = [
         p for p in model.parameters()

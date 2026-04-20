@@ -5,7 +5,7 @@ from .optimizer_helpers import _softmax_from_log
 from .duo_optimizer import optimize_weights, optimize_weights_ts, optimize_weights_blob
 from .temperature_scaling import optimize_temperature_scaling
 from .uncertainty_metrics import compute_uncertainty_metrics
-from .blob import inject_blob_params, compute_total_kl, get_blob_param_groups
+from .blob import inject_blob_params, compute_total_kl, get_blob_param_groups, set_blobsample
 
 __all__ = [
     'setup_logger',
@@ -22,4 +22,5 @@ __all__ = [
     'inject_blob_params',
     'compute_total_kl',
     'get_blob_param_groups',
+    'set_blobsample',
 ]
