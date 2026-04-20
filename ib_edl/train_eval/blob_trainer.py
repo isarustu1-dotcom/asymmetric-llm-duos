@@ -129,6 +129,13 @@ class BLoBTrainer(Trainer):
         self.optimizer = _DualOptimizer(mu_opt, rho_opt)
         return self.optimizer
 
+    def create_scheduler(self, num_training_steps: int, optimizer=None):
+        # Pass mu_optimizer to satisfy isinstance(optimizer, Optimizer).
+        # param_groups is the same object reference, so LR updates propagate.
+        if optimizer is None or not isinstance(optimizer, torch.optim.Optimizer):
+            optimizer = self.optimizer.mu_optimizer
+        return super().create_scheduler(num_training_steps, optimizer=optimizer)
+
     # ------------------------------------------------------------------
     # Loss
     # ------------------------------------------------------------------
