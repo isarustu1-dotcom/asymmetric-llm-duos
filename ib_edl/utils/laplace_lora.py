@@ -8,6 +8,7 @@ import transformers
 from transformers.tokenization_utils_base import BatchEncoding
 from copy import deepcopy
 import peft
+from torch.utils.data import DataLoader
 
 from bayesian_lora import (
     calculate_kronecker_factors,
@@ -129,19 +130,23 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
         # Select the logits corresponding to our target classes
         target_logits = logits[:, -1, target_ids]
         return target_logits
-    
-    loader = trainer.get_eval_dataloader(dataset)
+
+    base_loader = trainer.get_eval_dataloader(dataset)
+    loader = DataLoader(
+        base_loader.dataset,
+        batch_size=1,
+        shuffle=False,
+        collate_fn=base_loader.collate_fn,
+    )
 
     # Release fragmented allocations left over from training before the
     # Jacobian loop, which is the most memory-intensive part of Laplace.
     torch.cuda.empty_cache()
 
-    pred_logits_list = []
     pred_mu_list     = []
     pred_var_list    = []
     true_labels_list = []
-    pred_probs_list =[]
-    mean_sampled_logits_list = []
+    pred_probs_list  = []
 
     with torch.no_grad():
         for batch in loader:
@@ -185,21 +190,15 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
             f_mu_exp = f_mu.float().expand(samples, *f_mu.shape)
             L_exp    = L.float().expand(samples, *L.shape)
             eps      = torch.randn_like(f_mu_exp).unsqueeze(-1)  # float32 via randn_like
-            logits_sampled   = f_mu_exp[..., None] + L_exp @ eps # (100_000, B, C, 1)
-            probs_sampled = logits_sampled.squeeze(-1).softmax(-1).mean(0)
-            mean_sampled_logits   = logits_sampled.squeeze(-1).mean(0)  # (B, C) — MC average
+            logits_sampled = f_mu_exp[..., None] + L_exp @ eps  # (samples, B, C, 1)
+            probs_sampled  = logits_sampled.squeeze(-1).softmax(-1).mean(0)  # (B, C)
 
-            pred_logits_list.append(logits_sampled.cpu())
             pred_probs_list.append(probs_sampled.cpu())
-            mean_sampled_logits_list.append(mean_sampled_logits.cpu())
             true_labels_list.append(labels.cpu())
 
-    all_sampled_logits = torch.cat(pred_logits_list, dim=0)          # (100_000, N, C, 1)
-    all_probs = torch.cat(pred_probs_list, dim=0)           # (N, C)
-    all_mean_sampled_logits = torch.cat(mean_sampled_logits_list, dim=0)           # (N, C)
+    all_probs  = torch.cat(pred_probs_list,  dim=0)   # (N, C)
     all_labels = torch.cat(true_labels_list, dim=0).numpy()
 
-    #kfac_avg_probs   = torch.softmax(all_mean_sampled_logits, dim=-1).float().numpy().astype(np.float32)
     kfac_avg_probs = all_probs.float().numpy().astype(np.float32)
     kfac_avg_logits  = torch.log(all_probs.clamp(min=1e-10)).float().numpy().astype(np.float32)
     kfac_true_labels = all_labels.astype(int)
