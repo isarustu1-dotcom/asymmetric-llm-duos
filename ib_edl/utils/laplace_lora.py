@@ -118,26 +118,17 @@ def _get_raw_model_tokenizer(cfg):
 def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target_ids, factors, s2, peft_r, n_kfac, device):
     # --- output callback for Laplace predictions -----------------------------------------------
     def output_callback(outputs):
-        """Post process model outputs.
-
-        This function will be passed the results of model(**batch_inputs), and
-        should return the relevant logits. For multiple-choice tasks, this is
-        the class logits, but for full next-token prediction, this would just
-        be all the logits.
-        """
-        # Get the last token for CausalLM
         logits = outputs.logits
-        # Select the logits corresponding to our target classes
         target_logits = logits[:, -1, target_ids]
         return target_logits
 
-    base_loader = trainer.get_eval_dataloader(dataset)
-    loader = DataLoader(
-        base_loader.dataset,
-        batch_size=1,
-        shuffle=False,
-        collate_fn=base_loader.collate_fn,
-    )
+    loader = trainer.get_eval_dataloader(dataset)
+    #loader = DataLoader(
+    #    base_loader.dataset,
+    #    batch_size=laplace_batch_size,
+    #    shuffle=False,
+    #    collate_fn=base_loader.collate_fn,
+    #)
 
     # Release fragmented allocations left over from training before the
     # Jacobian loop, which is the most memory-intensive part of Laplace.
@@ -148,51 +139,54 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
     true_labels_list = []
     pred_probs_list  = []
 
+    def _process_single_batch(batch_inputs, labels):
+        jacobian, f_mu = jacobian_mean(model, batch_inputs, output_callback=output_callback)
+
+        actual_bs = batch_inputs.input_ids.size(0)
+        if actual_bs == 1:
+            # Work-around for bayesian_lora bug: variance() squeezes without dim,
+            # dropping the batch dim when bs==1. Expand to bs=2 then slice back.
+            var_inputs   = BatchEncoding({k: v.expand(2, *v.shape[1:]) for k, v in batch_inputs.items()})
+            var_jacobian = {k: v.expand(2, *v.shape[1:]) for k, v in jacobian.items()}
+            f_var = variance(var_inputs, var_jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device)[:1]
+        else:
+            f_var = variance(batch_inputs, jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device)
+
+        L = stable_cholesky(f_var)
+        samples = 100_000
+        f_mu_exp = f_mu.float().expand(samples, *f_mu.shape)
+        L_exp    = L.float().expand(samples, *L.shape)
+        eps      = torch.randn_like(f_mu_exp).unsqueeze(-1)
+        logits_sampled = f_mu_exp[..., None] + L_exp @ eps
+        probs_sampled  = logits_sampled.squeeze(-1).softmax(-1).mean(0)
+
+        return f_mu, f_var, probs_sampled, labels
+
     with torch.no_grad():
         for batch in loader:
             prompts = batch['prompts']
             labels = batch['labels'].to(device)
-
             batch_inputs = tokenizer(prompts, **tok_cfg).to(device)
 
-            # Predict the output logit locations
-            jacobian, f_mu = jacobian_mean(
-                model, batch_inputs, output_callback=output_callback
-            )
+            try:
+                f_mu, f_var, probs_sampled, labels = _process_single_batch(batch_inputs, labels)
+            except torch.cuda.OutOfMemoryError:
+                torch.cuda.empty_cache()
+                # Fall back to processing one sample at a time
+                f_mu_parts, f_var_parts, probs_parts, lbl_parts = [], [], [], []
+                for i in range(batch_inputs.input_ids.size(0)):
+                    single_inputs = BatchEncoding({k: v[i:i+1] for k, v in batch_inputs.items()})
+                    single_labels = labels[i:i+1]
+                    fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
+                    f_mu_parts.append(fm.cpu()); f_var_parts.append(fv.cpu())
+                    probs_parts.append(ps.cpu()); lbl_parts.append(lb.cpu())
+                f_mu          = torch.cat(f_mu_parts).to(device)
+                f_var         = torch.cat(f_var_parts).to(device)
+                probs_sampled = torch.cat(probs_parts).to(device)
+                labels        = torch.cat(lbl_parts).to(device)
+
             pred_mu_list.append(f_mu.clone().cpu())
-
-            # Predict the output logit variances.
-            # Work-around for a bug in bayesian_lora: variance() calls
-            # .squeeze() on every Jacobian tensor without specifying a dim,
-            # so when batch_size == 1 the batch dimension is removed and the
-            # subsequent shape assertion fails.  We duplicate the single
-            # sample to batch_size=2 before passing to variance() so that
-            # squeeze() leaves the batch dim intact, then slice [:1] back.
-            actual_bs = batch_inputs.input_ids.size(0)
-            if actual_bs == 1:
-                var_inputs   = BatchEncoding(
-                    {k: v.expand(2, *v.shape[1:]) for k, v in batch_inputs.items()}
-                )
-                var_jacobian = {k: v.expand(2, *v.shape[1:]) for k, v in jacobian.items()}
-                f_var = variance(
-                    var_inputs, var_jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device
-                )[:1]
-            else:
-                f_var = variance(
-                    batch_inputs, jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device
-                )
             pred_var_list.append(f_var.clone().cpu())
-
-            # Sample logits from N(f_mu, f_var) via reparameterisation
-            # Cast to float32: f_mu may be bfloat16, L is float32 from stable_cholesky
-            L = stable_cholesky(f_var)
-            samples = 100_000
-            f_mu_exp = f_mu.float().expand(samples, *f_mu.shape)
-            L_exp    = L.float().expand(samples, *L.shape)
-            eps      = torch.randn_like(f_mu_exp).unsqueeze(-1)  # float32 via randn_like
-            logits_sampled = f_mu_exp[..., None] + L_exp @ eps  # (samples, B, C, 1)
-            probs_sampled  = logits_sampled.squeeze(-1).softmax(-1).mean(0)  # (B, C)
-
             pred_probs_list.append(probs_sampled.cpu())
             true_labels_list.append(labels.cpu())
 
@@ -249,7 +243,7 @@ def optimize_laplace(
     seed: int = 42,
     prior_var: Optional[float] = 0.1,
     n_kfac: int = 10,
-    lr_threshold_kfac: int = 100,
+    lr_threshold_kfac: int = 100
 ) -> None:
     """Fit diagonal Laplace over LoRA params, evaluate on val/test, persist.
 
