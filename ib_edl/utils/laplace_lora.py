@@ -39,6 +39,7 @@ def _find_factors(model, trainer, tokenizer, tok_cfg, target_ids, n_kfac, lr_thr
         inputs = tokenizer(prompts, **tok_cfg).to(device)
         outputs = model(**inputs)
         logits = outputs.logits[:, -1, target_ids]  # Get the last token logits
+        logits = logits.softmax(-1)
         return logits
 
     ## Get train loader
@@ -75,20 +76,23 @@ def _find_LL(model, tokenizer, val_loader, tok_cfg, target_ids, device):
     return LL
 
 def _find_optimal_prior_var(prior_var, trainer, model, tokenizer, tok_cfg, val_dataset, target_ids, factors, peft_r, n_kfac, device):
-    s2 = torch.tensor(prior_var, requires_grad=True)
-    opt = torch.optim.Adam([s2], lr=1e-2)
+    log_s2 = torch.tensor(prior_var).log().requires_grad_(True)
+    opt = torch.optim.Adam([log_s2], lr=1e-2)
     val_loader = trainer.get_eval_dataloader(val_dataset)
 
     LL = _find_LL(model, tokenizer, val_loader, tok_cfg, target_ids, device)
 
-    for _ in range(100):
+    for i in range(500):
         opt.zero_grad()
-        loss = model_evidence(model, LL, factors, peft_r, n_kfac, s2).log()
+        s2 = log_s2.exp()
+        loss = -model_evidence(model, LL, factors, peft_r, n_kfac, s2).log()
         loss.backward()
-        torch.nn.utils.clip_grad_norm_([s2], 1.0)
+        torch.nn.utils.clip_grad_norm_([log_s2], 1.0)
         opt.step()
-    
-    return s2
+        if i % 50 == 49:
+            print(f"  [prior opt] step {i+1}: s2={s2.item():.6f}, loss={loss.item():.4f}")
+
+    return log_s2.exp().detach()
 
 def _get_raw_model_tokenizer(cfg):
     ## Get raw model
@@ -152,6 +156,9 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
         else:
             f_var = variance(batch_inputs, jacobian, factors, s2, len(target_ids), peft_r, n_kfac, device)
 
+        diag_mean = f_var.diagonal(dim1=-2, dim2=-1).mean().item()
+        
+        print(f"  [variance]: f_var diagonal mean={diag_mean:.2f}")
         L = stable_cholesky(f_var)
         samples = 100_000
         f_mu_exp = f_mu.float().expand(samples, *f_mu.shape)
