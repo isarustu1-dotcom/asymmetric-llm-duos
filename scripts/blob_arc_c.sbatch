@@ -20,7 +20,7 @@ CFG_SIDE=configs/arc_c_qwen2_15b/blob_arc_c_qwen2_15b.yaml
 WORK_DIR=$HOME/results
 DATASET=arc_c
 
-for SEED in 1 2 3 4 5; do
+for SEED in 1 2; do
     echo "=============================================================="
     echo "[BLoB arc_c] seed=$SEED — training"
     echo "=============================================================="
