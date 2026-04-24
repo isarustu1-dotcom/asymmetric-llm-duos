@@ -15,8 +15,8 @@ mamba activate adl-asymmetric-lm-duos
 
 pip install -e .
 
-CFG_BASE="configs/sciq_qwen2_7b  /lora_sciq_qwen2_7b.yaml"
-CFG_SIDE="configs/sciq_qwen2_15b  /lora_sciq_qwen2_15b.yaml"
+CFG_BASE="configs/sciq_qwen2_7b/lora_sciq_qwen2_7b.yaml"
+CFG_SIDE="configs/sciq_qwen2_15b/lora_sciq_qwen2_15b.yaml"
 WORK_DIR=$HOME/results
 DATASET=sciq
 

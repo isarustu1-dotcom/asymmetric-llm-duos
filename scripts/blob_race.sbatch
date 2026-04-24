@@ -15,8 +15,8 @@ mamba activate adl-asymmetric-lm-duos
 
 pip install -e .
 
-CFG_BASE="configs/race_qwen2_7b /blob_race_qwen2_7b.yaml"
-CFG_SIDE="configs/race_qwen2_15b /blob_race_qwen2_15b.yaml"
+CFG_BASE="configs/race_qwen2_7b/blob_race_qwen2_7b.yaml"
+CFG_SIDE="configs/race_qwen2_15b/blob_race_qwen2_15b.yaml"
 WORK_DIR=$HOME/results
 DATASET=race
 
