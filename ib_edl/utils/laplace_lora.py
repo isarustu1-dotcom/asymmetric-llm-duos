@@ -184,9 +184,16 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
                 for i in range(batch_inputs.input_ids.size(0)):
                     single_inputs = BatchEncoding({k: v[i:i+1] for k, v in batch_inputs.items()})
                     single_labels = labels[i:i+1]
-                    fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
+                    torch.cuda.empty_cache()
+                    try:
+                        fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
+                    except torch.cuda.OutOfMemoryError:
+                        torch.cuda.empty_cache()
+                        fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
                     f_mu_parts.append(fm.cpu()); f_var_parts.append(fv.cpu())
                     probs_parts.append(ps.cpu()); lbl_parts.append(lb.cpu())
+                    del fm, fv, ps, lb
+                    torch.cuda.empty_cache()
                 f_mu          = torch.cat(f_mu_parts).to(device)
                 f_var         = torch.cat(f_var_parts).to(device)
                 probs_sampled = torch.cat(probs_parts).to(device)
