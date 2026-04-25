@@ -29,14 +29,20 @@ from __future__ import annotations
 import argparse
 import os
 import os.path as osp
+import sys
 
 import numpy as np
 import pandas as pd
 
+# Make sibling modules in tools/ importable when this file is invoked as
+# ``python tools/postprocess_blob_asymduos.py`` from the repo root (no
+# ``tools/__init__.py``).
+sys.path.insert(0, osp.dirname(osp.abspath(__file__)))
+
 from ib_edl.utils.duo_optimizer import optimize_weights_blob
 
 # Reuse helpers from average_metrics so behaviour matches the standard pipeline.
-from tools.average_metrics import (  # type: ignore
+from average_metrics import (  # type: ignore
     _create_metrics_df,
     _create_predictions_df,
     _deep_ensemble_metrics,
