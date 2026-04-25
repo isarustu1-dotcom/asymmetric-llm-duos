@@ -137,6 +137,8 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
     # Release fragmented allocations left over from training before the
     # Jacobian loop, which is the most memory-intensive part of Laplace.
     torch.cuda.empty_cache()
+    torch.backends.cuda.enable_mem_efficient_sdp(True)
+    torch.backends.cuda.enable_flash_sdp(True)
 
     pred_mu_list     = []
     pred_var_list    = []
