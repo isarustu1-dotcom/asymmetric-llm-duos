@@ -67,12 +67,66 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+def _collapse_mc_dim_inplace(npz_path: str) -> bool:
+    """Collapse per-MC-sample logits ``(N, S, C)`` → Bayesian-averaged
+    log-probs ``(N, C)``, in place. Idempotent: 2D inputs are left alone.
+
+    The bayesian-peft fork dumps shape ``(N, S, C)`` because eval uses
+    ``--bayes-eval-n-samples-final 10``, but ``optimize_weights_blob`` and
+    the downstream sklearn metrics expect 2D log-probs. The Bayesian
+    predictive is ``E_q[p(y|x, A)] ≈ mean_s softmax(logits_s)``; we then
+    take ``log`` to keep the npz schema in log-prob space.
+    """
+    raw = dict(np.load(npz_path, allow_pickle=True))
+    changed = False
+    for seed_key in list(raw.keys()):
+        sd = raw[seed_key].item()
+        lo = sd['logits']
+        if lo.ndim == 2:
+            continue
+        if lo.ndim != 3:
+            raise ValueError(
+                f'{npz_path}[seed={seed_key}]: unexpected logits shape {lo.shape}')
+        # softmax over classes (numerically stable)
+        x = lo - lo.max(axis=-1, keepdims=True)
+        probs = np.exp(x)
+        probs /= probs.sum(axis=-1, keepdims=True)
+        # MC-average across the sample dim, then back to log-probs
+        mean_probs = probs.mean(axis=1)
+        mean_probs = np.clip(mean_probs, 1e-12, 1.0)
+        sd['logits'] = np.log(mean_probs).astype(np.float32)
+        raw[seed_key] = np.array(sd)
+        changed = True
+    if changed:
+        np.savez_compressed(npz_path, **raw)
+    return changed
+
+
+def _collapse_all_blob_npzs(results_root: str, dataset: str) -> None:
+    npz_file = f'{dataset}.npz'
+    for role in ('base', 'sidekick'):
+        for split in ('val_preds', 'test_preds'):
+            p = osp.join(results_root, 'blob', role, split, npz_file)
+            if not osp.exists(p):
+                print(f'[collapse] missing: {p}')
+                continue
+            if _collapse_mc_dim_inplace(p):
+                print(f'[collapse] {p}: collapsed (N,S,C) → (N,C)')
+            else:
+                print(f'[collapse] {p}: already 2D, skipping')
+
+
 def _process_dataset(results_root: str, dataset: str, seeds: list[int],
                      de_size: int, skip_duo: bool) -> None:
     npz_file = f'{dataset}.npz'
     print('\n' + '=' * 70)
     print(f'[postprocess] dataset={dataset}')
     print('=' * 70)
+
+    # --- Stage 0: collapse (N, S, C) per-MC-sample logits → (N, C) ----------
+    # The bayesian-peft fork dumps per-sample logits; the duo optimizer and
+    # sklearn metrics expect 2D log-probs. Idempotent — safe to re-run.
+    _collapse_all_blob_npzs(results_root, dataset)
 
     # --- Stage 1: per-seed unconstrained duo optimisation -------------------
     if not skip_duo:
