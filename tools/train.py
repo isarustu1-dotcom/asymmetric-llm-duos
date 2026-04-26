@@ -32,16 +32,13 @@ from transformers import TrainingArguments
 
 from ib_edl import (
     DATASETS,
-    BLoBTrainer,
     ClassificationMetric,
     EvidentialTrainer,
     FTTrainer,
     UpdateRegWeightCallback,
     get_model_and_tokenizer,
-    inject_blob_params,
     optimize_temperature_scaling,
     optimize_weights,
-    optimize_weights_blob,
     optimize_weights_ts,
     plot_predictions,
     save_predictions,
@@ -95,25 +92,6 @@ def parse_args():
                         'tag. Requires --config_sidekick. If omitted, the sidekick '
                         'config yaml value is used.')
 
-    # --- BLoB flags ---
-    p.add_argument('--blob', action='store_true',
-                   help='Use BLoB (Bayesian LoRA by Backpropagation) training '
-                        'instead of plain LoRA.  Mutually exclusive with --ib-edl.')
-    p.add_argument('--bayes-eps', type=float, default=None,
-                   help='Override blob_cfg.bayes_eps (variance init scale).')
-    p.add_argument('--bayes-beta', type=float, default=None,
-                   help='Override blob_cfg.bayes_beta (prior variance σ²).')
-    p.add_argument('--bayes-kllr', type=float, default=None,
-                   help='Override blob_cfg.bayes_kllr (KL optimizer learning rate).')
-    p.add_argument('--bayes-gamma', type=float, default=None,
-                   help='Override blob_cfg.bayes_gamma (dataset rescaling factor).')
-    p.add_argument('--bayes-train-samples', type=int, default=None,
-                   help='Override blob_cfg.bayes_train_n_samples.')
-    p.add_argument('--bayes-eval-samples', type=int, default=None,
-                   help='Override blob_cfg.bayes_eval_n_samples.')
-    p.add_argument('--bayes-eval-samples-final', type=int, default=None,
-                   help='Override blob_cfg.bayes_eval_n_samples_final.')
-
     # --- wandb ---
     p.add_argument('--no-wandb', action='store_true')
     p.add_argument('--run-name', '-n', default=None)
@@ -140,8 +118,6 @@ def _validate_args(args):
             '--beta-base / --beta-sidekick only apply to IB-EDL runs (requires --ib-edl).')
     if args.beta_sidekick is not None and args.config_sidekick is None:
         raise ValueError('--beta-sidekick requires --config_sidekick.')
-    if args.blob and args.ib_edl:
-        raise ValueError('--blob and --ib-edl are mutually exclusive.')
 
 
 def _validate_cfg(cfg, args, model_type):
@@ -151,9 +127,6 @@ def _validate_cfg(cfg, args, model_type):
     if args.ib_edl:
         assert cfg.get('edl_loss_cfg', None) is not None, \
             f'edl_loss_cfg missing in config — required for --ib-edl ({model_type}).'
-    if args.blob:
-        assert cfg.get('blob_cfg', None) is not None, \
-            f'blob_cfg missing in config — required for --blob ({model_type}).'
 
 
 # ---------------------------------------------------------------------------
@@ -187,8 +160,6 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
         model_tag = f'{base_model}_{side_model}'
 
     method_parts = ['ib_edl' if args.ib_edl else 'lora']
-    if args.blob:
-        method_parts.append('blob')
     if args.beta_base is not None:
         method_parts.append(f'beta_base_{args.beta_base}')
     if args.beta_sidekick is not None:
@@ -200,28 +171,6 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
     method = '_'.join(method_parts)
 
     return osp.join(root, dataset, model_tag, method)
-
-
-# ---------------------------------------------------------------------------
-# BLoB config overrides
-# ---------------------------------------------------------------------------
-
-def _apply_blob_overrides(cfg, args):
-    """Apply --bayes-* CLI overrides into cfg.blob_cfg in-place."""
-    overrides = {
-        'bayes_eps':                  args.bayes_eps,
-        'bayes_beta':                 args.bayes_beta,
-        'bayes_kllr':                 args.bayes_kllr,
-        'bayes_gamma':                args.bayes_gamma,
-        'bayes_train_n_samples':      args.bayes_train_samples,
-        'bayes_eval_n_samples':       args.bayes_eval_samples,
-        'bayes_eval_n_samples_final': args.bayes_eval_samples_final,
-    }
-    for key, val in overrides.items():
-        if val is not None:
-            old = cfg.blob_cfg.get(key)
-            cfg.blob_cfg[key] = val
-            print(f'[train] Overriding blob_cfg.{key}: {old} -> {val}')
 
 
 # ---------------------------------------------------------------------------
@@ -239,10 +188,6 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
                       f'{osp.splitext(osp.basename(cfg.filename))[0]}_{timestamp}.yaml'))
 
     model, tokenizer = get_model_and_tokenizer(**cfg.model, device=device)
-
-    if args.blob:
-        _apply_blob_overrides(cfg, args)
-        inject_blob_params(model, cfg.blob_cfg.bayes_eps, cfg.blob_cfg.bayes_beta)
 
     train_set = DATASETS.build(cfg.data['train'], default_args=dict(tokenizer=tokenizer))
     val_set   = DATASETS.build(cfg.data['val'],   default_args=dict(tokenizer=tokenizer))
@@ -268,9 +213,7 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
     )
 
     callbacks = []
-    if args.blob:
-        trainer_cls = BLoBTrainer
-    elif args.ib_edl:
+    if args.ib_edl:
         reg_cfg = cfg.edl_loss_cfg['reg_weight_cfg']
         callbacks.append(UpdateRegWeightCallback(
             start_epoch=reg_cfg['start_epoch'],
@@ -279,13 +222,6 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
         trainer_cls = EvidentialTrainer
     else:
         trainer_cls = FTTrainer
-
-    extra_kwargs = {}
-    if args.blob:
-        extra_kwargs = dict(
-            blob_cfg=cfg.blob_cfg,
-            train_dataset_size=len(train_set),
-        )
 
     trainer = trainer_cls(
         cfg=cfg,
@@ -299,7 +235,6 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
             num_classes=target_ids.shape[-1], **cfg.get('metric_cfg', {})),
         data_collator=train_set.get_collate_fn(),
         callbacks=callbacks if callbacks else None,
-        **extra_kwargs,
     )
 
     if not args.skip_ft:
@@ -317,17 +252,11 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
         val_idx  = val_set.get_data_indices()
         test_idx = test_set.get_data_indices()
 
-        if args.blob:
-            trainer._blob_eval_n_samples = cfg.blob_cfg.bayes_eval_n_samples_final
-            logger.info(f'[{model_type}] BLoB final predict: '
-                        f'n_samples={cfg.blob_cfg.bayes_eval_n_samples_final}')
-
         preds_val  = trainer.predict(val_set)
         preds_test = trainer.predict(test_set)
 
         npz = cfg.process_preds['npz_file']
-        pred_prefix = (osp.join(work_dir, 'blob', model_type)
-                       if args.blob else osp.join(work_dir, model_type))
+        pred_prefix = osp.join(work_dir, model_type)
         save_predictions(preds_val,
                          osp.join(pred_prefix, 'val_preds', npz),
                          logger=logger, seed=args.seed,
@@ -413,7 +342,7 @@ def main():
             has_sidekick=has_sidekick,
         )
 
-    if args.duo and not args.blob:
+    if args.duo:
         print('\n[train] Running duo optimisation ...')
         optimize_weights(
             work_dir, npz_file,
@@ -421,17 +350,9 @@ def main():
             constrained=args.duo_constrained,
         )
 
-    if args.duo and args.temperature_scaling and not args.blob:
+    if args.duo and args.temperature_scaling:
         print('\n[train] Running Duo TS optimisation (duo on temperature-scaled outputs) ...')
         optimize_weights_ts(
-            work_dir, npz_file,
-            seed=args.seed,
-            constrained=args.duo_constrained,
-        )
-
-    if args.duo and args.blob:
-        print('\n[train] Running BLoB duo optimisation ...')
-        optimize_weights_blob(
             work_dir, npz_file,
             seed=args.seed,
             constrained=args.duo_constrained,

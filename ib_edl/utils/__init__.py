@@ -5,7 +5,6 @@ from .optimizer_helpers import _softmax_from_log
 from .duo_optimizer import optimize_weights, optimize_weights_ts, optimize_weights_blob
 from .temperature_scaling import optimize_temperature_scaling
 from .uncertainty_metrics import compute_uncertainty_metrics
-from .blob import inject_blob_params, compute_total_kl, get_blob_param_groups, set_blobsample
 
 __all__ = [
     'setup_logger',
@@ -16,11 +15,10 @@ __all__ = [
     '_softmax_from_log',
     'optimize_weights',
     'optimize_weights_ts',
+    # optimize_weights_blob is the duo-fitting entry point used by
+    # tools/postprocess_blob_asymduos.py (BLoB training itself lives in the
+    # bayesian-peft fork; this repo only post-processes the dumped npzs).
     'optimize_weights_blob',
     'optimize_temperature_scaling',
     'compute_uncertainty_metrics',
-    'inject_blob_params',
-    'compute_total_kl',
-    'get_blob_param_groups',
-    'set_blobsample',
 ]
