@@ -251,16 +251,18 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
     if cfg.process_preds.get('npz_file') is not None:
         val_idx  = val_set.get_data_indices()
         test_idx = test_set.get_data_indices()
+
         preds_val  = trainer.predict(val_set)
         preds_test = trainer.predict(test_set)
 
         npz = cfg.process_preds['npz_file']
+        pred_prefix = osp.join(work_dir, model_type)
         save_predictions(preds_val,
-                         osp.join(work_dir, model_type, 'val_preds', npz),
+                         osp.join(pred_prefix, 'val_preds', npz),
                          logger=logger, seed=args.seed,
                          data_idx=val_idx, input_text=val_set.get_input_text())
         save_predictions(preds_test,
-                         osp.join(work_dir, model_type, 'test_preds', npz),
+                         osp.join(pred_prefix, 'test_preds', npz),
                          logger=logger, seed=args.seed,
                          data_idx=test_idx, input_text=test_set.get_input_text())
 

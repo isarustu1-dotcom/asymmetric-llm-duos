@@ -15,5 +15,5 @@ __all__ = [
     'KLDivergenceLoss',
     'UpdateRegWeightCallback',
     'plot_predictions',
-    'plot_calibration_curve_and_ece'
+    'plot_calibration_curve_and_ece',
 ]

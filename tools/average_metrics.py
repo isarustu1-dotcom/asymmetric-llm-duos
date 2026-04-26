@@ -40,6 +40,8 @@ def parse_args():
 
     # method flags — must match what was used during training
     p.add_argument('--ib-edl', action='store_true')
+    p.add_argument('--blob', action='store_true',
+                   help='BLoB run: read predictions from blob/{model_type}/ subdirs.')
     p.add_argument('--duo', action='store_true')
     p.add_argument('--duo-constrained', action='store_true')
     p.add_argument('--temperature-scaling', action='store_true')
@@ -87,6 +89,8 @@ def _build_work_dir(root, cfg_base, cfg_sidekick, args):
         model_tag = f'{base_model}_{side_model}'
 
     method_parts = ['ib_edl' if args.ib_edl else 'lora']
+    if getattr(args, 'blob', False):
+        method_parts.append('blob')
     if args.beta_base is not None:
         method_parts.append(f'beta_base_{args.beta_base}')
     if args.beta_sidekick is not None:
@@ -236,19 +240,26 @@ def _deep_ensemble_metrics(pred_df: pd.DataFrame, combos: list,
 # ---------------------------------------------------------------------------
 
 def _build_metrics_from_preds(work_dir: str, npz_file: str,
-                               model_types_present: list) -> dict:
+                               model_types_present: list,
+                               blob: bool = False) -> dict:
     """Compute per-seed metrics from raw val/test prediction NPZs.
 
     Used when no duo optimisation or temperature scaling was run, so
     metrics/<npz_file> was never written by those steps.  Produces the
     same nested dict structure that duo_optimizer / temperature_scaling
     would have written, so the rest of main() can proceed unchanged.
+
+    When *blob* is True, predictions are read from
+    ``{work_dir}/blob/{model_type}/`` instead of ``{work_dir}/{model_type}/``.
     """
     from sklearn.metrics import accuracy_score, f1_score
     from ib_edl import compute_uncertainty_metrics
 
+    def _preds_root(mt: str) -> str:
+        return osp.join(work_dir, 'blob', mt) if blob else osp.join(work_dir, mt)
+
     # Discover seeds from the base model's val predictions
-    base_val_path = osp.join(work_dir, 'base', 'val_preds', npz_file)
+    base_val_path = osp.join(_preds_root('base'), 'val_preds', npz_file)
     base_val_raw = dict(np.load(base_val_path, allow_pickle=True))
     seeds = list(base_val_raw.keys())
 
@@ -259,7 +270,7 @@ def _build_metrics_from_preds(work_dir: str, npz_file: str,
 
         for mt in model_types_present:
             for split_label, preds_dir in [('val', 'val_preds'), ('tst', 'test_preds')]:
-                path = osp.join(work_dir, mt, preds_dir, npz_file)
+                path = osp.join(_preds_root(mt), preds_dir, npz_file)
                 raw = dict(np.load(path, allow_pickle=True))
                 sd = raw[seed].item()
                 probs = _softmax_from_log(sd['logits'])
@@ -310,7 +321,8 @@ def main():
         print(f'[average_metrics] {metrics_path} not found — '
               'computing metrics from raw prediction files.')
         present = ['base'] + (['sidekick'] if has_sidekick else [])
-        metrics_data = _build_metrics_from_preds(work_dir, npz_file, present)
+        metrics_data = _build_metrics_from_preds(work_dir, npz_file, present,
+                                                  blob=args.blob)
         os.makedirs(osp.dirname(metrics_path), exist_ok=True)
         np.savez_compressed(metrics_path, **metrics_data)
         print(f'[average_metrics] Saved computed metrics to {metrics_path}')
@@ -335,33 +347,40 @@ def main():
         m = args.deep_ensemble_size
         rng = np.random.default_rng(42)
 
-        base_tst_path = osp.join(work_dir, 'base', 'test_preds', npz_file)
+        # For BLoB runs, predictions live under blob/{model_type}/; the DE
+        # model-type labels get a '_blob' suffix to distinguish them from the
+        # plain-LoRA DE entries.
+        preds_root = osp.join(work_dir, 'blob') if args.blob else work_dir
+        base_de_label = 'base_blob' if args.blob else 'base'
+        side_de_label = 'sidekick_blob' if args.blob else 'sidekick'
+
+        base_tst_path = osp.join(preds_root, 'base', 'test_preds', npz_file)
         base_preds_df = _create_predictions_df(
             dict(np.load(base_tst_path, allow_pickle=True)),
-            model_type='base', output_path=base_tst_path)
+            model_type=base_de_label, output_path=base_tst_path)
 
         seeds = list(base_preds_df['seed'].unique())
         combos = _sample_combinations(seeds, m, n_samples=len(seeds), rng=rng)
         print(f'[average_metrics] Deep ensemble ({m} models), combos: {combos}')
 
         de_frames = []
-        base_de = _deep_ensemble_metrics(base_preds_df, combos, 'base')
-        base_de['model'] = f'base_de({m})'
+        base_de = _deep_ensemble_metrics(base_preds_df, combos, base_de_label)
+        base_de['model'] = f'{base_de_label}_de({m})'
         base_de['split'] = 'test'
         de_frames.append(base_de)
 
         if has_sidekick:
-            side_tst_path = osp.join(work_dir, 'sidekick', 'test_preds', npz_file)
+            side_tst_path = osp.join(preds_root, 'sidekick', 'test_preds', npz_file)
             side_preds_df = _create_predictions_df(
                 dict(np.load(side_tst_path, allow_pickle=True)),
-                model_type='sidekick', output_path=side_tst_path)
-            side_de = _deep_ensemble_metrics(side_preds_df, combos, 'sidekick')
-            side_de['model'] = f'sidekick_de({m})'
+                model_type=side_de_label, output_path=side_tst_path)
+            side_de = _deep_ensemble_metrics(side_preds_df, combos, side_de_label)
+            side_de['model'] = f'{side_de_label}_de({m})'
             side_de['split'] = 'test'
             de_frames.append(side_de)
 
-        # DE on temperature-scaled outputs
-        if args.temperature_scaling:
+        # DE on temperature-scaled outputs (only applies to non-blob runs)
+        if args.temperature_scaling and not args.blob:
             base_ts_tst_path = osp.join(work_dir, 'temperature_scaling', 'base', 'test_preds', npz_file)
             if osp.exists(base_ts_tst_path):
                 base_ts_preds_df = _create_predictions_df(
@@ -385,8 +404,9 @@ def main():
                     de_frames.append(side_ts_de)
 
         de_data = pd.concat(de_frames, ignore_index=True)
-        de_model_types = [f'base_de({m})'] + ([f'sidekick_de({m})'] if has_sidekick else [])
-        if args.temperature_scaling:
+        de_model_types = [f'{base_de_label}_de({m})'] + (
+            [f'{side_de_label}_de({m})'] if has_sidekick else [])
+        if args.temperature_scaling and not args.blob:
             de_model_types.append(f'base_ts_de({m})')
             if has_sidekick:
                 de_model_types.append(f'sidekick_ts_de({m})')
