@@ -176,26 +176,22 @@ def _get_laplace_predictions(model, tokenizer, tok_cfg, trainer, dataset, target
             prompts = batch['prompts']
             labels = batch['labels'].to(device)
             batch_inputs = tokenizer(prompts, **tok_cfg).to(device)
-
+            torch.cuda.empty_cache()
             try:
                 f_mu, f_var, probs_sampled, labels = _process_single_batch(batch_inputs, labels)
             except torch.cuda.OutOfMemoryError:
-                torch.cuda.empty_cache()
                 # Fall back to processing one sample at a time
                 f_mu_parts, f_var_parts, probs_parts, lbl_parts = [], [], [], []
                 for i in range(batch_inputs.input_ids.size(0)):
                     single_inputs = BatchEncoding({k: v[i:i+1] for k, v in batch_inputs.items()})
                     single_labels = labels[i:i+1]
-                    torch.cuda.empty_cache()
-                    try:
-                        fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
-                    except torch.cuda.OutOfMemoryError:
-                        torch.cuda.empty_cache()
-                        fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
+
+                    fm, fv, ps, lb = _process_single_batch(single_inputs, single_labels)
                     f_mu_parts.append(fm.cpu()); f_var_parts.append(fv.cpu())
                     probs_parts.append(ps.cpu()); lbl_parts.append(lb.cpu())
                     del fm, fv, ps, lb
                     torch.cuda.empty_cache()
+
                 f_mu          = torch.cat(f_mu_parts).to(device)
                 f_var         = torch.cat(f_var_parts).to(device)
                 probs_sampled = torch.cat(probs_parts).to(device)
@@ -325,9 +321,11 @@ def optimize_laplace(
     )
     print(f"Optimized prior variance is: {s2.item()}")
 
-    # model is no longer needed after this point — delete it and make space in cache
-    # before loading model_laplace so we don't hold two full model copies on the GPU.
+    # Move trainer's model off GPU before loading model_laplace.
+    # del model only drops the local reference; trainer.model still pins it on GPU.
+    trainer.model.cpu()
     del model
+    trainer.model = None
     torch.cuda.empty_cache()
 
     ## Get raw model and tokenizer
