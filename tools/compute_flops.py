@@ -55,6 +55,9 @@ def parse_args():
                    help="Sequence length override (default: max_length from config).")
     p.add_argument("--laplace-samples", type=int, default=100_000,
                    help="MC samples used in Laplace posterior predictive. Default: 100000.")
+    p.add_argument("--blob-samples", type=int, default=10,
+                   help="MC weight samples used in BLoB posterior predictive "
+                        "(--bayes-eval-n-samples-final in bayesian-peft). Default: 10.")
     return p.parse_args()
 
 
@@ -231,7 +234,8 @@ def profile_model(label: str, cfg_path: str, device: torch.device,
 # ---------------------------------------------------------------------------
 
 def build_method_table(base: dict, sidekick: Optional[dict],
-                       n_laplace_samples: int) -> list[dict]:
+                       n_laplace_samples: int,
+                       n_blob_samples: int = 10) -> list[dict]:
     """Compute MACs per inference sample for each method.
 
     Laplace Jacobian cost is theoretical (C backward passes ≈ 2C × forward MACs)
@@ -256,6 +260,8 @@ def build_method_table(base: dict, sidekick: Optional[dict],
                      note="Same; Dirichlet normalisation is O(C), negligible"))
     rows.append(dict(method="laplace_lora_base",   macs=_laplace_macs(b_fw),
                      note=f"Measured forward + theoretical {C} backward passes + {n_laplace_samples:,} MC samples"))
+    rows.append(dict(method="blob_base",           macs=n_blob_samples * b_fw,
+                     note=f"{n_blob_samples} stochastic weight-sample forward passes (measured each)"))
 
     if sidekick is None:
         return rows
@@ -271,6 +277,8 @@ def build_method_table(base: dict, sidekick: Optional[dict],
                      note="Same; Dirichlet normalisation is O(C), negligible"))
     rows.append(dict(method="laplace_lora_sidekick",   macs=_laplace_macs(s_fw),
                      note=f"Measured forward + theoretical {C} backward passes + {n_laplace_samples:,} MC samples"))
+    rows.append(dict(method="blob_sidekick",           macs=n_blob_samples * s_fw,
+                     note=f"{n_blob_samples} stochastic weight-sample forward passes (measured each)"))
 
     # --- Duo ---
     duo = b_fw + s_fw
@@ -282,6 +290,8 @@ def build_method_table(base: dict, sidekick: Optional[dict],
                      note="Same; Dirichlet on both sides"))
     rows.append(dict(method="laplace_lora_duo",   macs=_laplace_macs(b_fw) + _laplace_macs(s_fw),
                      note="Laplace(base) + Laplace(sidekick)"))
+    rows.append(dict(method="blob_duo",           macs=n_blob_samples * (b_fw + s_fw),
+                     note=f"{n_blob_samples} weight samples × (base + sidekick) forward passes"))
 
     return rows
 
@@ -348,7 +358,8 @@ def main():
     if args.config_sidekick:
         sidekick = profile_model("sidekick", args.config_sidekick, device, args.seq_len)
 
-    rows = build_method_table(base, sidekick, n_laplace_samples=args.laplace_samples)
+    rows = build_method_table(base, sidekick, n_laplace_samples=args.laplace_samples,
+                              n_blob_samples=args.blob_samples)
     print_report(rows, base, sidekick)
 
 
