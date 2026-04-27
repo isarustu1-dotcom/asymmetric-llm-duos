@@ -101,7 +101,7 @@ def parse_args():
     p.add_argument("--laplace-prior-var", type=float, default=0.1,
                    help="Fixed prior variance. None → tuned on val.")
 
-    p.add_argument("--laplace-nkfac", type=int, default=100)
+    p.add_argument("--laplace-nkfac", type=int, default=10)
     p.add_argument("--laplace-lr-threshold", type=int, default=100)
 
     # --- wandb ---
