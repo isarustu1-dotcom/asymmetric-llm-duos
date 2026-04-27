@@ -431,3 +431,108 @@ def optimize_weights_ts(result_dir: str, saved_file_name: str, seed: int = 42,
         existing_seed = existing_seed.item()
     ex_met[seed_key] = _merge_dictionaries(existing_seed, new_metrics)
     np.savez_compressed(metrics_path, **ex_met)
+
+
+def optimize_weights_laplace(result_dir: str, saved_file_name: str, seed: int = 42,
+                        constrained: bool = False, verbose: bool = True) -> None:
+    """Fit duo scales on temperature-scaled val logits, evaluate on TS test logits.
+
+    Loads predictions from temperature_scaling/{base|sidekick}/{val|test_preds}/
+    and saves combined duo_ts predictions to duo_ts/{val|test_preds}/.
+
+    Args:
+        result_dir:       Experiment output directory. 
+        saved_file_name:  NPZ filename, e.g. 'arc_c.npz'.
+        seed:             Which seed's predictions to load and store results under.
+        constrained:      If True, use SLSQP with w_base+w_side=1 constraint.
+        verbose:          Print optimiser iterations.
+    """
+    def _load(model, split):
+        path = osp.join(result_dir, 'laplace_lora', model, split, saved_file_name)
+        data = dict(np.load(path, allow_pickle=True))[str(seed)].item()
+        order = np.argsort(data['idx'])
+        return data, order
+
+    base_val, bv_ord = _load('base', 'val_preds')
+    side_val, sv_ord = _load('sidekick', 'val_preds')
+    base_tst, bt_ord = _load('base', 'test_preds')
+    side_tst, st_ord = _load('sidekick', 'test_preds')
+
+    if not np.array_equal(_sort_by_idx(base_val['idx'], bv_ord),
+                          _sort_by_idx(side_val['idx'], sv_ord)):
+        raise ValueError('Val set indices of base_laplace and sidekick_laplace do not match.')
+    if not np.array_equal(_sort_by_idx(base_tst['idx'], bt_ord),
+                          _sort_by_idx(side_tst['idx'], st_ord)):
+        raise ValueError('Test set indices of base_laplace and sidekick_laplace do not match.')
+
+    bv_logits = _sort_by_idx(base_val['logits'], bv_ord)
+    sv_logits = _sort_by_idx(side_val['logits'], sv_ord)
+    bt_logits = _sort_by_idx(base_tst['logits'], bt_ord)
+    st_logits = _sort_by_idx(side_tst['logits'], st_ord)
+    y_val = _sort_by_idx(base_val['true_labels'], bv_ord)
+    y_tst = _sort_by_idx(base_tst['true_labels'], bt_ord)
+
+    fit_fn = _fit_constrained if constrained else _fit_unconstrained
+    mode_label = 'constrained' if constrained else 'unconstrained'
+    print(f'\n[duo_optimizer] Fitting {mode_label} Duo Laplace LoRA for seed {seed} ...')
+    params = fit_fn(bv_logits, sv_logits, y_val, verbose=verbose)
+    alpha, beta = params['scale_base'], params['scale_sidekick']
+    print(f'  scale_base={alpha:.4f}, scale_sidekick={beta:.4f}, '
+          f'w_base={params["weight_base"]:.4f}, w_sidekick={params["weight_sidekick"]:.4f}')
+
+    # Build duo_ts metrics (individual TS metrics are already in the metrics file)
+    def _compute_duo_laplace(logits_base, logits_sidekick, y_true):
+        duo_logits = alpha * logits_base + beta * logits_sidekick
+        probs_duo = _softmax_from_log(duo_logits)
+        _sanity_check_on_probs(probs_duo, 'duo_laplace_lora')
+        pred_duo = probs_duo.argmax(axis=1)
+        m = {
+            'duo_laplace_lora_accuracy': float(accuracy_score(y_true, pred_duo)),
+            'duo_laplace_lora_f1_macro': float(f1_score(y_true, pred_duo, average='macro')),
+        }
+        m.update({f'duo_laplace_lora_{k}': v for k, v in compute_uncertainty_metrics(probs_duo, y_true).items()})
+        return m, duo_logits, probs_duo, pred_duo
+
+    val_metrics, duo_val_logits, duo_val_probs, duo_val_pred = _compute_duo_laplace(bv_logits, sv_logits, y_val)
+    tst_metrics, duo_tst_logits, duo_tst_probs, duo_tst_pred = _compute_duo_laplace(bt_logits, st_logits, y_tst)
+
+    metrics_path = osp.join(result_dir, 'metrics', saved_file_name)
+    duo_laplace_val_path = osp.join(result_dir, 'duo_laplace', 'val_preds', saved_file_name)
+    duo_laplace_tst_path = osp.join(result_dir, 'duo_laplace', 'test_preds', saved_file_name)
+
+    ex_val = _read_or_create_path(duo_laplace_val_path)
+    ex_tst = _read_or_create_path(duo_laplace_tst_path)
+    ex_met = _read_or_create_path(metrics_path)
+
+    _save_val_test_results(seed, saved_file_name,
+                           _sort_by_idx(base_val['idx'], bv_ord),
+                           _sort_by_idx(base_val['input'], bv_ord),
+                           duo_val_logits.astype(np.float32), duo_val_probs, duo_val_pred,
+                           _sort_by_idx(base_val['true_labels'], bv_ord),
+                           ex_val, duo_laplace_val_path)
+    _save_val_test_results(seed, saved_file_name,
+                           _sort_by_idx(base_tst['idx'], bt_ord),
+                           _sort_by_idx(base_tst['input'], bt_ord),
+                           duo_tst_logits.astype(np.float32), duo_tst_probs, duo_tst_pred,
+                           _sort_by_idx(base_tst['true_labels'], bt_ord),
+                           ex_tst, duo_laplace_tst_path)
+
+    new_metrics = {
+        'data': saved_file_name,
+        'duo_laplace_mode': mode_label,
+        'duo_laplace_base_weight': params['weight_base'],
+        'duo_laplace_sidekick_weight': params['weight_sidekick'],
+        'duo_laplace_base_scale': alpha,
+        'duo_laplace_sidekick_scale': beta,
+        'duo_laplace_base_temperature': params['temperature_base'],
+        'duo_laplace_sidekick_temperature': params['temperature_sidekick'],
+        'val': val_metrics,
+        'test': tst_metrics,
+    }
+
+    seed_key = str(seed)
+    existing_seed = ex_met.get(seed_key, {})
+    if hasattr(existing_seed, 'item'):
+        existing_seed = existing_seed.item()
+    ex_met[seed_key] = _merge_dictionaries(existing_seed, new_metrics)
+    np.savez_compressed(metrics_path, **ex_met)

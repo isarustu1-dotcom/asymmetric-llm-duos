@@ -45,6 +45,8 @@ def parse_args():
     p.add_argument('--duo', action='store_true')
     p.add_argument('--duo-constrained', action='store_true')
     p.add_argument('--temperature-scaling', action='store_true')
+    p.add_argument('--laplace-lora', action='store_true',
+                   help='Run Laplace LoRA after training.')
     p.add_argument('--deep-ensemble', action='store_true',
                    help='Compute deep ensemble metrics from same-model seed pairs.')
     p.add_argument('--deep-ensemble-size', type=int, default=2,
@@ -99,6 +101,8 @@ def _build_work_dir(root, cfg_base, cfg_sidekick, args):
         method_parts.append('tempscaling')
     if args.duo:
         method_parts.append('duo_constrained' if args.duo_constrained else 'duo_unconstrained')
+    if args.laplace_lora:
+        method_parts.append(f'laplace_lora')
     method = '_'.join(method_parts)
     return osp.join(root, dataset, model_tag, method)
 
@@ -314,7 +318,7 @@ def main():
     os.makedirs(summary_dir, exist_ok=True)
 
     # --- load per-seed metrics -----------------------------------------
-    # metrics/<npz> is written by duo_optimizer / temperature_scaling.
+    # metrics/<npz> is written by duo_optimizer / temperature_scaling / laplace lora.
     # For a plain LoRA run without those steps, fall back to computing
     # metrics directly from the raw prediction files.
     if not osp.exists(metrics_path):
@@ -403,6 +407,30 @@ def main():
                     side_ts_de['split'] = 'test'
                     de_frames.append(side_ts_de)
 
+        # DE on laplace lora outputs
+        if args.laplace_lora:
+            base_laplace_tst_path = osp.join(work_dir, 'laplace_lora', 'base', 'test_preds', npz_file)
+            if osp.exists(base_laplace_tst_path):
+                base_laplace_preds_df = _create_predictions_df(
+                    dict(np.load(base_laplace_tst_path, allow_pickle=True)),
+                    model_type='base_laplace', output_path=base_laplace_tst_path)
+                base_laplace_de = _deep_ensemble_metrics(base_laplace_preds_df, combos, 'base_laplace')
+                base_laplace_de['model'] = f'base_laplace_de({m})'
+                base_laplace_de['split'] = 'test'
+                de_frames.append(base_laplace_de)
+
+            if has_sidekick:
+                side_laplace_tst_path = osp.join(
+                    work_dir, 'laplace_lora', 'sidekick', 'test_preds', npz_file)
+                if osp.exists(side_laplace_tst_path):
+                    side_laplace_preds_df = _create_predictions_df(
+                        dict(np.load(side_laplace_tst_path, allow_pickle=True)),
+                        model_type='sidekick_laplace', output_path=side_laplace_tst_path)
+                    side_laplace_de = _deep_ensemble_metrics(side_laplace_preds_df, combos, 'sidekick_laplace')
+                    side_laplace_de['model'] = f'sidekick_laplace_de({m})'
+                    side_laplace_de['split'] = 'test'
+                    de_frames.append(side_laplace_de)
+
         de_data = pd.concat(de_frames, ignore_index=True)
         de_model_types = [f'{base_de_label}_de({m})'] + (
             [f'{side_de_label}_de({m})'] if has_sidekick else [])
@@ -410,6 +438,11 @@ def main():
             de_model_types.append(f'base_ts_de({m})')
             if has_sidekick:
                 de_model_types.append(f'sidekick_ts_de({m})')
+        ## Add laplace lora to model_types
+        if args.laplace_lora and not args.blob:
+            de_model_types.append(f'base_laplace_de({m})')
+            if has_sidekick:
+                de_model_types.append(f'sidekick_laplace_de({m})')
         for mt in de_model_types:
             if mt in de_data['model'].values:
                 summaries.append(_summarize(de_data, mt, 'test'))

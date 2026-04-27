@@ -29,6 +29,7 @@ import torch
 import wandb
 from mmengine.runner.utils import set_random_seed
 from transformers import TrainingArguments
+from transformers.trainer_utils import get_last_checkpoint
 
 from ib_edl import (
     DATASETS,
@@ -43,6 +44,8 @@ from ib_edl import (
     plot_predictions,
     save_predictions,
     setup_logger,
+    optimize_laplace,
+    optimize_weights_laplace,
 )
 
 
@@ -79,6 +82,8 @@ def parse_args():
                         'Default is unconstrained (L-BFGS-B).')
     p.add_argument('--temperature-scaling', action='store_true',
                    help='Run per-model temperature scaling after training.')
+    p.add_argument('--laplace-lora', action='store_true',
+                   help='Run Laplace LoRA after training.')
 
     # --- IB-EDL hyperparameter tuning (per-model) ---
     p.add_argument('--beta-base', type=float, default=None,
@@ -92,6 +97,13 @@ def parse_args():
                         'tag. Requires --config_sidekick. If omitted, the sidekick '
                         'config yaml value is used.')
 
+    # --- Laplace LoRA hyperparameter tuning ---
+    p.add_argument("--laplace-prior-var", type=float, default=0.1,
+                   help="Fixed prior variance. None → tuned on val.")
+
+    p.add_argument("--laplace-nkfac", type=int, default=100)
+    p.add_argument("--laplace-lr-threshold", type=int, default=100)
+
     # --- wandb ---
     p.add_argument('--no-wandb', action='store_true')
     p.add_argument('--run-name', '-n', default=None)
@@ -100,6 +112,11 @@ def parse_args():
     # --- config overrides ---
     p.add_argument('--cfg-options', '-o', nargs='+', action=mmengine.DictAction,
                    help='Override config values using key=value syntax.')
+
+    # --- test_run ---
+    p.add_argument('--test-run', action='store_true',
+                   help='Run a test run with a small subset of data.')
+    
 
     return p.parse_args()
 
@@ -168,6 +185,8 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
         method_parts.append('tempscaling')
     if args.duo:
         method_parts.append('duo_constrained' if args.duo_constrained else 'duo_unconstrained')
+    if args.laplace_lora:
+        method_parts.append(f'laplace_lora')
     method = '_'.join(method_parts)
 
     return osp.join(root, dataset, model_tag, method)
@@ -178,7 +197,7 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
 # ---------------------------------------------------------------------------
 
 def _train_one_model(model_type: str, cfg, args, work_dir: str,
-                     timestamp: str, device: torch.device):
+                     timestamp: str, device: torch.device, laplace_lora: bool = False):
     logger = setup_logger(
         name='ib-edl',
         filepath=osp.join(work_dir, model_type, f'{timestamp}.log'),
@@ -240,6 +259,8 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
     if not args.skip_ft:
         trainer.train()
         logger.info(f'Fine-tuning finished for {model_type}.')
+        last_checkpoint = get_last_checkpoint(training_args.output_dir)
+        logger.info(f'Last checkpoint: {last_checkpoint}')
 
     for split_name, split_set, prefix in [('val', val_set, 'val'),
                                            ('test', test_set, 'test')]:
@@ -265,6 +286,22 @@ def _train_one_model(model_type: str, cfg, args, work_dir: str,
                          osp.join(pred_prefix, 'test_preds', npz),
                          logger=logger, seed=args.seed,
                          data_idx=test_idx, input_text=test_set.get_input_text())
+
+    if laplace_lora:
+
+        optimize_laplace(
+            result_dir=work_dir,
+            saved_file_name=npz,
+            model_type=model_type,
+            trainer=trainer,
+            val_dataset=val_set,
+            test_dataset=test_set,
+            seed=args.seed,
+            checkpoint_path=last_checkpoint,
+            prior_var = args.laplace_prior_var,
+            n_kfac = args.laplace_nkfac,
+            lr_threshold_kfac = args.laplace_lr_threshold,
+        )
 
     return cfg   # return last cfg for npz filename lookup
 
@@ -300,6 +337,13 @@ def main():
         cfg = mmengine.Config.fromfile(cfg_path)
         if args.cfg_options:
             cfg.merge_from_dict(args.cfg_options)
+
+        if args.test_run:
+            cfg.data.train.subset_size = 10              # small subset for fast testing
+            cfg.data.val.subset_size   = 4
+            cfg.data.test.subset_size  = 4
+            cfg.train_cfg.max_steps = 10
+            
         new_beta = beta_override[model_type]
         if new_beta is not None:
             if cfg.get('vib') is None:
@@ -323,7 +367,7 @@ def main():
             )
             wandb.config.update({f'{model_type}_config': cfg.to_dict()})
 
-        last_cfg = _train_one_model(model_type, cfg, args, work_dir, timestamp, device)
+        last_cfg = _train_one_model(model_type, cfg, args, work_dir, timestamp, device, args.laplace_lora)
 
         if not args.no_wandb:
             wandb.finish()
@@ -358,6 +402,13 @@ def main():
             constrained=args.duo_constrained,
         )
 
+    if args.duo and args.laplace_lora:
+        print('\n[train] Running Duo Laplace LoRA optimisation ...')
+        optimize_weights_laplace(
+            work_dir, npz_file,
+            seed=args.seed,
+            constrained=args.duo_constrained,
+        )
 
 if __name__ == '__main__':
     main()

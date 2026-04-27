@@ -14,6 +14,11 @@ from .utils import (
     optimize_weights,
     optimize_weights_blob,
     optimize_weights_ts,
+    optimize_temperature_scaling,
+    compute_uncertainty_metrics,
+    _softmax_from_log,
+    optimize_laplace,
+    optimize_weights_laplace,
     save_predictions,
     setup_logger,
 )
@@ -34,6 +39,11 @@ __all__ = [
     # to combine BLoB predictions produced by the bayesian-peft fork.
     'optimize_weights_blob',
     'optimize_weights_ts',
+    'optimize_temperature_scaling',
+    'compute_uncertainty_metrics',
+    '_softmax_from_log',
+    'optimize_laplace',
+    'optimize_weights_laplace',
     'save_predictions',
     'setup_logger',
 ]

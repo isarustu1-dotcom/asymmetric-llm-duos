@@ -82,15 +82,25 @@ def _fit_temperature(logits: np.ndarray, y_true: np.ndarray,
 def _build_metrics(scale: float, logits: np.ndarray, y_true: np.ndarray,
                    model_type: str = 'base'):
     new_logits = scale * logits
+    ## Getting probs for base/sidekick model and its temp_scaled model
+    probs_model_type = _softmax_from_log(logits)
     probs = _softmax_from_log(new_logits)
+    ## Sanity checks
+    _sanity_check_on_probs(probs_model_type, f'{model_type}')
     _sanity_check_on_probs(probs, f'{model_type}_tempscaled')
+    ## Getting predictions
+    preds_model_type = probs_model_type.argmax(axis=1)
     preds = probs.argmax(axis=1)
 
     prefix = f'{model_type}_ts'
     metrics = {
+        f'{model_type}_accuracy': float(accuracy_score(y_true, preds_model_type)),
+        f'{model_type}_f1_macro': float(f1_score(y_true, preds_model_type, average='macro')),
         f'{prefix}_accuracy': float(accuracy_score(y_true, preds)),
         f'{prefix}_f1_macro': float(f1_score(y_true, preds, average='macro')),
     }
+    metrics.update({f'{model_type}_{k}': v
+                    for k, v in compute_uncertainty_metrics(probs_model_type, y_true).items()})
     metrics.update({f'{prefix}_{k}': v
                     for k, v in compute_uncertainty_metrics(probs, y_true).items()})
     return metrics, new_logits, probs, preds
