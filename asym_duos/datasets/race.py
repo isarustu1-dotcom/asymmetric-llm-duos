@@ -10,7 +10,7 @@ from .dataset_utils import qa_dataset_collate_fn, add_index_to_dataset
 
 @DATASETS.register_module()
 class RaceDataset(ClassificationDataset):
-    """RACE reading-comprehension MCQ as next-token classification (article + question + choices)."""
+    """RACE reading-comprehension MCQA as next-token classification (article + question + choices)."""
 
     preamble = (
         'Read the article and return the label of the correct answer. Questions may end with "?" '

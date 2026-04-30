@@ -11,7 +11,7 @@ from .dataset_utils import qa_dataset_collate_fn, add_index_to_dataset
 
 @DATASETS.register_module()
 class SciQDataset(ClassificationDataset):
-    """SciQ science MCQ as next-token classification."""
+    """SciQ science MCQA as next-token classification."""
 
 
     preamble = (

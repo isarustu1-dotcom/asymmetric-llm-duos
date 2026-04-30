@@ -10,7 +10,7 @@ from .dataset_utils import qa_dataset_collate_fn, add_index_to_dataset
 
 @DATASETS.register_module()
 class CSQADataset(ClassificationDataset):
-    """CommonsenseQA as next-token MCQ classification."""
+    """CommonsenseQA as next-token MCQA classification."""
 
     preamble = (
         'Return the label of the correct answer for the question below.\n'

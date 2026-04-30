@@ -10,7 +10,7 @@ from .dataset_utils import qa_dataset_collate_fn, add_index_to_dataset
 
 @DATASETS.register_module()
 class ARCDataset(ClassificationDataset):
-    """AI2 Reasoning Challenge (ARC-Easy / ARC-Challenge) as next-token MCQ classification."""
+    """AI2 Reasoning Challenge (ARC-Easy / ARC-Challenge) as next-token MCQA classification."""
 
     preamble = (
         'Return the label of the correct answer for the question below.\n'

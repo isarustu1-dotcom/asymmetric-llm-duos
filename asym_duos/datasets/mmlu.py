@@ -10,7 +10,7 @@ from .dataset_utils import qa_dataset_collate_fn, add_index_to_dataset
 
 @DATASETS.register_module()
 class MMLUDataset(ClassificationDataset):
-    """MMLU (all subjects concatenated) as next-token MCQ classification."""
+    """MMLU (all subjects concatenated) as next-token MCQA classification."""
 
     preamble = (
         'Return the label of the correct answer for the question below.\n'
