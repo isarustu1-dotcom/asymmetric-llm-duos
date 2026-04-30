@@ -10,10 +10,10 @@ mamba activate adl-asymmetric-lm-duos
 
 pip install -e .
 
-python tools/train.py --config_base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 1
-python tools/train.py --config_base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 2
-python tools/train.py --config_base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 3
-python tools/train.py --config_base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 4
-python tools/train.py --config_base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 5
+python tools/train.py --config-base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 1
+python tools/train.py --config-base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 2
+python tools/train.py --config-base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 3
+python tools/train.py --config-base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 4
+python tools/train.py --config-base configs/csqa_qwen2_7b/lora_csqa_qwen2_7b.yaml -w data/results --seed 5
 
 

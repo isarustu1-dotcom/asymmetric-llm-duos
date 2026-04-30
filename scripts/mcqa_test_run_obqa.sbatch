@@ -10,8 +10,8 @@ mamba activate adl-asymmetric-lm-duos
 
 pip install -e .
 
-python tools/train.py --config_base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 1
-python tools/train.py --config_base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 2
-python tools/train.py --config_base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 3
-python tools/train.py --config_base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 4
-python tools/train.py --config_base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 5
+python tools/train.py --config-base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 1
+python tools/train.py --config-base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 2
+python tools/train.py --config-base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 3
+python tools/train.py --config-base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 4
+python tools/train.py --config-base configs/obqa_qwen2_7b/lora_obqa_qwen2_7b.yaml --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml -w data/results --temperature-scaling --duo --seed 5

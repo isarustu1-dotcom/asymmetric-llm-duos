@@ -1,58 +1,58 @@
 # Asymmetric LLM Duos
 
-Code for calibrating multiple-choice QA language models with LoRA fine-tuning, Information-Theoretic Evidential Deep Learning (IB-EDL), post-hoc temperature scaling, and asymmetric two-model logit fusion.
+Code accompanying our work on calibrating multiple-choice QA language models with LoRA fine-tuning, Information-Bottleneck Evidential Deep Learning (IB-EDL), post-hoc temperature scaling, Laplace-LoRA, and asymmetric two-model logit fusion.
 
-This repository applies the asymmetric duo idea to LLMs. The original asymmetric duo formulation used here comes from the computer vision work *Asymmetric Duos: Sidekicks Improve Uncertainty*, and this codebase adapts that idea to language-model calibration and multiple-choice QA.
+The asymmetric duo idea originates in the computer-vision paper *Asymmetric Duos: Sidekicks Improve Uncertainty* (Zhou, Shelhamer, Pleiss, NeurIPS 2025); this repository adapts it to LLM calibration on multiple-choice QA, and combines it with several Bayesian / evidential baselines.
 
-The repository is organized around a single training entrypoint, a single final-analysis entrypoint, and a lightweight Python package (`ib_edl`) that contains the reusable dataset, model, training, and calibration code.
+The repository is organized around a single training entry point, a single aggregation entry point, and a Python package `asym_duos` that holds the reusable dataset, model, training, and calibration code.
 
 ## What This Repository Does
 
 The core workflow is:
 
-1. Fine-tune one model, or a base/sidekick pair of models, on a multiple-choice QA dataset.
+1. Fine-tune one model, or a base / sidekick pair, on a multiple-choice QA dataset.
 2. Save validation and test predictions as logits.
-3. Optionally fit post-hoc calibration on the validation set:
+3. Optionally fit a post-hoc calibration on the validation set:
    - per-model temperature scaling
+   - Laplace-LoRA posterior approximation
    - asymmetric duo weights for combining base and sidekick logits
-4. Aggregate metrics across multiple seeds and optionally compute deep-ensemble results.
+4. Aggregate metrics across seeds and optionally compute deep-ensemble baselines.
 
-The repository currently includes experiment configs for:
+Datasets with ready-made experiment configs:
 
-- `ARC-Challenge` (`arc_c`)
+- `ARC-Easy` (`arc_e`) and `ARC-Challenge` (`arc_c`)
 - `CommonsenseQA` (`csqa`)
 - `OpenBookQA` (`obqa`)
+- `SciQ` (`sciq`)
+- `RACE` (`race`)
 
-Base model configs are provided for:
+Base-model configs:
 
-- `Qwen2-7B`
-- `Qwen2-1.5B` (stored under `qwen2_15b.yaml`)
-- `Qwen3-0.6B`
-- `Qwen3-1.7B`
-- `Qwen3-8B`
+- `Qwen2-7B`, `Qwen2-1.5B`
+- `Qwen3-0.6B`, `Qwen3-1.7B`, `Qwen3-8B`
+
+Additional dataset wrappers exist in `asym_duos/datasets/` (e.g. `MMLU`) without ready-made experiment configs — adding one follows the pattern in `configs/_base_/`.
 
 ## Repository Layout
 
 ```text
 .
 ├── configs/                # Experiment and shared config files
-│   ├── _base_/             # Reusable dataset/model/schedule config fragments
-│   ├── arc_c_qwen2_7b/     # Dataset+model experiment configs
-│   ├── arc_c_qwen2_15b/
-│   ├── csqa_qwen2_7b/
-│   ├── csqa_qwen2_15b/
-│   ├── obqa_qwen2_7b/
-│   └── obqa_qwen2_15b/
-├── ib_edl/                 # Python package with datasets, trainers, utils
+│   ├── _base_/             # Reusable dataset/model/schedule fragments
+│   └── <dataset>_<model>/  # Composed experiment configs
+├── asym_duos/              # Python package
 │   ├── datasets/
 │   ├── models/
 │   ├── train_eval/
 │   └── utils/
-├── scripts/                # Example Slurm launch scripts
+├── scripts/                # Slurm launch templates
 ├── tools/
-│   ├── train.py            # Main training / calibration entrypoint
-│   └── average_metrics.py  # Final aggregation across seeds
-├── setup.cfg               # Package metadata and dependencies
+│   ├── train.py                     # Training + post-hoc calibration entry point
+│   ├── average_metrics.py           # Aggregate metrics across seeds (+ deep ensembles)
+│   ├── compute_flops.py             # MACs / FLOPs analysis for each method
+│   ├── pick_best_ib_edl_beta.py     # Pick winning IB-EDL beta from a tuning sweep
+│   └── postprocess_blob_asymduos.py # Post-hoc duo + ensemble for BLoB predictions
+├── setup.cfg
 └── pyproject.toml
 ```
 
@@ -60,50 +60,36 @@ Base model configs are provided for:
 
 ### Plain LoRA
 
-The simplest setup fine-tunes a single causal LM with PEFT/LoRA and evaluates it directly.
+Standard cross-entropy LoRA fine-tuning of a causal LM, evaluated directly on the answer-token logits.
 
 ### IB-EDL
 
-`IB-EDL` replaces plain cross-entropy training with an evidential objective. The model predicts positive evidence for answer classes, which is converted into Dirichlet-style uncertainty estimates. The implementation also supports a variational information bottleneck (VIB) term.
+Replaces cross-entropy with an evidential objective: the model predicts positive Dirichlet evidence over answer classes, optionally perturbed through a variational information bottleneck. Built on the [IB-EDL reference implementation](https://github.com/sandylaker/ib-edl).
 
 ### Temperature Scaling
 
-Temperature scaling is a post-hoc calibration baseline. After training, the code fits one scalar temperature per model on the validation logits and applies it to validation and test predictions.
+A post-hoc scalar `T` per model fitted on validation NLL and applied to val and test logits (Guo et al., ICML 2017).
+
+### Laplace-LoRA
+
+Post-hoc Laplace approximation over the LoRA parameters via the [`bayesian-lora`](https://github.com/MaximeRobeyns/bayesian_lora) package, following Yang et al. (ICLR 2024) and Daxberger et al. (NeurIPS 2021).
 
 ### Asymmetric Duo
 
-An asymmetric duo is a pair of independently fine-tuned models:
+A pair of independently fine-tuned models — `base` and `sidekick` — whose logits are fused on validation:
 
-- `base`
-- `sidekick`
+- **unconstrained**: independent positive scales for base and sidekick (L-BFGS-B).
+- **constrained**: weights in `[0, 1]` that sum to `1` (SLSQP).
 
-Their logits are combined after training by learning validation-set fusion weights. Two modes are supported:
-
-- unconstrained: independent positive scales for base and sidekick
-- constrained: weights in `[0, 1]` that sum to `1`
-
-The duo is "asymmetric" because the two models can differ in size or capacity.
-
-In this repository, that idea is applied to LLMs. The motivation comes from the computer vision asymmetric-duo setup of Zhou, Shelhamer, and Pleiss, but the implementation here is tailored to causal language models, token-level answer selection, and calibration-focused evaluation.
+The fusion is over logits, not probabilities. The duo is "asymmetric" because the two models can differ in size or capacity.
 
 ## Installation
-
-Create an environment with Python and PyTorch that supports your GPU setup, then install the package in editable mode:
 
 ```bash
 pip install -e .
 ```
 
-Key dependencies are declared in `setup.cfg` and include:
-
-- `torch`
-- `transformers`
-- `datasets`
-- `peft`
-- `accelerate`
-- `mmengine`
-- `scipy`
-- `wandb`
+Key dependencies are declared in `setup.cfg` (see `install_requires`).
 
 ## Quick Start
 
@@ -111,7 +97,7 @@ Key dependencies are declared in `setup.cfg` and include:
 
 ```bash
 python tools/train.py \
-  --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \
+  --config-base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \
   --work-dir data/results \
   --seed 1
 ```
@@ -120,8 +106,8 @@ python tools/train.py \
 
 ```bash
 python tools/train.py \
-  --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \
-  --config_sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \
+  --config-base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \
+  --config-sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \
   --work-dir data/results \
   --temperature-scaling \
   --duo \
@@ -132,91 +118,58 @@ python tools/train.py \
 
 ```bash
 python tools/train.py \
-  --config_base configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml \
-  --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml \
+  --config-base configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml \
+  --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml \
   --work-dir data/results \
   --ib-edl \
-  --duo \
-  --duo-constrained \
+  --duo --duo-constrained \
   --seed 1
 ```
 
-### 4. Aggregate Final Results Across Seeds
-
-Run the training command for several seeds first, then summarize:
+### 4. Aggregate across seeds
 
 ```bash
 python tools/average_metrics.py \
-  --config_base configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml \
-  --config_sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml \
+  --config-base configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml \
+  --config-sidekick configs/arc_c_qwen2_15b/ib_arc_c_qwen2_15b.yaml \
   --work-dir data/results \
-  --dataset_name arc_c \
-  --ib-edl \
-  --duo \
-  --duo-constrained
+  --dataset-name arc_c \
+  --ib-edl --duo --duo-constrained
 ```
 
-To include deep-ensemble results:
-
-```bash
-python tools/average_metrics.py \
-  --config_base configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml \
-  --config_sidekick configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml \
-  --work-dir data/results \
-  --dataset_name arc_c \
-  --temperature-scaling \
-  --duo \
-  --deep-ensemble \
-  --deep-ensemble-size 2
-```
+Add `--deep-ensemble --deep-ensemble-size N` to also report deep-ensemble metrics built from same-model seeds.
 
 ## Training Entry Point
 
-`tools/train.py` is the main script for:
-
-- loading configs
-- building datasets and models
-- running fine-tuning
-- evaluating on validation and test splits
-- saving predictions
-- optionally running post-hoc temperature scaling
-- optionally running duo optimization
+`tools/train.py` loads configs, builds datasets and models, fine-tunes, evaluates val/test, saves predictions, and runs the requested post-hoc steps.
 
 Important arguments:
 
-- `--config_base`: config for the mandatory base model
-- `--config_sidekick`: optional config for the sidekick model
-- `--work-dir`: root directory for outputs
-- `--seed`: random seed
-- `--gpu-id`: CUDA device index
-- `--skip-ft`: skip fine-tuning and reuse existing PEFT checkpoints from config
-- `--ib-edl`: use the evidential trainer instead of plain fine-tuning
-- `--duo`: run duo optimization after prediction files are saved
-- `--duo-constrained`: use constrained fusion instead of unconstrained fusion
-- `--temperature-scaling`: run per-model post-hoc temperature scaling
-- `--no-wandb`: disable Weights & Biases logging
-- `--cfg-options key=value ...`: override config fields from the CLI
+| Flag | Purpose |
+| --- | --- |
+| `--config-base` | Config for the base model (required). |
+| `--config-sidekick` | Config for the sidekick model. Required for `--duo`. |
+| `--work-dir`, `-w` | Root directory for outputs. |
+| `--seed`, `--gpu-id` | Standard. |
+| `--skip-ft`, `-s` | Skip fine-tuning and reuse `model.peft_path` from config. |
+| `--ib-edl` | Use the evidential trainer instead of plain LoRA. |
+| `--temperature-scaling` | Run per-model temperature scaling after training. |
+| `--laplace-lora` | Run Laplace-LoRA after training. |
+| `--duo` / `--duo-constrained` | Run duo fusion (constrained or unconstrained). |
+| `--beta-base`, `--beta-sidekick` | Override `vib.beta` per model (IB-EDL only). |
+| `--no-wandb` | Disable Weights & Biases. |
+| `--cfg-options key=value ...` | Override config fields from the CLI. |
 
-## Result Aggregation
+## Other Tools
 
-`tools/average_metrics.py` reconstructs the experiment output directory from the same config and method flags used in training, then:
-
-- loads per-seed metrics
-- computes mean and standard deviation
-- writes tidy CSV summaries
-- optionally computes deep ensembles from pairs or groups of same-model seeds
-
-If no `metrics/<dataset>.npz` file exists yet, the script can rebuild metrics directly from raw prediction files.
+- `tools/average_metrics.py` — reconstructs the experiment output directory from the same flags used in training, computes mean ± std across seeds, writes tidy CSVs, and optionally builds deep ensembles. Falls back to rebuilding `metrics/<dataset>.npz` from raw prediction files if it is missing.
+- `tools/compute_flops.py` — empirical MACs/FLOPs analysis for each method (LoRA / IB-EDL / Laplace / BLoB / duo).
+- `tools/pick_best_ib_edl_beta.py` — given a sweep over `--beta-base` (or `--beta-sidekick`) values, picks the winner under a chosen target metric.
+- `tools/postprocess_blob_asymduos.py` — reads BLoB predictions saved under `blob/{model_type}/` and runs the duo + ensemble pipeline on top of them.
 
 ## Output Structure
 
-Outputs are grouped under the `--work-dir` root using:
-
-```text
-<work-dir>/<dataset>/<model-tag>/<method>/
-```
-
-Examples:
+Outputs are grouped under `--work-dir` as `<dataset>/<model-tag>/<method>/`, e.g.:
 
 ```text
 data/results/arc_c/qwen2_7b/lora/
@@ -224,217 +177,65 @@ data/results/arc_c/qwen2_7b_qwen2_15b/lora_tempscaling_duo_unconstrained/
 data/results/arc_c/qwen2_7b_qwen2_15b/ib_edl_duo_constrained/
 ```
 
-A typical experiment directory contains:
+Each experiment directory contains:
 
 ```text
-base/
-  checkpoints/
-  val_preds/
-  test_preds/
-sidekick/
-  checkpoints/
-  val_preds/
-  test_preds/
-temperature_scaling/
-  base/
-  sidekick/
-duo/
-  val_preds/
-  test_preds/
+base/         { checkpoints/, val_preds/, test_preds/ }
+sidekick/     { checkpoints/, val_preds/, test_preds/ }   # if applicable
+temperature_scaling/  { base/, sidekick/ }                # if --temperature-scaling
+duo/          { val_preds/, test_preds/ }                 # if --duo
 metrics/
 overall_metrics_summary/
 ```
 
 ## Config System
 
-Configs are built from reusable pieces in `configs/_base_`.
+Configs are composed from reusable fragments under `configs/_base_/`:
 
-Typical composition:
+- a dataset config (`arc_c.yaml`, `csqa.yaml`, `obqa.yaml`, `sciq.yaml`, `race.yaml`)
+- a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`, `qwen3_06b.yaml`, `qwen3_1_7B.yaml`, `qwen3_8b.yaml`)
+- a misc config (prediction saving, plotting)
+- a training schedule (`non_edl_schedule.yaml` or `edl_schedule.yaml`)
 
-- dataset config, for example `configs/_base_/arc_c.yaml`
-- model config, for example `configs/_base_/qwen2_7b.yaml`
-- misc config, for prediction saving and plotting
-- training schedule, either:
-  - `non_edl_schedule.yaml`
-  - `edl_schedule.yaml`
+Experiment configs add method-specific fields such as `process_preds.npz_file`, `edl_loss_cfg`, and `vib`.
 
-Experiment configs then add method-specific settings, for example:
+> Note: `qwen2_15b.yaml` points to `Qwen/Qwen2-1.5B` — the file name reads "15b" but the model is 1.5B.
 
-- `process_preds.npz_file`
-- `edl_loss_cfg`
-- `vib`
+## Datasets
 
-### Current Model Base Configs
-
-- `configs/_base_/qwen2_7b.yaml`
-- `configs/_base_/qwen2_15b.yaml`
-- `configs/_base_/qwen3_06b.yaml`
-- `configs/_base_/qwen3_1_7B.yaml`
-- `configs/_base_/qwen3_8b.yaml`
-
-The repository now includes Qwen3 base configs and matching dataset-specific experiment configs following the same structure as the Qwen2 runs.
-
-## How Datasets Are Formatted
-
-The code treats multiple-choice QA as next-token classification over answer labels like `A`, `B`, `C`, etc.
-
-Each dataset wrapper:
+Each dataset wrapper (under `asym_duos/datasets/`):
 
 - loads a Hugging Face dataset
-- formats a prompt containing the question and choices
-- maps class labels to token IDs
+- formats a prompt with question and choices (preamble defined per class)
+- maps class labels to single answer-token IDs
 - returns prompt/label pairs compatible with `transformers.Trainer`
 
-Implemented dataset wrappers include:
-
-- `ARCDataset`
-- `CSQADataset`
-- `OBQADataset`
-- `SciQDataset`
-- `RaceDataset`
-- `MMLUDataset`
-
-Only some of these currently have ready-made experiment configs.
-
-## How IB-EDL Is Implemented
-
-The package `ib_edl` contains the reusable method implementation:
-
-- `ib_edl/models/`
-  - model and tokenizer loading
-  - LoRA / PEFT setup
-- `ib_edl/datasets/`
-  - dataset wrappers and prompt formatting
-- `ib_edl/train_eval/`
-  - `FTTrainer` for plain cross-entropy fine-tuning
-  - `EvidentialTrainer` for evidential objectives
-  - evidential losses and evaluation metrics
-- `ib_edl/utils/`
-  - prediction saving
-  - uncertainty metrics
-  - temperature scaling
-  - duo optimization
-
-The `EvidentialTrainer`:
-
-- converts logits to positive evidence
-- computes evidential loss terms
-- optionally applies a variational information bottleneck
-- returns logits derived from normalized Dirichlet parameters for evaluation
-
-## Temperature Scaling Details
-
-Temperature scaling is implemented in `ib_edl/utils/temperature_scaling.py`.
-
-It:
-
-- loads saved validation and test logits
-- fits a single scalar temperature on validation NLL
-- applies the learned scale to validation and test logits
-- computes accuracy, F1, NLL, Brier score, ECE, LPPD, and mean uncertainty
-- saves calibrated predictions and updates the shared metrics file
-
-This makes it easy to compare:
-
-- raw base model
-- raw sidekick model
-- temperature-scaled base model
-- temperature-scaled sidekick model
-
-## Asymmetric Duo Details
-
-Duo optimization is implemented in `ib_edl/utils/duo_optimizer.py`.
-
-It:
-
-- loads saved base and sidekick predictions
-- checks that validation and test example indices match across both models
-- optimizes fusion weights on validation logits
-- evaluates the fused model on validation and test data
-- saves combined logits and uncertainty metrics
-
-The fused probability distribution is computed from a weighted combination of base and sidekick logits, not from probability averaging.
-
-## Slurm Scripts
-
-The `scripts/` directory contains example Slurm launchers for:
-
-- ARC-C runs
-- CSQA runs
-- OBQA runs
-- metrics aggregation
-
-These scripts are useful as templates, but they should be reviewed before reuse because they reflect a specific cluster environment and a few paths/config combinations may need updating.
+Wrappers: `ARCDataset`, `CSQADataset`, `OBQADataset`, `SciQDataset`, `RaceDataset`, `MMLUDataset`.
 
 ## Practical Notes
 
-- `--duo` requires `--config_sidekick`.
-- `--duo-constrained` only makes sense together with `--duo`.
-- `--skip-ft` requires `model.peft_path` to be set in the config.
-- Weights & Biases logging is enabled by default unless `--no-wandb` is passed.
-- Prediction saving depends on `process_preds.npz_file` being set in the config.
-- The code expects CUDA and uses `cuda:<gpu-id>` directly.
-
-## Extending The Repository
-
-### Add a New Experiment Config
-
-Create a new config folder that combines:
-
-- a dataset config from `configs/_base_`
-- a model config from `configs/_base_`
-- `misc.yaml`
-- either `non_edl_schedule.yaml` or `edl_schedule.yaml`
-
-Then add method-specific fields such as:
-
-- `process_preds.npz_file`
-- `edl_loss_cfg`
-- `vib`
-
-### Add a New Dataset
-
-1. Implement a dataset wrapper under `ib_edl/datasets/`.
-2. Register it in the dataset registry.
-3. Add a base dataset config under `configs/_base_/`.
-4. Create experiment configs that compose it with a model config.
-
-### Add a New Model
-
-1. Create a new base model config in `configs/_base_/`.
-2. Point `model_name_or_path` to the Hugging Face model.
-3. Adjust LoRA target modules if needed for the architecture.
-4. Create dataset-specific experiment configs that reference it.
-
-## Known Caveats
-
-- There is no generated documentation site yet; the source of truth is the code and configs.
-- `configs/_base_/qwen2_15b.yaml` currently points to `Qwen/Qwen2-1.5B`, so the filename reads like `15b` while the underlying model is `1.5B`.
-- The Qwen3 configs use the same experiment structure as the Qwen2 configs, so any new model family should follow that same pattern to work cleanly with the training and aggregation scripts.
-
-## Reference
-
-The asymmetric duo idea used in this repository is adapted from the following computer vision paper and applied here to LLM calibration:
-
-- Tim G. Zhou, Evan Shelhamer, and Geoff Pleiss. *Asymmetric Duos: Sidekicks Improve Uncertainty*. arXiv:2505.18636, 2025. NeurIPS 2025. https://arxiv.org/abs/2505.18636
-
-DOI: https://doi.org/10.48550/arXiv.2505.18636
+- `--duo` requires `--config-sidekick`.
+- `--duo-constrained` only makes sense with `--duo`.
+- `--skip-ft` requires `model.peft_path` in the config.
+- W&B is on by default; pass `--no-wandb` to disable.
+- Prediction saving requires `process_preds.npz_file` to be set in the config.
+- The code uses `cuda:<gpu-id>` directly.
 
 ## Suggested Reading Order
 
-If you are new to the repo, this order works well:
-
 1. `tools/train.py`
-2. `tools/average_metrics.py`
-3. one experiment config, for example `configs/arc_c_qwen2_7b/ib_arc_c_qwen2_7b.yaml`
-4. the matching base configs in `configs/_base_/`
-5. `ib_edl/train_eval/evidential_trainer.py`
-6. `ib_edl/utils/temperature_scaling.py`
-7. `ib_edl/utils/duo_optimizer.py`
+2. one experiment config under `configs/<dataset>_<model>/`
+3. `asym_duos/train_eval/ft_trainer.py`
+4. `asym_duos/utils/duo_optimizer.py`
+5. `tools/average_metrics.py`
 
-## Citation
+## Citations and Acknowledgements
 
-If you are using this repository in academic work, cite both:
+This repository builds on, and reuses code from, several earlier works:
 
-- Zhou, Shelhamer, and Pleiss, *Asymmetric Duos: Sidekicks Improve Uncertainty* (the original computer vision asymmetric-duo paper)
-- this LLM adaptation / project repository
+- **IB-EDL** — the trainers, losses, and MCQA prompt format are adapted from <https://github.com/sandylaker/ib-edl>.  
+  *Calibrating LLMs with Information-Theoretic Evidential Deep Learning* (arXiv:2502.06351).
+- **Asymmetric Duos** — Zhou, Shelhamer, Pleiss, *Asymmetric Duos: Sidekicks Improve Uncertainty*, NeurIPS 2025 (arXiv:2505.18636).
+- **Temperature Scaling** — Guo, Pleiss, Sun, Weinberger, *On Calibration of Modern Neural Networks*, ICML 2017.
+- **Laplace-LoRA** — Yang, Robeyns et al., *Bayesian Low-Rank Adaptation for Large Language Models*, ICLR 2024 (via the [`bayesian-lora`](https://github.com/MaximeRobeyns/bayesian_lora) package).
+

@@ -20,7 +20,6 @@ python tools/train.py \\
 """
 
 import argparse
-import os
 import os.path as osp
 from datetime import datetime
 
@@ -31,7 +30,7 @@ from mmengine.runner.utils import set_random_seed
 from transformers import TrainingArguments
 from transformers.trainer_utils import get_last_checkpoint
 
-from ib_edl import (
+from asym_duos import (
     DATASETS,
     ClassificationMetric,
     EvidentialTrainer,
@@ -41,7 +40,6 @@ from ib_edl import (
     optimize_temperature_scaling,
     optimize_weights,
     optimize_weights_ts,
-    plot_predictions,
     save_predictions,
     setup_logger,
     optimize_laplace,
@@ -57,9 +55,9 @@ def parse_args():
     p = argparse.ArgumentParser(description='Train and evaluate Asymmetric LLM Duos.')
 
     # --- model configs (base is mandatory, sidekick is optional) ---
-    p.add_argument('--config_base', required=True,
+    p.add_argument('--config-base', required=True,
                    help='Config file for the base model (mandatory).')
-    p.add_argument('--config_sidekick', default=None,
+    p.add_argument('--config-sidekick', default=None,
                    help='Config file for the sidekick model (optional).')
 
     # --- output ---
@@ -186,7 +184,7 @@ def _build_work_dir(root: str, cfg_base_path: str, cfg_sidekick_path, args) -> s
     if args.duo:
         method_parts.append('duo_constrained' if args.duo_constrained else 'duo_unconstrained')
     if args.laplace_lora:
-        method_parts.append(f'laplace_lora')
+        method_parts.append('laplace_lora')
     method = '_'.join(method_parts)
 
     return osp.join(root, dataset, model_tag, method)

@@ -29,8 +29,8 @@ for BETA in "${BETAS[@]}"; do
     echo "[tune] beta=$BETA (seed $TUNE_SEED)"
     echo "=============================================================="
     python tools/train.py \
-        --config_base     "$CFG_BASE" \
-        --config_sidekick "$CFG_SIDE" \
+        --config-base     "$CFG_BASE" \
+        --config-sidekick "$CFG_SIDE" \
         -w "$WORK_DIR" \
         --ib-edl \
         --seed $TUNE_SEED \
@@ -42,8 +42,8 @@ echo "=============================================================="
 echo "[pick-base] best base beta by base_ece"
 echo "=============================================================="
 BEST_BASE=$(python tools/pick_best_ib_edl_beta.py \
-    --config_base     "$CFG_BASE" \
-    --config_sidekick "$CFG_SIDE" \
+    --config-base     "$CFG_BASE" \
+    --config-sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \
     --ib-edl \
     --tune base \
@@ -55,8 +55,8 @@ echo "=============================================================="
 echo "[pick-sidekick] best sidekick beta by sidekick_ece"
 echo "=============================================================="
 BEST_SIDE=$(python tools/pick_best_ib_edl_beta.py \
-    --config_base     "$CFG_BASE" \
-    --config_sidekick "$CFG_SIDE" \
+    --config-base     "$CFG_BASE" \
+    --config-sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \
     --ib-edl \
     --tune sidekick \
@@ -71,8 +71,8 @@ for SEED in "${FINAL_SEEDS[@]}"; do
     echo "[final] seed=$SEED beta_base=$BEST_BASE beta_sidekick=$BEST_SIDE"
     echo "=============================================================="
     python tools/train.py \
-        --config_base     "$CFG_BASE" \
-        --config_sidekick "$CFG_SIDE" \
+        --config-base     "$CFG_BASE" \
+        --config-sidekick "$CFG_SIDE" \
         -w "$WORK_DIR" \
         --ib-edl --duo \
         --seed $SEED \
@@ -84,8 +84,8 @@ echo "=============================================================="
 echo "[aggregate] beta_base=$BEST_BASE beta_sidekick=$BEST_SIDE"
 echo "=============================================================="
 python tools/average_metrics.py \
-    --config_base     "$CFG_BASE" \
-    --config_sidekick "$CFG_SIDE" \
+    --config-base     "$CFG_BASE" \
+    --config-sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \
     --ib-edl --duo \
     --beta-base $BEST_BASE \

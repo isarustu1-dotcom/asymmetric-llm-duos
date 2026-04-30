@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score
 
-from ib_edl import _softmax_from_log, compute_uncertainty_metrics
+from asym_duos import _softmax_from_log, compute_uncertainty_metrics
 
 
 # ---------------------------------------------------------------------------
@@ -31,11 +31,11 @@ from ib_edl import _softmax_from_log, compute_uncertainty_metrics
 
 def parse_args():
     p = ArgumentParser('Aggregate metrics across seeds.')
-    p.add_argument('--config_base', required=True)
-    p.add_argument('--config_sidekick', default=None)
+    p.add_argument('--config-base', required=True)
+    p.add_argument('--config-sidekick', default=None)
     p.add_argument('--work-dir', '-w', required=True,
                    help='Root result directory (same as used in train.py).')
-    p.add_argument('--dataset_name', '-d', required=True,
+    p.add_argument('--dataset-name', '-d', required=True,
                    help='Dataset name matching the npz file stem, e.g. arc_c.')
 
     # method flags — must match what was used during training
@@ -102,7 +102,7 @@ def _build_work_dir(root, cfg_base, cfg_sidekick, args):
     if args.duo:
         method_parts.append('duo_constrained' if args.duo_constrained else 'duo_unconstrained')
     if args.laplace_lora:
-        method_parts.append(f'laplace_lora')
+        method_parts.append('laplace_lora')
     method = '_'.join(method_parts)
     return osp.join(root, dataset, model_tag, method)
 
@@ -257,7 +257,7 @@ def _build_metrics_from_preds(work_dir: str, npz_file: str,
     ``{work_dir}/blob/{model_type}/`` instead of ``{work_dir}/{model_type}/``.
     """
     from sklearn.metrics import accuracy_score, f1_score
-    from ib_edl import compute_uncertainty_metrics
+    from asym_duos import compute_uncertainty_metrics
 
     def _preds_root(mt: str) -> str:
         return osp.join(work_dir, 'blob', mt) if blob else osp.join(work_dir, mt)
@@ -339,7 +339,7 @@ def main():
                           for k in first_val if k.endswith('_nll')})
 
     metrics_df = _create_metrics_df(metrics_data, ['val', 'test'], model_types,
-                                    output_dir := metrics_path)
+                                    metrics_path)
 
     summaries = []
     for mt in model_types:

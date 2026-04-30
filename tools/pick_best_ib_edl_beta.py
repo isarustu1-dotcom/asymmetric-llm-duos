@@ -7,7 +7,7 @@ import sys
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score
 
-from ib_edl import _softmax_from_log, compute_uncertainty_metrics
+from asym_duos import _softmax_from_log, compute_uncertainty_metrics
 
 
 def _model_tag(cfg_path):
@@ -64,10 +64,10 @@ def parse_args():
     p = argparse.ArgumentParser(
         description='Pick the best IB-EDL beta for base or sidekick '
                     'from tuning runs.')
-    p.add_argument('--config_base', required=True)
-    p.add_argument('--config_sidekick', default=None)
+    p.add_argument('--config-base', required=True)
+    p.add_argument('--config-sidekick', default=None)
     p.add_argument('--work-dir', '-w', required=True)
-    p.add_argument('--dataset_name', '-d', required=True)
+    p.add_argument('--dataset-name', '-d', required=True)
 
     # method flags — must match what was used during tuning runs (NOT the final runs)
     p.add_argument('--ib-edl', action='store_true',

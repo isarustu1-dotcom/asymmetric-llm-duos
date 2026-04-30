@@ -31,7 +31,7 @@ import mmengine
 import torch
 from ptflops import get_model_complexity_info
 
-from ib_edl import DATASETS, get_model_and_tokenizer
+from asym_duos import DATASETS, get_model_and_tokenizer
 
 
 # ---------------------------------------------------------------------------
@@ -42,13 +42,13 @@ def parse_args():
     p = argparse.ArgumentParser(
         description="Empirical MACs/FLOPs analysis for Asymmetric LLM Duo methods."
     )
-    p.add_argument("--config_base", required=True,
+    p.add_argument("--config-base", required=True,
                    help="Any config YAML for the base model (lora_ and ib_ variants are "
                         "equivalent — only model_name_or_path, peft_cfg, and dataset type "
                         "are used). E.g. configs/arc_c_qwen2_7b/lora_arc_c_qwen2_7b.yaml")
-    p.add_argument("--config_sidekick", default=None,
+    p.add_argument("--config-sidekick", default=None,
                    help="Any config YAML for the sidekick model (same rules as "
-                        "--config_base). Must share the same dataset as the base config. "
+                        "--config-base). Must share the same dataset as the base config. "
                         "E.g. configs/arc_c_qwen2_15b/lora_arc_c_qwen2_15b.yaml")
     p.add_argument("--gpu-id", type=int, default=0)
     p.add_argument("--seq-len", type=int, default=None,

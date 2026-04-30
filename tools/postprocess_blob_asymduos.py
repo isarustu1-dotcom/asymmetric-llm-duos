@@ -39,7 +39,7 @@ import pandas as pd
 # ``tools/__init__.py``).
 sys.path.insert(0, osp.dirname(osp.abspath(__file__)))
 
-from ib_edl.utils.duo_optimizer import optimize_weights_blob
+from asym_duos.utils.duo_optimizer import optimize_weights_blob
 
 # Reuse helpers from average_metrics so behaviour matches the standard pipeline.
 from average_metrics import (  # type: ignore

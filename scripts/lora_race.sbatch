@@ -25,8 +25,8 @@ for SEED in 1 2 3 4 5; do
     echo "[LoRA race] seed=$SEED — training (duo + temperature-scaling)"
     echo "=============================================================="
     python tools/train.py \
-        --config_base     "$CFG_BASE" \
-        --config_sidekick "$CFG_SIDE" \
+        --config-base     "$CFG_BASE" \
+        --config-sidekick "$CFG_SIDE" \
         -w "$WORK_DIR" \
         --duo --temperature-scaling \
         --seed $SEED
@@ -37,8 +37,8 @@ echo "=============================================================="
 echo "[LoRA race] aggregating metrics (duo + TS + DE size 2)"
 echo "=============================================================="
 python tools/average_metrics.py \
-    --config_base     "$CFG_BASE" \
-    --config_sidekick "$CFG_SIDE" \
+    --config-base     "$CFG_BASE" \
+    --config-sidekick "$CFG_SIDE" \
     -w "$WORK_DIR" -d "$DATASET" \
     --duo --temperature-scaling \
     --deep-ensemble --deep-ensemble-size 2
