@@ -60,7 +60,7 @@ def _nll_single(log_temperature: np.ndarray, logits: np.ndarray, y: np.ndarray) 
 def _fit_temperature(logits: np.ndarray, y_true: np.ndarray,
                      verbose: bool = True, model_label: str = '') -> dict:
     """Fit a single temperature scalar via L-BFGS-B."""
-    x0 = np.array([np.log(100.0)], dtype=np.float64)
+    x0 = np.array([np.log(1.0)], dtype=np.float64)
     cb = (lambda xk: print(f'  T_{model_label}={np.exp(xk[0]):.4f}')) if verbose else None
     res = minimize(_nll_and_grad, x0, args=(logits, y_true),
                    method='L-BFGS-B', jac=True, bounds=None, callback=cb,
