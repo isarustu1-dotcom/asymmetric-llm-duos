@@ -30,8 +30,6 @@ Base-model configs:
 
 - `Qwen2-7B`, `Qwen2-1.5B`
 
-Reusable model fragments for `Qwen3-0.6B`, `Qwen3-1.7B`, and `Qwen3-8B` ship under `configs/_base_/`, but no ready-made composed experiment configs are included for them. Additional dataset wrappers exist in `asym_duos/datasets/` (e.g. `MMLU`) without ready-made experiment configs — adding one follows the pattern in `configs/_base_/`.
-
 ## Repository Layout
 
 ```text
