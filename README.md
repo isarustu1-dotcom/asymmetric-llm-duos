@@ -42,7 +42,6 @@ Base-model configs:
 │   ├── models/
 │   ├── train_eval/
 │   └── utils/
-├── scripts/                # Slurm launch templates
 ├── tools/
 │   ├── train.py                     # Training + post-hoc calibration entry point
 │   ├── average_metrics.py           # Aggregate metrics across seeds (+ deep ensembles)
@@ -189,8 +188,8 @@ overall_metrics_summary/
 
 Configs are composed from reusable fragments under `configs/_base_/`:
 
-- a dataset config (`arc_c.yaml`, `csqa.yaml`, `obqa.yaml`, `sciq.yaml`, `race.yaml`)
-- a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`; `qwen3_06b.yaml`, `qwen3_1_7B.yaml`, `qwen3_8b.yaml` are also available as fragments, though only the Qwen2 ones have composed experiment configs)
+- a dataset config (`arc_c.yaml`, `arc_e.yaml`, `csqa.yaml`, `obqa.yaml`, `race.yaml`, `sciq.yaml`)
+- a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`)
 - a misc config (prediction saving, plotting)
 - a training schedule (`non_edl_schedule.yaml` or `edl_schedule.yaml`)
 
