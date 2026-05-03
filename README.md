@@ -1,10 +1,10 @@
 # Asymmetric LLM Duos
 
-Code accompanying our work on calibrating multiple-choice QA language models with LoRA fine-tuning, Information-Bottleneck Evidential Deep Learning (IB-EDL), post-hoc temperature scaling, Laplace-LoRA, and asymmetric two-model logit fusion.
+Code for *Pushing the Calibration-Compute Frontier of LLMs via Asymmetric Duos*. We adapt the Asymmetric Duos framework of Zhou, Shelhamer, and Pleiss (NeurIPS 2025) from computer vision to large language models, evaluated in a multiple-choice question answering (MCQA) setting.
 
-The asymmetric duo idea originates in the computer-vision paper *Asymmetric Duos: Sidekicks Improve Uncertainty* (Zhou, Shelhamer, Pleiss, NeurIPS 2025); this repository adapts it to LLM calibration on multiple-choice QA, and combines it with several Bayesian / evidential baselines.
+An Asymmetric Duo pairs a strong **base** model with a much smaller **sidekick** model and combines their predictions through a simple logit-space fusion whose global scaling parameters are fit on a validation set. Across six MCQA benchmarks, this yields best or second-best calibration (ECE, NLL) at a fraction of the inference FLOPs of stronger baselines such as BLoB, placing the method on — and in some cases improving — the calibration–compute Pareto frontier. The fusion also composes additively with existing calibration-aware methods (Laplace-LoRA, IB-EDL, BLoB).
 
-The repository is organized around a single training entry point, a single aggregation entry point, and a Python package `asym_duos` that holds the reusable dataset, model, training, and calibration code.
+This repository implements the LoRA fine-tuning, post-hoc calibration (temperature scaling, Laplace-LoRA), evidential training (IB-EDL), and asymmetric logit fusion used in the paper, organized around a single training entry point, a single aggregation entry point, and a Python package `asym_duos`.
 
 ## What This Repository Does
 
@@ -29,9 +29,8 @@ Datasets with ready-made experiment configs:
 Base-model configs:
 
 - `Qwen2-7B`, `Qwen2-1.5B`
-- `Qwen3-0.6B`, `Qwen3-1.7B`, `Qwen3-8B`
 
-Additional dataset wrappers exist in `asym_duos/datasets/` (e.g. `MMLU`) without ready-made experiment configs — adding one follows the pattern in `configs/_base_/`.
+Reusable model fragments for `Qwen3-0.6B`, `Qwen3-1.7B`, and `Qwen3-8B` ship under `configs/_base_/`, but no ready-made composed experiment configs are included for them. Additional dataset wrappers exist in `asym_duos/datasets/` (e.g. `MMLU`) without ready-made experiment configs — adding one follows the pattern in `configs/_base_/`.
 
 ## Repository Layout
 
@@ -193,7 +192,7 @@ overall_metrics_summary/
 Configs are composed from reusable fragments under `configs/_base_/`:
 
 - a dataset config (`arc_c.yaml`, `csqa.yaml`, `obqa.yaml`, `sciq.yaml`, `race.yaml`)
-- a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`, `qwen3_06b.yaml`, `qwen3_1_7B.yaml`, `qwen3_8b.yaml`)
+- a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`; `qwen3_06b.yaml`, `qwen3_1_7B.yaml`, `qwen3_8b.yaml` are also available as fragments, though only the Qwen2 ones have composed experiment configs)
 - a misc config (prediction saving, plotting)
 - a training schedule (`non_edl_schedule.yaml` or `edl_schedule.yaml`)
 
