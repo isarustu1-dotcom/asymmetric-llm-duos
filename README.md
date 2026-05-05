@@ -1,6 +1,6 @@
 # Asymmetric LLM Duos
 
-Code for *Pushing the Calibration-Compute Frontier of LLM Classifiers via Asymmetric Duos*. We adapt the Asymmetric Duos framework of Zhou, Shelhamer, and Pleiss (NeurIPS 2025) from computer vision to large language models, evaluated in a multiple-choice question answering (MCQA) setting.
+Code for *Advancing the Calibration-Compute Frontier of LLM Classifiers via Asymmetric Duos*. We adapt the Asymmetric Duos framework of Zhou, Shelhamer, and Pleiss (NeurIPS 2025) from computer vision to large language models, evaluated in a multiple-choice question answering (MCQA) setting.
 
 An Asymmetric Duo pairs a strong **base** model with a much smaller **sidekick** model and combines their predictions through a simple logit-space fusion whose global scaling parameters are fit on a validation set. Across six MCQA benchmarks, this yields best or second-best calibration (ECE, NLL) on five — RACE being the lone exception, where it trails the strongest baseline by a small margin — at a fraction of the inference FLOPs of stronger baselines such as BLoB, placing the method on, and in some cases improving, the calibration–compute Pareto frontier. The fusion also composes additively with existing calibration-aware methods (Laplace-LoRA, IB-EDL, BLoB).
 
