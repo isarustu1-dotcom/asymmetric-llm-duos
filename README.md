@@ -190,7 +190,7 @@ Configs are composed from reusable fragments under `configs/_base_/`:
 
 - a dataset config (`arc_c.yaml`, `arc_e.yaml`, `csqa.yaml`, `obqa.yaml`, `race.yaml`, `sciq.yaml`)
 - a model config (`qwen2_7b.yaml`, `qwen2_15b.yaml`)
-- a misc config (prediction saving, plotting)
+- a misc config (prediction saving: `npz_file` path)
 - a training schedule (`non_edl_schedule.yaml` or `edl_schedule.yaml`)
 
 Experiment configs add method-specific fields such as `process_preds.npz_file`, `edl_loss_cfg`, and `vib`.
@@ -206,7 +206,7 @@ Each dataset wrapper (under `asym_duos/datasets/`):
 - maps class labels to single answer-token IDs
 - returns prompt/label pairs compatible with `transformers.Trainer`
 
-Wrappers: `ARCDataset`, `CSQADataset`, `OBQADataset`, `SciQDataset`, `RaceDataset`, `MMLUDataset`.
+Wrappers: `ARCDataset`, `CSQADataset`, `OBQADataset`, `SciQDataset`, `RaceDataset`.
 
 ## Practical Notes
 
