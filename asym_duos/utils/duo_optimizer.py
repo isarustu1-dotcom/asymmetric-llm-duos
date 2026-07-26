@@ -16,11 +16,13 @@ import os.path as osp
 from typing import Dict
 
 import numpy as np
-from scipy.optimize import minimize
 from sklearn.metrics import accuracy_score, f1_score
 
+import warnings
+
+from .duo_fit import STALL_WARNING, duo_params, fit_duo, legacy_kwargs
 from .optimizer_helpers import (
-    _logsumexp, _merge_dictionaries, _read_or_create_path,
+    _merge_dictionaries, _read_or_create_path,
     _sanity_check_on_probs, _save_val_test_results,
     _softmax_from_log, _sort_by_idx,
 )
@@ -28,77 +30,44 @@ from .uncertainty_metrics import compute_uncertainty_metrics
 
 
 # ---------------------------------------------------------------------------
-# NLL losses
-# ---------------------------------------------------------------------------
-
-def _nll_unconstrained(scales: np.ndarray, logits_base: np.ndarray,
-                       logits_sidekick: np.ndarray, y: np.ndarray) -> float:
-    alpha, beta = scales
-    log_p = alpha * logits_base + beta * logits_sidekick
-    log_p_norm = log_p - _logsumexp(log_p, axis=1, keepdims=True)
-    return float(-np.mean(log_p_norm[np.arange(len(y)), y]))
-
-
-def _nll_constrained(weights: np.ndarray, logits_base: np.ndarray,
-                     logits_sidekick: np.ndarray, y: np.ndarray) -> float:
-    w_base, w_sidekick = weights
-    log_p = w_base * logits_base + w_sidekick * logits_sidekick
-    log_p_norm = log_p - _logsumexp(log_p, axis=1, keepdims=True)
-    return float(-np.mean(log_p_norm[np.arange(len(y)), y]))
-
-
-# ---------------------------------------------------------------------------
 # Optimisers
+#
+# Both delegate to the shared core in ``duo_fit``, pinned to the original
+# float32 / finite-difference numerics via ``legacy_kwargs()`` so the numbers
+# behind the published tables stay reproducible. Post-hoc analyses under
+# ``asym_duos.analysis`` call the same core with its float64 defaults instead.
 # ---------------------------------------------------------------------------
 
 def _fit_unconstrained(logits_base: np.ndarray, logits_sidekick: np.ndarray,
                        y_true: np.ndarray, verbose: bool = True) -> Dict[str, float]:
     """L-BFGS-B: alpha, beta >= 1e-6, no sum constraint."""
-    x0 = np.array([1.0, 1.0], dtype=np.float64)
-    bounds = [(1e-6, None), (1e-6, None)]
-
-    cb = (lambda xk: print(f'  scales -> base={xk[0]:.4f}, sidekick={xk[1]:.4f}')) if verbose else None
-    res = minimize(_nll_unconstrained, x0, args=(logits_base, logits_sidekick, y_true),
-                   method='L-BFGS-B', bounds=bounds, callback=cb,
-                   options={'disp': verbose})
-    if not res.success:
-        raise RuntimeError(f'Unconstrained duo optimisation failed: {res.message}')
-
-    alpha, beta = res.x
-    total = alpha + beta
-    return {
-        'scale_base': float(alpha),
-        'scale_sidekick': float(beta),
-        'weight_base': float(alpha / total),
-        'weight_sidekick': float(beta / total),
-        'temperature_base': float(1.0 / alpha),
-        'temperature_sidekick': float(1.0 / beta),
-    }
+    fit = fit_duo(logits_base, logits_sidekick, y_true, constrained=False, **legacy_kwargs())
+    if not fit.success:
+        raise RuntimeError(f'Unconstrained duo optimisation failed: {fit.message}')
+    if fit.stalled:
+        warnings.warn(STALL_WARNING, RuntimeWarning, stacklevel=2)
+    if verbose:
+        print(f'  scales -> base={fit.scales[0]:.4f}, sidekick={fit.scales[1]:.4f} '
+              f'(nll={fit.nll:.6f}, iters={fit.n_iter})')
+    return duo_params(fit)
 
 
 def _fit_constrained(logits_base: np.ndarray, logits_sidekick: np.ndarray,
                      y_true: np.ndarray, verbose: bool = True) -> Dict[str, float]:
     """SLSQP: w_base + w_sidekick = 1, both in [0, 1]."""
-    x0 = np.array([0.5, 0.5], dtype=np.float64)
-    bounds = [(0.0, 1.0), (0.0, 1.0)]
-    constraints = {'type': 'eq', 'fun': lambda w: w[0] + w[1] - 1.0}
-
-    cb = (lambda xk: print(f'  weights -> base={xk[0]:.4f}, sidekick={xk[1]:.4f}')) if verbose else None
-    res = minimize(_nll_constrained, x0, args=(logits_base, logits_sidekick, y_true),
-                   method='SLSQP', bounds=bounds, constraints=constraints, callback=cb,
-                   options={'disp': verbose})
-    if not res.success:
-        raise RuntimeError(f'Constrained duo optimisation failed: {res.message}')
-
-    w_base, w_sidekick = res.x
-    return {
-        'scale_base': float(w_base),
-        'scale_sidekick': float(w_sidekick),
-        'weight_base': float(w_base),
-        'weight_sidekick': float(w_sidekick),
-        'temperature_base': float(1.0 / w_base) if w_base > 0 else float('inf'),
-        'temperature_sidekick': float(1.0 / w_sidekick) if w_sidekick > 0 else float('inf'),
-    }
+    fit = fit_duo(logits_base, logits_sidekick, y_true, constrained=True, **legacy_kwargs())
+    if not fit.success:
+        raise RuntimeError(f'Constrained duo optimisation failed: {fit.message}')
+    if fit.stalled:
+        warnings.warn(STALL_WARNING, RuntimeWarning, stacklevel=2)
+    if verbose:
+        print(f'  weights -> base={fit.scales[0]:.4f}, sidekick={fit.scales[1]:.4f} '
+              f'(nll={fit.nll:.6f}, iters={fit.n_iter})')
+    params = duo_params(fit)
+    # Under the simplex constraint the scales *are* the weights.
+    params['weight_base'] = params['scale_base']
+    params['weight_sidekick'] = params['scale_sidekick']
+    return params
 
 
 # ---------------------------------------------------------------------------

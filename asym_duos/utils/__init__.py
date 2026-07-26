@@ -2,7 +2,9 @@ from .logging import setup_logger
 from .misc import save_predictions
 from .typing import Device
 from .optimizer_helpers import _softmax_from_log
+from .duo_fit import ScaleFit, duo_params, fit_component_scales, fit_duo, fit_temperature_scale, fuse
 from .duo_optimizer import optimize_weights, optimize_weights_ts, optimize_weights_laplace, optimize_weights_blob
+from .preds_io import DuoPreds, Preds, load_duo_experiment, load_duo_split, load_split, load_stored_duo_params
 from .temperature_scaling import optimize_temperature_scaling
 from .uncertainty_metrics import compute_uncertainty_metrics
 from .laplace_lora import optimize_laplace
@@ -12,6 +14,18 @@ __all__ = [
     'Device',
     'save_predictions',
     '_softmax_from_log',
+    'ScaleFit',
+    'duo_params',
+    'fit_component_scales',
+    'fit_duo',
+    'fit_temperature_scale',
+    'fuse',
+    'DuoPreds',
+    'Preds',
+    'load_duo_experiment',
+    'load_duo_split',
+    'load_split',
+    'load_stored_duo_params',
     'optimize_weights',
     'optimize_weights_ts',
     # optimize_weights_blob is the duo-fitting entry point used by
